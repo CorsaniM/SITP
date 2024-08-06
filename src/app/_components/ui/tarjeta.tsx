@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cva, type VariantProps } from "node_modules/.pnpm/class-variance-authority@0.7.0/node_modules/class-variance-authority/dist/index"
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from "~/lib/utils"
 
 

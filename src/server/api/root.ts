@@ -2,7 +2,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { imagesRouter } from "./routers/images";
 import { ticketsRouter } from "./routers/tickets";
-import { commentsRouter } from "./routers/coments";
+import { commentsRouter } from "./routers/comments";
 import { participantsRouter } from "./routers/participants";
 import { eventsRouter } from "./routers/events";
 
@@ -13,7 +13,7 @@ import { eventsRouter } from "./routers/events";
  */
 export const appRouter = createTRPCRouter({
   tickets: ticketsRouter,
-  coments: commentsRouter,
+  comments: commentsRouter,
   participants: participantsRouter,
   images: imagesRouter,
   events: eventsRouter,

@@ -1,13 +1,13 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { api } from 'app/trpc/react';
-import { Card, CardTitle, CardDescription } from "app/app/_components/ui/tarjeta";
-import { List, ListTile } from 'app/app/_components/list';
-import { Title } from 'app/app/_components/ui/title';
+import { api } from '~/trpc/react';
+import { Card, CardTitle, CardDescription } from "~/app/_components/ui/tarjeta";
+import { List, ListTile } from '~/app/_components/list';
+import { Title } from '~/app/_components/ui/title';
 import { useUser, useOrganization } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { Button } from 'app/app/_components/ui/button';
+import { Button } from '~/app/_components/ui/button';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,8 +16,8 @@ dayjs.locale("es");
 
 export default function TicketPage(props:{params:{ticketId: string}}) {
   const id = props.params.ticketId
-  const ticket = api.tickets.get.useQuery({ id: parseInt(id) }).data;
-  const { mutateAsync: createMensaje, isPending } = api.message.create.useMutation();
+  const ticket = api.tickets.getById.useQuery({ id: parseInt(id) }).data;
+  const { mutateAsync: createMensaje, isPending } = api.comments.create.useMutation();
   const router = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
@@ -29,11 +29,10 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
     try {
         await createMensaje({
             userId: user!.id,
-            tipoMessage: "actualización",
+            type: "actualización",
             title: ticket!.title || "",
             ticketId: ticket!.id,
             description: description,
-            images: "",
             state: "no leido",
             orgId: organization!.id,
             createdAt: new Date,
