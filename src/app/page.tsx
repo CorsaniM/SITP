@@ -1,16 +1,15 @@
-import Link from "next/link";
+"use client"
+import { useOrganization, useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
-import { LatestPost } from "~/app/_components/post";
-import { api, HydrateClient } from "~/trpc/server";
+export default async function Page() {
+  const { user } = useUser();
+  const organization = useOrganization()
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  void api.post.getLatest.prefetch();
-
-  return (
-    <div>
-      <h1>Exitos y suerte con todo. Acuerdense que estamos cualquier cosa</h1>
-    </div>
-  );
+  if(organization.organization?.name === "IanTech"){
+      return redirect("admin")
+  }  
+  else{
+      return redirect("support")
+  }
 }
