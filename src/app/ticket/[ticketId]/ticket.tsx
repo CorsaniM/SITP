@@ -29,14 +29,12 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
     try {
         await createMensaje({
             userId: user!.id,
-            type: "actualización",
-            title: ticket!.title || "",
             ticketId: ticket!.id,
-            description: description,
+            type: "actualización",
             state: "no leido",
-            orgId: organization!.id,
+            title: ticket!.title || "",
+            description: description,
             createdAt: new Date,
-            updatedAt: new Date,
         })  
          
         toast.success('mensaje enviado')
@@ -48,9 +46,9 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         toast.error('no se pudo crear el mensaje')
     }
 }
-// const { mutateAsync: updateMensaje} = api.message.update.useMutation();
+// const { mutateAsync: updateMensaje} = api.comments.update.useMutation();
 // useEffect(()=>{
-//   ticket?.message.map((mensaje)=>{
+//   ticket?.comments.map((mensaje)=>{
 //     updateMensaje({
 //       id: mensaje.id,
 //       state: "leido",
@@ -70,7 +68,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             </div>
             <div className='flex-auto px-16'>
             Estado: {ticket!.state} <br />
-            Urgencia: {ticket!.urgencia}
+            Urgencia: {ticket!.urgency}
             </div>
           </div>
 
@@ -84,11 +82,11 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         <div className='p-2'>
           <CardTitle>Mensajes:</CardTitle>
           <List>
-            {ticket.message ? ticket.message.map((message) => (
+            {ticket.comments ? ticket.comments.map((comments) => (
               <ListTile
-                key={message.id}
-                title={message.title}
-                leading={message.description}
+                key={comments.id}
+                title={comments.title}
+                leading={comments.description}
               />
             )) : (<h1>No hay notificaciones</h1>)}
           </List>

@@ -3,11 +3,11 @@ import Link from "next/link";
 
 
 export default function Sidenav(props: { children: React.ReactNode }) {
-  return <li>{props.children}</li>;
+  return <ul>{props.children}</ul>;
 }
 
 export function SidenavSeparator(props: { children: React.ReactNode }) {
-  return <li className=" px-4 pt-3 text-sm font-medium">{props.children}</li>;
+  return <ul className=" px-4 pt-3 text-sm font-medium">{props.children}</ul>;
 }
 
 export function SidenavItem(props: {

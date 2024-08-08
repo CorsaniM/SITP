@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { db } from "~/server/db";
+import { db, schema } from "~/server/db";
 import { images, participants, tickets } from "~/server/db/schema";
 
 export const ticketsRouter = createTRPCRouter({
@@ -15,10 +15,8 @@ export const ticketsRouter = createTRPCRouter({
       description: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const [respuesta] = await ctx.db
-        .insert(tickets)
+    const [respuesta] = await ctx.db
+        .insert(schema.tickets)
         .values(input)
         .returning();
 
@@ -53,16 +51,22 @@ export const ticketsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const ticketWithRelations = await ctx.db.query.tickets.findMany({
-        where: eq(tickets.orgId, input.orgId),
-        with: {
-          comments: true,
-          images: true,
-          participants: true,
-        },
-      });
 
-      return ticketWithRelations;
+      try {
+        const ticketWithRelations = await ctx.db.query.tickets.findMany({
+          where: eq(tickets.orgId, input.orgId),
+          with: {
+            comments: true,
+            images: true,
+            participants: true,
+          },
+        });
+  
+        return ticketWithRelations;
+      }
+     catch {
+      return null
+      }
     }),
 
     getByUser: publicProcedure

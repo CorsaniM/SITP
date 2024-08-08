@@ -8,7 +8,7 @@ import { useUser } from '@clerk/nextjs';
 
 export default function Dashboard() { 
   const { user } = useUser();
-  const tickets =api.tickets.getByUser.useQuery({userId: user!.id}).data
+  const tickets =api.tickets.getByUser.useQuery({userId: user!}).data
   const ticketpend = tickets?.filter((pend)=> pend.state === "Pendiente")
   const ticketasig = tickets?.filter((asig)=> asig.state === "Asignado")
   const ticketfin = tickets?.filter((fin)=> fin.state === "Finalizado")
