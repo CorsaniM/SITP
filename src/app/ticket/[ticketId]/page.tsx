@@ -1,3 +1,4 @@
+"use client"
 import TicketPage from "./ticket"
 
 export default function Page(props:{params:{ticketId: string}}) {
