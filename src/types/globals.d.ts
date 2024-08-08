@@ -1,10 +1,5 @@
 export {};
-export type Roles =
-  | "admin"
-  | "user"
-  | "unathourized"
-  | "org:page_owner"
-  | "owner";
+export type Roles = "Admin" | "Member" | "unathourized" | "Owner";
 declare global {
   interface CustomJwtSessionClaims {
     membership: Record<string, string>;

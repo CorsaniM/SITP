@@ -1,13 +1,17 @@
 import Link from "next/link";
 
-
-
 export default function Sidenav(props: { children: React.ReactNode }) {
   return <ul>{props.children}</ul>;
+  return (
+    <ul className="list-none p-0 m-0">
+      {props.children}
+    </ul>
+  );
 }
 
 export function SidenavSeparator(props: { children: React.ReactNode }) {
   return <ul className=" px-4 pt-3 text-sm font-medium">{props.children}</ul>;
+  return <li className="px-4 pt-3 text-sm font-medium">{props.children}</li>;
 }
 
 export function SidenavItem(props: {
@@ -18,9 +22,12 @@ export function SidenavItem(props: {
 }) {
   const className = `w-full flex gap-2 px-5 py-4 items-center 
     hover:bg-stone-100 active:bg-stone-200`;
+  
   const content = (
     <>
-      <div className=" items-center justify-center p-1 ">{props.icon}</div>
+      <div className="items-center justify-center p-1">
+        {props.icon}
+      </div>
       <p className="text block w-full text-left text-sm font-semibold">
         {props.children}
       </p>

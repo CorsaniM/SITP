@@ -2,7 +2,14 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { relations, sql } from "drizzle-orm";
-import { index, int, integer, sqliteTable, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  int,
+  integer,
+  sqliteTable,
+  sqliteTableCreator,
+  text,
+} from "drizzle-orm/sqlite-core";
 import { number } from "zod";
 
 /**
@@ -27,15 +34,15 @@ export const tickets = createTable(
       .default(sql`(unixepoch())`)
       .notNull(),
     updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     titleIndex: index("title_idx").on(example.title),
-  })
+  }),
 );
 
-export const ticketsRelations = relations(tickets, ({many}) => ({
+export const ticketsRelations = relations(tickets, ({ many }) => ({
   comments: many(comments),
   images: many(images),
   events: many(events),
@@ -48,8 +55,8 @@ export const comments = createTable(
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("userId").notNull(),
     ticketId: int("ticketId")
-    .references(() => tickets.id)
-    .notNull(),
+      .references(() => tickets.id)
+      .notNull(),
     type: text("type"), //(Actualización, Ticket Rechazado, Ticket Finalizado)
     state: text("state"), //(leído o no por el creador asignado)
     title: text("title"),
@@ -60,7 +67,7 @@ export const comments = createTable(
   },
   (example) => ({
     descriptionIndex: index("description_idx").on(example.description),
-  })
+  }),
 );
 
 export const commentsRelations = relations(comments, ({ one }) => ({
@@ -76,19 +83,19 @@ export const images = createTable(
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("userId").notNull(),
     ticketId: int("ticketId")
-    .references(() => tickets.id)
-    .notNull(),
-    url: text("url"), 
+      .references(() => tickets.id)
+      .notNull(),
+    url: text("url"),
     createdAt: int("created_at", { mode: "timestamp" })
       .default(sql`(unixepoch())`)
       .notNull(),
   },
   (example) => ({
     urlIndex: index("url_idx").on(example.url),
-  })
+  }),
 );
 
-export const imagesRelations = relations(images, ({one}) => ({
+export const imagesRelations = relations(images, ({ one }) => ({
   ticket: one(tickets, {
     fields: [images.ticketId],
     references: [tickets.id],
@@ -101,8 +108,8 @@ export const events = createTable(
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("userId").notNull(),
     ticketId: int("ticketId")
-    .references(() => tickets.id)
-    .notNull(),
+      .references(() => tickets.id)
+      .notNull(),
     type: text("type", { length: 256 }),
     description: text("description"),
     createdAt: int("created_at", { mode: "timestamp" })
@@ -111,10 +118,10 @@ export const events = createTable(
   },
   (example) => ({
     typeIndex: index("type_idx").on(example.type),
-  })
+  }),
 );
 
-export const eventsRelations = relations(events, ({one}) => ({
+export const eventsRelations = relations(events, ({ one }) => ({
   ticket: one(tickets, {
     fields: [events.ticketId],
     references: [tickets.id],
@@ -127,26 +134,23 @@ export const participants = createTable(
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("userId").notNull(),
     ticketId: int("ticketId")
-    .references(() => tickets.id)
-    .notNull(),
+      .references(() => tickets.id)
+      .notNull(),
     createdAt: int("created_at", { mode: "timestamp" })
-    .default(sql`(unixepoch())`)
-    .notNull(),
+      .default(sql`(unixepoch())`)
+      .notNull(),
     updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-    () => new Date()
-  ),
+      () => new Date(),
+    ),
   },
   (example) => ({
     ticketIdIndex: index("ticketId_idx").on(example.ticketId),
-  })
+  }),
 );
 
-
-export const participantsRelations = relations(participants, ({one}) => ({
+export const participantsRelations = relations(participants, ({ one }) => ({
   ticket: one(tickets, {
     fields: [participants.ticketId],
     references: [tickets.id],
   }),
 }));
-
-
