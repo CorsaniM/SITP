@@ -1,8 +1,7 @@
 "use client"
-import { useRouter } from "next/navigation";
 import { api } from '~/trpc/react';
 import { Card, CardTitle, CardDescription } from "~/app/_components/ui/tarjeta";
-import { List, ListTile } from '~/app/_components/list';
+import { List, ListTile } from '~/app/_components/ui/list';
 import { Title } from '~/app/_components/ui/title';
 import { useUser, useOrganization } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
@@ -11,6 +10,7 @@ import { Button } from '~/app/_components/ui/button';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useQueryClient } from "@tanstack/react-query";
+import LayoutContainer from '~/app/_components/layout-container';
 dayjs.extend(utc);
 dayjs.locale("es");
 
@@ -57,9 +57,10 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
 // })
 
   return (
+    <LayoutContainer>
     <div className="px-10 py-24 w-full md:px-20 lg:px-32 xl:px-40">
         {ticket ? (
-      <Card>
+          <Card>
         <div className='bg-stone-100 p-2 '>
           <div className='flex flex-row '>
             <div>
@@ -84,9 +85,9 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
           <List>
             {ticket.comments ? ticket.comments.map((comments) => (
               <ListTile
-                key={comments.id}
-                title={comments.title}
-                leading={comments.description}
+              key={comments.id}
+              title={comments.title}
+              leading={comments.description}
               />
             )) : (<h1>No hay notificaciones</h1>)}
           </List>
@@ -98,7 +99,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
                         value={description}
                         placeholder='Mensaje...'
                         onChange={(e) => setDescription(e.target.value)}
-                    />
+                        />
                     <Button 
                       className="m-4 px-4 py-2 text-black rounded disabled:opacity-50 rounded-full bg-slate-200 hover:bg-slate-300"
                       disabled={isPending}
@@ -108,5 +109,6 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
       </Card>
         ): (null)}
     </div>
+        </LayoutContainer>
   );
 }

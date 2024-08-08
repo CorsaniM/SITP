@@ -15,21 +15,18 @@ import { checkRole } from "~/lib/react/roles";
 
 export default function Page() {
 
-    const organization = useOrganization()
-    const user = useUser().user
-
     const isAdmin = checkRole("Admin");
     
-    if(isAdmin){
+    if(!isAdmin){
         return (
             <Sidenav>
-            <SidenavItem icon={<Mails />} href="/admin">
+            <SidenavItem icon={<Mails />} href="/ticket">
               Tickets
             </SidenavItem>
-            <SidenavItem icon={<Users />} href="/admin/users">
+            <SidenavItem icon={<Users />} href="/users">
               Usuarios
             </SidenavItem>
-            <SidenavItem icon={<Rows3 />} href="/admin/events">
+            <SidenavItem icon={<Rows3 />} href="/events">
               Eventos
             </SidenavItem>
           </Sidenav>
@@ -38,14 +35,9 @@ export default function Page() {
     else{
         return (
         <Sidenav>
-            <SidenavItem 
-                icon={<MailPlus />} 
-                href="/support/crear-tickets">
-                    Crear ticket
-            </SidenavItem>
             <SidenavItem
                 icon={<Mails/>}
-                href="/support">
+                href="/ticket">
                     Tickets
             </SidenavItem>
         </Sidenav>
