@@ -41,14 +41,11 @@ app.get('/ticket/post/:orgid/:urgency/:title/:description', async (c) => {
 });
 
 app.notFound((c) => {
-    return c.text('Custom 404 Message', 404)
-  })
+  return c.text("Custom 404 Message", 404);
+});
 
-  export const GET = app.fetch;
-  export const POST = app.fetch;
-  export const PUT = app.fetch;
-  export const DELETE = app.fetch;
-  export const PATCH = app.fetch;
-
-//app.get('/posts/:id/comment/:comment_id', (c) => {
-//    const { id, comment_id } = c.req.param()  ... })
+export const GET = app.fetch;
+export const POST = app.fetch;
+export const PUT = app.fetch;
+export const DELETE = app.fetch;
+export const PATCH = app.fetch;
