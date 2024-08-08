@@ -6,10 +6,7 @@ export default async function Page() {
   const { user } = useUser();
   const organization = useOrganization()
 
-  if(organization.organization?.name === "IanTech"){
-      return redirect("admin")
-  }  
-  else{
-      return redirect("support")
-  }
+ 
+      return redirect("/ticket")
+  
 }

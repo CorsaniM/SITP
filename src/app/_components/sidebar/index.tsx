@@ -10,31 +10,29 @@ import {
     Users,
   } from "lucide-react";
 import Sidenav, { SidenavItem } from '../sidenav';
-import { useOrganization } from "@clerk/nextjs";
+import { useOrganization, useUser } from "@clerk/nextjs";
+import { checkRole } from "~/lib/react/roles";
 
 export default function Page() {
 
     const organization = useOrganization()
+    const user = useUser().user
 
-    if(organization.organization?.name === "IanTech"){
+    const isAdmin = checkRole("Admin");
+    
+    if(isAdmin){
         return (
-            <Sidenav >
-                <SidenavItem 
-                    icon={<Mails />} 
-                    href="/admin">
-                        Tickets
-                </SidenavItem>
-                <SidenavItem
-                    icon={<Users />}
-                    href="/admin/users">
-                        Usuarios
-                </SidenavItem>
-                <SidenavItem
-                    icon={<Rows3 />}
-                    href="/admin/events">
-                        Eventos
-                </SidenavItem>
-            </Sidenav>
+            <Sidenav>
+            <SidenavItem icon={<Mails />} href="/admin">
+              Tickets
+            </SidenavItem>
+            <SidenavItem icon={<Users />} href="/admin/users">
+              Usuarios
+            </SidenavItem>
+            <SidenavItem icon={<Rows3 />} href="/admin/events">
+              Eventos
+            </SidenavItem>
+          </Sidenav>
             )
     }  
     else{

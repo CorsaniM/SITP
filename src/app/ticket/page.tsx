@@ -3,7 +3,7 @@
 import { api } from "~/trpc/react"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link";
-import { List } from "../_components/list";
+import { List } from "../_components/ui/list";
 import { Card, CardTitle, CardDescription } from "../_components/ui/tarjeta";
 
 

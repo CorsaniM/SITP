@@ -15,7 +15,7 @@ export default function Page(){
                 </div>
             </div>
             <div className='flex border-solid border-2 border-slate-500 max-h-full bg-slate-300 place-content-right flex-column p-2'>
-                <Dashboard/>
+                {/* <Dashboard/> */}
             </div>
         </div>
         )

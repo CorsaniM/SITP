@@ -4,8 +4,12 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider, useUser} from '@clerk/nextjs'
 import { SyncActiveOrganization } from "./_components/SyncActiveOrganization";
 import { auth } from "@clerk/nextjs/server";
+
+import { cookies } from "next/headers";
+
 import Upbar from "./_components/upbar";
 import Sidebar from "./_components/sidebar";
+import { Toaster } from "./_components/ui/sonner";
 
 export const metadata = {
   title: "Sistema de tickets",
@@ -23,7 +27,7 @@ export default function RootLayout({
 
   
   return (
-    <ClerkProvider>
+    <ClerkProvider signInFallbackRedirectUrl={"/"}>
       <SyncActiveOrganization membership={sessionClaims!.membership!}/>
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="h-screen">
@@ -34,7 +38,10 @@ export default function RootLayout({
           <Sidebar/>
         </div>
           <div className='flex'>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>
+              {children}
+              <Toaster />
+            </TRPCReactProvider>
           </div>
       </body>
     </html>
