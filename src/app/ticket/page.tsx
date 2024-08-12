@@ -31,8 +31,11 @@ async function Creator() {
   })
 }  
      return(
-      <div className="h-screen w-screen pt-16 grid grid-cols-5 grid-rows-5">
-      <div className='flex col-span-4 row-span-5 place-content-center max-h-full flex-column pl-36'>
+      <div className="h-screen w-screen ml-36 mt-16 grid grid-rows-8">
+      <div className='flex border-solid border-2 border-slate-500 max-h-full bg-slate-300 place-content-right p-2'>
+          <Dashboard/>
+      </div>
+      <div className='flex row-span-5 place-content-center max-h-full flex-column'>
           <div className="flex pt-4 flex-col align-center">
               <Title>Tickets</Title>
               <div className="px-10 py-4">
@@ -55,9 +58,6 @@ async function Creator() {
         </List>
         </div>
           </div>
-      </div>
-      <div className='flex border-solid border-2 border-slate-500 max-h-full bg-slate-300 place-content-right flex-column p-2'>
-          <Dashboard/>
       </div>
       <div>
         <Button onClick={ Creator }>
