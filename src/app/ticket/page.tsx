@@ -9,7 +9,6 @@ import { Title } from "../_components/ui/title";
 import Dashboard from "../_components/dashboard/dashboard";
 import { Button } from "../_components/ui/button";
 
-
 export default function Page() {
   let orgId = ""
 const organization = useOrganization()
@@ -22,7 +21,7 @@ const ticketsPorOrg = api.tickets.getByOrg.useQuery({orgId: "dimetallo"}).data;
 const { mutateAsync: CreateTicket } = api.tickets.create.useMutation()
 async function Creator() {
   await CreateTicket ({
-    orgId: orgId,
+    orgId: "dimetallo",
     state: "",
     urgency: 0,
     suppUrgency: 0,
@@ -32,9 +31,9 @@ async function Creator() {
 }  
      return(
       <div className="h-screen w-screen ml-36 mt-16 grid grid-rows-8">
-      <div className='flex border-solid ml-1 border-2 border-slate-500 rounded-b-2xl max-h-full place-content-right p-2'>
-          <Dashboard/>
-      </div>
+        <div className='flex border-solid ml-1 border-2 border-slate-500 rounded-b-2xl max-h-full place-content-right p-2'>
+            <Dashboard/>
+        </div>
       <div className='flex row-span-5 place-content-center flex-column'>
           <div className="flex pt-4 flex-col align-center">
               <div className="px-10 py-4">

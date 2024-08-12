@@ -37,7 +37,7 @@ export default function RootLayout({
         <div className='list-none fixed top-20 bottom-0 left-0 flex flex-col shadow-xl sm:flex h-full'>
           <Sidebar/>
         </div>
-          <div className='flex'>
+          <div className='flex '>
             <TRPCReactProvider>
               {children}
               <Toaster />
