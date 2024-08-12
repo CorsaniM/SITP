@@ -17,7 +17,7 @@ if (organization.organization){
 orgId = organization!.organization!.id 
 }
 
-const ticketsPorOrg = api.tickets.getByOrg.useQuery({orgId: orgId}).data;
+const ticketsPorOrg = api.tickets.getByOrg.useQuery({orgId: "dimetallo"}).data;
 
 const { mutateAsync: CreateTicket } = api.tickets.create.useMutation()
 async function Creator() {
@@ -31,11 +31,11 @@ async function Creator() {
   })
 }  
      return(
-      <div className="h-screen w-screen ml-36 mt-16 grid grid-rows-8">
+      <div className="w-screen ml-36 mt-16 grid grid-rows-8">
       <div className='flex border-solid border-2 border-slate-500 max-h-full bg-slate-300 place-content-right p-2'>
           <Dashboard/>
       </div>
-      <div className='flex row-span-5 place-content-center max-h-full flex-column'>
+      <div className='flex row-span-5 place-content-center flex-column'>
           <div className="flex pt-4 flex-col align-center">
               <Title>Tickets</Title>
               <div className="px-10 py-4">
