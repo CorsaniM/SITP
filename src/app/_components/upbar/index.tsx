@@ -15,12 +15,12 @@ if (!isAdmin) {
     rolPagina = "Soporte"
 }
     return (
-        <div className="flex w-screen h-16 bg-white shadow-md justify-between items-center p-5 font-serif">
+        <div className="flex w-screen h-16 shadow-md justify-between items-center p-5 font-serif">
             <div className="text-lg">
                      <Link href={"/ticket"}> {rolPagina} {user?.fullName}!</Link>
             </div>
             <div className="flex items-center p-4">
-                <div>
+                <div className=" rounded-lg bg-gray-400 text-white m-2">
                     <OrganizationSwitcher hidePersonal={true}/>
                 </div>
                 <UserButton/>
