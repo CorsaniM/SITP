@@ -46,7 +46,7 @@ console.log("Render - isAdmin:", isAdmin);
   return (
     <>
     <LayoutContainer>
-
+      <div className="mt-8">
       <Title>Usuarios</Title>
       {isAdmin ? (
         <List>
@@ -104,6 +104,7 @@ console.log("Render - isAdmin:", isAdmin);
       ) : (
         <h1>Acceso denegado</h1>
       )}
+      </div>
     </LayoutContainer>
     </>
 

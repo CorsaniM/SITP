@@ -30,14 +30,14 @@ export default function RootLayout({
     <ClerkProvider signInFallbackRedirectUrl={"/"}>
       <SyncActiveOrganization membership={sessionClaims!.membership!}/>
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="h-screen">
-        <div className="fixed top h-16">
+      <body className="bg-gray-800 h-screen text-gray-200">
+        <div className="fixed top h-16 ">
           <Upbar/>
         </div>
         <div className='list-none fixed top-20 bottom-0 left-0 flex flex-col shadow-xl sm:flex h-full'>
           <Sidebar/>
         </div>
-          <div className='flex'>
+          <div className='flex '>
             <TRPCReactProvider>
               {children}
               <Toaster />
