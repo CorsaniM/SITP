@@ -42,7 +42,7 @@ export function ListTile(props: ListTileProps) {
         </>
     )
 
-    const containerClassName = 'flex gap-3 py-3 hover:bg-stone-100 active:bg-stone-200'
+    const containerClassName = 'flex gap-3 py-3 hover:bg-gray-700'
 
     if (props.href) {
         content = (

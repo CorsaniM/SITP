@@ -67,3 +67,68 @@ export const commentsRouter = createTRPCRouter({
     }),
 
 });
+
+
+
+
+
+
+// create: publicProcedure
+//     .input(z.object({ 
+//       userId: z.string(),
+//       ticketId: z.number(),
+//       type: z.string(), //(Actualización, Ticket Rechazado, Ticket Finalizado)
+//       state: z.string(), //(leído o no por el creador asignado)
+//       title: z.string(),
+//       description: z.string(),
+//       createdAt: z.date(),
+//     }))
+//     .mutation(async ({ ctx, input }) => {
+//       await new Promise((resolve) => setTimeout(resolve, 500));
+
+//       const [respuesta] = await ctx.db
+//         .insert(comments)
+//         .values(input)
+//         .returning();
+
+//         console.log("perro")
+//       if (!respuesta) {
+//         console.log("perro 2")
+//         throw new Error("Error al crear el comentario");
+//       }
+
+//       const newComment: comments = {
+//         ...input,
+//         id: respuesta.id
+//       }
+
+//       console.log("Termo")
+
+//       try {
+//         console.log(JSON.stringify({newComment}))
+//         const response = await fetch("api/hono/comments/post",{
+//           method: "POST",
+//           body: JSON.stringify({newComment}),
+//         })
+
+//         if(!response.ok){
+//           const error = await response.json()
+//           console.log("Termo")
+//           throw new Error(error || "Error al crear el comentario");
+//         }
+
+//         const responseData = await response.json()
+//         console.log("Ticket creado: ", responseData )
+//       }
+//       catch (error: any) {
+//         console.log("Termo 2")
+//         throw new Error(error || "Error al crear el comentario"); 
+//       }
+      
+      // app.post("/comments", async (c) => {
+      //   const {
+      //     id, title, description
+      //   } = await c.req.json();
+      // } )
+
+  //  }),

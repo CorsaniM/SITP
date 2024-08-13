@@ -1,5 +1,6 @@
 "use server";
 import { Hono } from "hono";
+import { comments } from "~/server/api/routers/comments";
 import { api } from "~/trpc/server";
 
 const app = new Hono().basePath("api/hono");
@@ -15,7 +16,7 @@ app.get("/ticket/:id", async (c) => {
   }
 });
 
-app.get("/ticket/post/:orgid/:urgency/:title/:description", async (c) => {
+app.get("/ticket/get/:orgid/:urgency/:title/:description", async (c) => {
   const orgId = c.req.param("orgid");
   const urgency = parseInt(c.req.param("urgency"));
   const title = c.req.param("title");
@@ -40,6 +41,41 @@ app.get("/ticket/post/:orgid/:urgency/:title/:description", async (c) => {
   }
 });
 
+app.get("/comments/get/:ticketId/:title/:description", async (c) => {
+  const ticketId = c.req.param("ticketId");
+  const title = c.req.param("title");
+  const description = c.req.param("description");
+
+  if (!ticketId || !title || !description) {
+    return c.json({ error: "Faltan parámetros requeridos" }, 400);
+  }
+
+  try {
+    const newTicket = await api.comments.create({
+      state: "no leido",
+      title: title,
+      description: description,
+      createdAt: new Date,
+      userId: "",
+      ticketId: parseInt(ticketId),
+      type: "recibido"
+    });
+    return c.json("Comentario creado en Ticket " + ticketId + " id"); // Devuelve el ticket creado con un código 201
+  } catch (error) {
+    return c.json({ error: "Error creando el comentario" }, 500);
+  }
+});
+
+app.post("/comments/post", async (c) => {
+  const {
+    id, title, description
+  } = await c.req.json();
+  return c.json("Comentario creado");
+} )
+
+
+
+
 app.notFound((c) => {
   return c.text("Custom 404 Message", 404);
 });
@@ -50,3 +86,8 @@ export const POST = async (request: Request) => app.fetch(request);
 export const PUT = async (request: Request) => app.fetch(request);
 export const DELETE = async (request: Request) => app.fetch(request);
 export const PATCH = async (request: Request) => app.fetch(request);
+
+// TEST creación de ticket: 
+// http://localhost:3000/api/hono/ticket/post/dimetallo/2/Test%20Ticket/This%20is%20a%20test%20description
+// TEST envío de coment: (funciona)
+// http://localhost:3000/api/hono/comments/post/5/ExampleTitle/ExampleDescription

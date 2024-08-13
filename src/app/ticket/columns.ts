@@ -9,7 +9,7 @@ export type TablaTickets = {
   orgId: string
   state: string
   urgency: number
-  //createdAt: Date
+  createdAt: string
 }
 
 export const columns: ColumnDef<TablaTickets>[] = [
