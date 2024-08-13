@@ -43,10 +43,13 @@ async function Creator() {
             return (
               <div className="my-1">
               <Link href={`/ticket/${ticket.id}`} key={ticket.id}>
-                 <Card className="hover:bg-stone-100 active:bg-stone-200">
+                <Card className="hover:bg-stone-100 active:bg-stone-200">
                   <CardTitle>{ticket.title}</CardTitle>
                   <CardDescription>
                   ID:{ticket.id} {ticket.description}
+                  Organizacion: {ticket.orgId}
+                  Fecha: {ticket.createdAt.toISOString()}
+
                   </CardDescription>
                 </Card>
               </Link>

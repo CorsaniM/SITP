@@ -7,7 +7,7 @@ import { checkRole } from "~/lib/react/roles";
 export default function Upbar() {
     const { organization } = useOrganization();
     const { user } = useUser()
-    const isAdmin = checkRole("Admin" || "Owner")
+    const isAdmin = checkRole("admin" || "owner")
 
     return (
         <div className="flex w-screen h-16 shadow-md justify-between items-center p-5 font-serif">
@@ -15,7 +15,7 @@ export default function Upbar() {
                 {isAdmin ?(
                     <Link href={"/"}>Administrador {user?.fullName}</Link>
                 ) : (
-                     <Link href={"/"}>Soporte {user?.fullName}!</Link>
+                    <Link href={"/"}>Soporte {user?.fullName}!</Link>
                 )} 
 
             </div>

@@ -5,7 +5,7 @@ import {} from "next/navigation";
 import { checkRole } from "~/lib/server/roles";
 
 export async function setRole(formData: FormData) {
-  if (!checkRole("Admin")) {
+  if (!checkRole("admin")) {
     return { message: "Not Authorized" };
   }
   try {
