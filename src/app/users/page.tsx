@@ -34,11 +34,8 @@ export default async function AdminDashboard() {
 console.log("plop", usersList.length)
 
 
-// const isAdmin = checkRole("admin");
 const isAdmin = true
 
-console.log("Render - user:", user);
-console.log("Render - isAdmin:", isAdmin);
 
 
 

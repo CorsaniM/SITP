@@ -4,7 +4,8 @@ import { Roles } from "~/types/globals";
 export const checkRole = (role: Roles) => {
   const { orgRole } = useAuth();
 
-  console.log(orgRole);
+  const user = useUser().user?.publicMetadata;
+  console.log(orgRole, "test");
 
   if (orgRole === role) return true;
   else {

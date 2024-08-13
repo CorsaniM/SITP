@@ -15,7 +15,7 @@ import { checkRole } from "~/lib/react/roles";
 
 export default function Page() {
 
-    const isAdmin = checkRole("Admin");
+    const isAdmin = checkRole("admin");
     
     if(!isAdmin){
         return (
