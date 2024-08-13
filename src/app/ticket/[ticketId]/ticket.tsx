@@ -61,7 +61,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
     <div className="px-10 py-24 w-full md:px-20 lg:px-32 xl:px-40">
         {ticket ? (
           <Card>
-        <div className='bg-gray-700 p-2 '>
+        <div className='bg-gray-900 p-2 '>
           <div className='flex flex-row '>
             <div>
             <CardTitle>ID: {ticket!.id} - {ticket!.title}</CardTitle>
@@ -95,7 +95,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         <div className="h-1/5 flex flex-col m-2 text-center">
                     <h1>Ingrese un nuevo mensaje</h1>
                     <textarea
-                        className="resize-y h-14 w-full border border-gray-700 p-2"
+                        className="resize-y h-14 w-full border bg-gray-700 p-2"
                         value={description}
                         placeholder='Mensaje...'
                         onChange={(e) => setDescription(e.target.value)}
