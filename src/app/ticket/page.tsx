@@ -86,8 +86,7 @@ async function Creator() {
 }  
      return(
       <div className="h-screen w-screen ml-36 mt-16 grid grid-rows-8">
-        <div className='flex border-solid ml-1 border-2 border-slate-500 
-        max-h-full place-content-right p-2'>
+        <div className='flex max-h-full place-content-right'>
             <Dashboard/>
         </div>
       <div className='flex row-span-5 place-content-center flex-column'>

@@ -31,7 +31,7 @@ export default function RootLayout({
         <div className="fixed top h-16 ">
           <Upbar/>
         </div>
-        <div className='list-none fixed top-16 bottom-0 left-0 flex-col
+        <div className='list-none w-36 fixed top-16 bottom-0 left-0 flex-col
         shadow-2xl bg-gray-800 sm:flex h-full'>
           <Sidebar/>
         </div>
