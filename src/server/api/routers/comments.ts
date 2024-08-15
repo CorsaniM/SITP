@@ -6,15 +6,17 @@ import { comments, images } from "~/server/db/schema";
 
 export const commentsRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ 
-      userId: z.string(),
-      ticketId: z.number(),
-      type: z.string(), //(Actualización, Ticket Rechazado, Ticket Finalizado)
-      state: z.string(), //(leído o no por el creador asignado)
-      title: z.string(),
-      description: z.string(),
-      createdAt: z.date(),
-    }))
+    .input(
+      z.object({
+        userId: z.string(),
+        ticketId: z.number(),
+        type: z.string(), //(Actualización, Ticket Rechazado, Ticket Finalizado)
+        state: z.string(), //(leído o no por el creador asignado)
+        title: z.string(),
+        description: z.string(),
+        createdAt: z.date(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -27,7 +29,7 @@ export const commentsRouter = createTRPCRouter({
         throw new Error("Error al crear el comentario");
       }
     }),
-      
+
   getById: publicProcedure
     .input(
       z.object({
@@ -43,20 +45,20 @@ export const commentsRouter = createTRPCRouter({
     }),
 
   getByTicketId: publicProcedure
-  .input(
-    z.object({
+    .input(
+      z.object({
         ticketId: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const channel = await ctx.db.query.comments.findMany({
+        where: eq(comments.id, input.ticketId),
+      });
+
+      return channel;
     }),
-  )
-  .query(async ({ input, ctx }) => {
-    const channel = await ctx.db.query.comments.findMany({
-      where: eq(comments.id, input.ticketId),
-    });
 
-    return channel;
-  }),
-
-    delete: publicProcedure
+  delete: publicProcedure
     .input(
       z.object({
         id: z.number(),
@@ -65,16 +67,10 @@ export const commentsRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       await db.delete(comments).where(eq(comments.id, input.id));
     }),
-
 });
 
-
-
-
-
-
 // create: publicProcedure
-//     .input(z.object({ 
+//     .input(z.object({
 //       userId: z.string(),
 //       ticketId: z.number(),
 //       type: z.string(), //(Actualización, Ticket Rechazado, Ticket Finalizado)
@@ -122,13 +118,13 @@ export const commentsRouter = createTRPCRouter({
 //       }
 //       catch (error: any) {
 //         console.log("Termo 2")
-//         throw new Error(error || "Error al crear el comentario"); 
+//         throw new Error(error || "Error al crear el comentario");
 //       }
-      
-      // app.post("/comments", async (c) => {
-      //   const {
-      //     id, title, description
-      //   } = await c.req.json();
-      // } )
 
-  //  }),
+// app.post(`/${orgId}/comments`, async (c) => {
+//   const {
+//     id, title, description
+//   } = await c.req.json();
+// } )
+
+//  }),

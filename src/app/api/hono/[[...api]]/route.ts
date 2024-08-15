@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { api } from "~/trpc/server";
 
 const app = new Hono().basePath("api/hono");
+const postDimetallo = new Hono().basePath("api/hono/dimetallo");
 
 app.get("/ticket/:id", async (c) => {
   const ticketId = c.req.param("id");
@@ -54,10 +55,10 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
       state: "no leido",
       title: title,
       description: description,
-      createdAt: new Date,
+      createdAt: new Date(),
       userId: "",
       ticketId: parseInt(ticketId),
-      type: "recibido"
+      type: "recibido",
     });
     return c.json("Comentario creado en Ticket " + ticketId + " id"); // Devuelve el ticket creado con un código 201
   } catch (error) {
@@ -65,15 +66,10 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
   }
 });
 
-app.post("/comments/post", async (c) => {
-  const {
-    id, title, description
-  } = await c.req.json();
+postDimetallo.post("/comments/post", async (c) => {
+  const { id, title, description } = await c.req.json();
   return c.json("Comentario creado");
-} )
-
-
-
+});
 
 app.notFound((c) => {
   return c.text("Custom 404 Message", 404);
@@ -86,7 +82,7 @@ export const PUT = async (request: Request) => app.fetch(request);
 export const DELETE = async (request: Request) => app.fetch(request);
 export const PATCH = async (request: Request) => app.fetch(request);
 
-// TEST creación de ticket: 
+// TEST creación de ticket:
 // http://localhost:3000/api/hono/ticket/post/dimetallo/2/Test%20Ticket/This%20is%20a%20test%20description
 // TEST envío de coment: (funciona)
 // http://localhost:3000/api/hono/comments/get/5/ExampleTitle/ExampleDescription

@@ -11,7 +11,9 @@ export default function Page(props:{params:{ticketId: string}}) {
     
 if (id) {
    return(
+    <div className="w-full justify-center">
        <TicketPage params={{ticketId:id}} />
+    </div>
    )
 
 }

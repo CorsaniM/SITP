@@ -18,12 +18,17 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
   const id = props.params.ticketId
   const ticket = api.tickets.getById.useQuery({ id: parseInt(id) }).data;
   const { mutateAsync: createMensaje, isPending } = api.comments.create.useMutation();
+
+
   const router = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
   const { organization } = useOrganization();
 
   const [description, setDescription] = useState("")
+  const [title, setTitle] = useState(ticket?.title || "")
+
+  console.log(title, "Titulo")
 
   async function handleCreate() {
     try {
@@ -32,7 +37,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             ticketId: ticket!.id,
             type: "actualización",
             state: "no leido",
-            title: ticket!.title || "",
+            title: title || "",
             description: description,
             createdAt: new Date,
         })  
@@ -82,7 +87,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         </div>
         <div className='p-2 bg-gray-800'>
           <CardTitle>Mensajes :</CardTitle>
-          <List>
+          <List className='flex'>
             {ticket.comments ? ticket.comments.map((comments) => (
               <ListTile
               key={comments.id}
@@ -92,17 +97,22 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             )) : (<h1>No hay notificaciones</h1>)}
           </List>
         </div>
+        <h1>Titulo</h1>
+<input className="resize-y h-14 w-full border bg-gray-700 p-2"
+                        value={title}
+                        placeholder='Titulo...'
+                        onChange={(e) => setTitle(e.target.value)}/>
         <div className="h-1/5 flex flex-col m-2 text-center text-white">
                     <h1>Ingrese un nuevo mensaje</h1>
                     <textarea
-                        className="resize-y h-14 w-full border bg-gray-700 p-2 bg-gray-800"
+                        className="resize-y h-14 w-full border bg-gray-700 p-2"
                         value={description}
                         placeholder='Mensaje...'
                         onChange={(e) => setDescription(e.target.value)}
                         />
                     <Button 
-                      className="m-4 px-4 py-2 text-black rounded disabled:opacity-50
-                      rounded-full bg-gray-800 border text-white hover:bg-gray-500 hover:text-black"
+                      className="m-4 px-4 py-2 text-black disabled:opacity-50
+                      rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
                       disabled={isPending}
                       onClick={handleCreate}>
                     {isPending ? "Creando..." : "Crear mensaje"} </Button>
