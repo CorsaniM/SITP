@@ -4,9 +4,6 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider, useUser} from '@clerk/nextjs'
 import { SyncActiveOrganization } from "./_components/SyncActiveOrganization";
 import { auth } from "@clerk/nextjs/server";
-
-import { cookies } from "next/headers";
-
 import Upbar from "./_components/upbar";
 import Sidebar from "./_components/sidebar";
 import { Toaster } from "./_components/ui/sonner";
@@ -30,11 +27,12 @@ export default function RootLayout({
     <ClerkProvider signInFallbackRedirectUrl={"/"}>
       <SyncActiveOrganization membership={sessionClaims!.membership!}/>
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="bg-gray-800 h-screen text-gray-200">
+      <body className="bg-gray-600 h-screen text-gray-200">
         <div className="fixed top h-16 ">
           <Upbar/>
         </div>
-        <div className='list-none fixed top-20 bottom-0 left-0 flex flex-col shadow-xl sm:flex h-full'>
+        <div className='list-none fixed top-16 bottom-0 left-0 flex-col
+        shadow-2xl bg-gray-800 sm:flex h-full'>
           <Sidebar/>
         </div>
           <div className='flex '>

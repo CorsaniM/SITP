@@ -10,7 +10,8 @@ export default function Upbar() {
     const isAdmin = checkRole("admin" || "owner")
 
     return (
-        <div className="flex w-screen h-16 shadow-md justify-between items-center p-5 font-serif">
+        <div className="flex w-screen h-16 drop-shadow-xl bg-gray-800 justify-between
+        items-center p-5 font-semibold">
             <div className="text-lg">
                 {isAdmin ?(
                     <Link href={"/"}>Administrador {user?.fullName}</Link>
@@ -19,8 +20,8 @@ export default function Upbar() {
                 )} 
 
             </div>
-            <div className="flex items-center p-4">
-                <div className=" rounded-lg bg-gray-400 text-white m-2">
+            <div className="flex items-center p-4 shadow-inner">
+                <div className="bg-gray-500 text-slate-100 m-2 rounded shadow-lg">
                     <OrganizationSwitcher hidePersonal={true}/>
                 </div>
                 <UserButton/>

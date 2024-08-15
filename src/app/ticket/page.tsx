@@ -86,7 +86,8 @@ async function Creator() {
 }  
      return(
       <div className="h-screen w-screen ml-36 mt-16 grid grid-rows-8">
-        <div className='flex border-solid ml-1 border-2 border-slate-500 rounded-b-2xl max-h-full place-content-right p-2'>
+        <div className='flex border-solid ml-1 border-2 border-slate-500 
+        max-h-full place-content-right p-2'>
             <Dashboard/>
         </div>
       <div className='flex row-span-5 place-content-center flex-column'>
@@ -96,9 +97,10 @@ async function Creator() {
           {ticketsPorOrg 
           && ticketsPorOrg?.map((ticket) => {
             return (
-              <div className="my-1">
+              <div className="my-1 bg-gray-800">
               <Link href={`/ticket/${ticket.id}`} key={ticket.id}>
-                 <Card className="hover:bg-stone-100 active:bg-stone-200">
+                 <Card className="bg-gray-800 hover:bg-gray-500 active:bg-gray-600
+                 font-semibold">
                   <CardTitle>{ticket.title}</CardTitle>
                   <CardDescription>
                   ID:{ticket.id} {ticket.description}

@@ -21,11 +21,11 @@ export function SidenavItem(props: {
   onClick?: () => void;
 }) {
   const className = `w-full flex gap-2 px-5 py-4 items-center
-    hover:bg-gray-700 active:bg-gray-600`;
+    hover:bg-gray-500 active:bg-gray-500`;
   
   const content = (
     <>
-      <div className="items-center justify-center p-2">
+      <div className="items-center justify-center p-2 mt-1">
         {props.icon}
       </div>
       <p className="text block w-full text-left text-sm font-semibold">

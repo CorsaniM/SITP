@@ -1,6 +1,5 @@
 "use server";
 import { Hono } from "hono";
-import { comments } from "~/server/api/routers/comments";
 import { api } from "~/trpc/server";
 
 const app = new Hono().basePath("api/hono");
@@ -90,4 +89,4 @@ export const PATCH = async (request: Request) => app.fetch(request);
 // TEST creación de ticket: 
 // http://localhost:3000/api/hono/ticket/post/dimetallo/2/Test%20Ticket/This%20is%20a%20test%20description
 // TEST envío de coment: (funciona)
-// http://localhost:3000/api/hono/comments/post/5/ExampleTitle/ExampleDescription
+// http://localhost:3000/api/hono/comments/get/5/ExampleTitle/ExampleDescription
