@@ -1,6 +1,7 @@
 import * as React from "react"
 import {
   ColumnDef,
+  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -19,6 +20,7 @@ import {
 } from "../_components/ui/table";
 
 import { Button } from "../_components/ui/button"
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -29,6 +31,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([])
 
   const table = useReactTable({
@@ -42,6 +45,11 @@ export function DataTable<TData, TValue>({
       sorting,
     },
   });
+
+  const handleRowClick = (row: Row<TData> ) => {
+        const fila = row.original as {id:number}
+    router.push(`/ticket/${fila.id}`);
+      };
 
   return (
     <div>
@@ -69,8 +77,10 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
+                className=" cursor-pointer hover:bg-gray-500 hover:text-gray-900 active:bg-gray-700 "
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={() => handleRowClick(row)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

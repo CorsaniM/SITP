@@ -18,10 +18,10 @@ import {
 // You can use a Zod schema here if you want.
 export type TablaTickets = {
   id: number
-  orgId: string
-  state: string
-  urgency: number
-  createdAt: string
+  orgId: string|null
+  state: string|null
+  urgency: number|null
+  createdAt: Date
 }
 
 export const columns: ColumnDef<TablaTickets>[] = [

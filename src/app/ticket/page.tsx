@@ -8,8 +8,7 @@ import { columns } from "./columns";
 import { api } from "~/trpc/react";
 
 export default function Page() {
-  // const router = useRouter();
-  
+ 
   const { data: ticketsPorOrg } = api.tickets.getByOrg.useQuery({
     orgId: "dimetallo",
   });
@@ -25,6 +24,7 @@ export default function Page() {
       description: "",
     });
   }
+
    if (!ticketsPorOrg) return <div>Loading...</div>;
 
   return (
@@ -35,7 +35,7 @@ export default function Page() {
       <div className="flex row-span-5 place-content-center flex-column">
         <div className="flex pt-4 flex-col align-center">
           <div className="px-10 py-4">
-            <div className="container mx-auto py-10">
+            <div className="container mx-auto py-10 ">
               <DataTable
                   columns={columns}
                   data={ticketsPorOrg}
@@ -56,7 +56,7 @@ export default function Page() {
 
 // import { api } from "~/trpc/react"
 // import { useOrganization, useUser } from "@clerk/nextjs"
- import Link from "next/link";
+// import Link from "next/link";
 // import { List } from "../_components/ui/list";
 // import { Card, CardTitle, CardDescription } from "../_components/ui/tarjeta";
 // import { Title } from "../_components/ui/title";

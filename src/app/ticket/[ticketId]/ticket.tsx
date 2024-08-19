@@ -85,23 +85,32 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             )}
           <hr className='mt-3 bg-gray-800'/>
         </div>
-        <div className='p-2 bg-gray-800 text:border-collapse text-lg'>
+        <div className='w-full p-2 bg-gray-800 text:border-collapse text-lg'>
           <CardTitle>Mensajes :</CardTitle>
           <List className='w-full h-full text-lg overflow-y-auto
           border-collapse border border-gray-700 hover:border-collapse'>
-            {ticket.comments ? ticket.comments.map((comments) => (
-              <ListTile
-              key={comments.id}
-        leading={<div><span className="font-bold">{comments.title}</span><p>{comments.description}</p></div>}
-      />
-            )) : (<h1>No hay notificaciones</h1>)}
-          </List>
+  {ticket.comments ? ticket.comments.map((comments) => (
+          <ListTile
+            key={comments.id}
+            leading={
+              <div className="flex flex-col space-y-1 max-w-full">
+                <span className="font-bold">{comments.title}</span>
+                <p className="flex flex-auto break-words max-w-xl">
+                  {comments.description}
+                </p>
+              </div>
+            }
+          />
+        )) : (<h1>No hay notificaciones</h1>)}
+      </List>
         </div>
+        <div className="h-1/5 flex flex-col m-2 text-center text-white text-lg text-wrap">
         <h1 className='text-lg'>Titulo</h1>
-<input className="h-14 w-full border bg-gray-700 p-2 text-lg text-wrap "
+        <input className="h-14 w-full border bg-gray-700 p-2 text-lg text-wrap "
                         value={title}
                         placeholder='Titulo...'
                         onChange={(e) => setTitle(e.target.value)}/>
+        </div>
         <div className="h-1/5 flex flex-col m-2 text-center text-white text-lg text-wrap">
                     <h1>Ingrese un nuevo mensaje</h1>
                     <textarea
