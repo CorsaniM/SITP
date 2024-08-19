@@ -35,7 +35,7 @@ export default function RootLayout({
         shadow-2xl bg-gray-800 sm:flex h-full'>
           <Sidebar/>
         </div>
-          <div className='flex '>
+          <div className='flex'>
             <TRPCReactProvider>
               {children}
               <Toaster />

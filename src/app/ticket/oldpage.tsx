@@ -30,7 +30,7 @@ async function Creator() {
   })
 }  
      return(
-      <div className="h-screen w-screen ml-36 mt-16 grid grid-rows-8">
+      <div className="w-screen ml-36 mt-16 grid grid-rows-8">
         <div className='flex border-solid ml-1 border-2 border-slate-500 rounded-b-2xl max-h-full place-content-right p-2'>
             <Dashboard/>
         </div>
