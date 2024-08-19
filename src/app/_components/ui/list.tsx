@@ -31,18 +31,18 @@ export function List(props: ListProps) {
 export function ListTile(props: ListTileProps) {
     let content = (
         <>
-            {props.leading && <div className='flex shrink-0 items-center justify-center'>{props.leading}</div>}
+            {props.leading && <div className='flex flex-auto shrink-0 items-center justify-center'>{props.leading}</div>}
 
             <div className='w-full'>
-                <div className='flex font-medium'>{props.title}</div>
-                <div className='font-semibold text-xs'>{props.subtitle}</div>
+                <div className='flex font-medium '>{props.title}</div>
+                <div className='font-semibold text-md'>{props.subtitle}</div>
             </div>
 
             {props.trailing && <div className='flex shrink-0 items-center justify-center'>{props.trailing}</div>}
         </>
     )
 
-    const containerClassName = 'flex gap-3 py-3 hover:bg-gray-700'
+    const containerClassName = 'flex py-3 h-full w-full hover:bg-gray-700 '
 
     if (props.href) {
         content = (
@@ -59,7 +59,8 @@ export function ListTile(props: ListTileProps) {
     }
 
     return (
-        <li className='border-t last:border-b' role='button' onClick={props.onClick}>
+        <li className='flex flex-auto max-w- border-t last:border-b
+        overflow-y-auto border-collapse border border-gray-700 hover:border-collapse' role='button' onClick={props.onClick}>
             {content}
         </li>
     )

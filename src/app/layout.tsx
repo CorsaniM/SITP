@@ -28,7 +28,7 @@ export default function RootLayout({
       <SyncActiveOrganization membership={sessionClaims!.membership!}/>
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="bg-gray-600 h-screen text-gray-200">
-        <div className="fixed top h-16 ">
+        <div className="fixed h-16 left-0 w-full bg-gray-800 text-white shadow-md z-50 ">
           <Upbar/>
         </div>
         <div className='list-none w-36 fixed top-16 bottom-0 left-0 flex-col
