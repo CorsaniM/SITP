@@ -10,7 +10,7 @@ export default function Sidenav(props: { children: React.ReactNode }) {
 }
 
 export function SidenavSeparator(props: { children: React.ReactNode }) {
-  return <ul className=" px-4 pt-3 text-sm font-medium">{props.children}</ul>;
+  return <ul className=" px-4 pt-3 text-lg font-large">{props.children}</ul>;
   return <li className="px-4 pt-3 text-sm font-medium">{props.children}</li>;
 }
 
@@ -25,10 +25,10 @@ export function SidenavItem(props: {
   
   const content = (
     <>
-      <div className="items-center justify-center p-2 mt-1">
+      <div className="items-center justify-center p-2 mt-1 text-lg font-large">
         {props.icon}
       </div>
-      <p className="text block w-full text-left text-sm font-semibold">
+      <p className="text block w-full text-left text-lg font-semibold ">
         {props.children}
       </p>
     </>
