@@ -29,6 +29,8 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
 
   console.log(title, "Titulo")
 
+
+  const comments = ticket?.comments.sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime())
   async function handleCreate() {
     try {
         await createMensaje({
