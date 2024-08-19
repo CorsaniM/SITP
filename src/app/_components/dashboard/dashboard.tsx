@@ -19,7 +19,7 @@ export default function Dashboard() {
 
     return(
       <div className='flex flex-auto p-2 border-solid border-2 border-gray-400 place-content-center bg-gray-800 hover:bg-gray-700'>
-        <h1 className="flex flex-auto basis-1/12 text-xl font-semibold justify-center place-self-center">Tickets</h1>
+        <h1 className="flex flex-auto basis-1/12 text-lg font-semibold justify-center place-self-center">Tickets</h1>
         <div  className='flex-auto basis-1/3  place-content-center'>
         <NumeroGrande>3{ticketpend?.length}</NumeroGrande>
         <Subtitle>Pendientes</Subtitle>

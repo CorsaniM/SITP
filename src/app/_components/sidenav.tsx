@@ -20,15 +20,15 @@ export function SidenavItem(props: {
   href?: string;
   onClick?: () => void;
 }) {
-  const className = `w-full flex gap-1 px-4 py-6 items-center
+  const className = `w-full flex gap-1 px-5 py-8 items-center
     hover:bg-gray-500 hover:text-gray-900 active:bg-gray-500`;
   
   const content = (
     <>
-      <div className="items-center justify-center p-2 mt-1 text-lg font-large">
+      <div className="items-center justify-center p-1 mt-1 text-lg font-large">
         {props.icon}
       </div>
-      <p className="text block w-full text-left text-lg font-semibold ">
+      <p className="text block w-full text-left text-md font-semibold ">
         {props.children}
       </p>
     </>
