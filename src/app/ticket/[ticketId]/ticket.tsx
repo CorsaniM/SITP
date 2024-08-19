@@ -2,7 +2,6 @@
 import { api } from '~/trpc/react';
 import { Card, CardTitle, CardDescription } from "~/app/_components/ui/tarjeta";
 import { List, ListTile } from '~/app/_components/ui/list';
-import { Title } from '~/app/_components/ui/title';
 import { useUser, useOrganization } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -33,22 +32,23 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
   async function handleCreate() {
     try {
         await createMensaje({
+            title: title || "",
             userId: user!.id,
             ticketId: ticket!.id,
             type: "actualización",
             state: "no leido",
-            title: title || "",
             description: description,
             createdAt: new Date,
         })  
          
-        toast.success('mensaje enviado')
+        toast.success('Mensaje enviado')
         router.invalidateQueries()
         setDescription("")
+        setTitle("")
 
     } catch (e) {
-        setError('no se pudo crear el mensaje')
-        toast.error('no se pudo crear el mensaje')
+        setError('No se pudo crear el mensaje')
+        toast.error('No se pudo crear el mensaje')
     }
 }
 // const { mutateAsync: updateMensaje} = api.comments.update.useMutation();
@@ -58,21 +58,21 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
 //       id: mensaje.id,
 //       state: "leido",
 //     })
-//   })
+//   })div
 // })
 
   return (
     <LayoutContainer>
-    <div className="px-10 py-24 w-full md:px-20 lg:px-32 xl:px-40">
+    <div className="resize-y px-10 py-24 w-full md:px-20 lg:px-32 xl:px-40">
         {ticket ? (
           <Card>
-        <div className='bg-gray-800 p-2'>
+        <div className='bg-gray-800 p-2 border-collapse text-lg text-wrap'>
           <div className='flex flex-row bg-gray-800 '>
             <div>
             <CardTitle>ID: {ticket!.id} - {ticket!.title}</CardTitle>
             Fecha de creación: {dayjs.utc(ticket.createdAt).format('DD/MM/YYYY')}
             </div>
-            <div className='flex-auto px-16 bg-gray-800'>
+            <div className='flex flex-auto px-32 bg-gray-800'>
             Estado: {ticket!.state} <br />
             Urgencia: {ticket!.urgency}
             </div>
@@ -85,33 +85,33 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             )}
           <hr className='mt-3 bg-gray-800'/>
         </div>
-        <div className='p-2 bg-gray-800'>
+        <div className='p-2 bg-gray-800 text:border-collapse text-lg'>
           <CardTitle>Mensajes :</CardTitle>
-          <List className='flex'>
+          <List className='w-full h-full text-lg overflow-y-auto
+          border-collapse border border-gray-700 hover:border-collapse'>
             {ticket.comments ? ticket.comments.map((comments) => (
               <ListTile
               key={comments.id}
-              title={comments.title}
-              leading={comments.description}
-              />
+        leading={<div><span className="font-bold">{comments.title}</span><p>{comments.description}</p></div>}
+      />
             )) : (<h1>No hay notificaciones</h1>)}
           </List>
         </div>
-        <h1>Titulo</h1>
-<input className="resize-y h-14 w-full border bg-gray-700 p-2"
+        <h1 className='text-lg'>Titulo</h1>
+<input className="h-14 w-full border bg-gray-700 p-2 text-lg text-wrap "
                         value={title}
                         placeholder='Titulo...'
                         onChange={(e) => setTitle(e.target.value)}/>
-        <div className="h-1/5 flex flex-col m-2 text-center text-white">
+        <div className="h-1/5 flex flex-col m-2 text-center text-white text-lg text-wrap">
                     <h1>Ingrese un nuevo mensaje</h1>
                     <textarea
-                        className="resize-y h-14 w-full border bg-gray-700 p-2"
+                        className="h-14 w-full border bg-gray-700 p-2 text-lg overflow-y-auto"
                         value={description}
                         placeholder='Mensaje...'
                         onChange={(e) => setDescription(e.target.value)}
                         />
                     <Button 
-                      className="m-4 px-4 py-2 text-black disabled:opacity-50
+                      className="m-4 px-4 py-2 text-white disabled:opacity-50 text-lg 
                       rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
                       disabled={isPending}
                       onClick={handleCreate}>
