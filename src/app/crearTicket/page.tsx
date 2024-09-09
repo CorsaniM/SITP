@@ -9,6 +9,7 @@ import { useOrganization, useUser } from "@clerk/nextjs"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/app/_components/ui/select"
 
 import { Input } from "~/app/_components/ui/input"
+import LayoutContainer from "../_components/layout-container"
 
 export default function CrearTicket() {
 
@@ -48,7 +49,7 @@ export default function CrearTicket() {
                 title: motivo,
                 description: description,
                 suppUrgency: 0,
-                orgId: organization!.id,
+                orgId: "dimetallo",
             })  
              
             toast.success('ticket creado correctamente')
@@ -61,6 +62,8 @@ export default function CrearTicket() {
     }
 
     return (
+            <LayoutContainer>
+
             <div className="flex flex-col m-4">
                 <div className="h-1/5 flex flex-col m-2">
                     <div className="flex flex-row gap-6">
@@ -117,12 +120,14 @@ export default function CrearTicket() {
                     <h1>Opcional* ingrese una imagen</h1>
                 </div>
                 <button
-                    className="m-4 px-4 py-2 text-black rounded disabled:opacity-50 rounded-full bg-slate-200 hover:bg-slate-300"
+                    className="m-4 px-4 py-2 text-black disabled:opacity-50 rounded-full bg-slate-200 hover:bg-slate-300"
                     disabled={isPending}
                     onClick={handleCreate}
                 >
                     {isPending ? "Creando..." : "Crear ticket"}
                 </button>
             </div>
+            </LayoutContainer>
+
     )
 }

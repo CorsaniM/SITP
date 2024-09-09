@@ -91,7 +91,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
           <CardTitle>Mensajes :</CardTitle>
           <List className='w-full h-full text-lg overflow-y-auto
           border-collapse border border-gray-700 hover:border-collapse'>
-  {ticket.comments ? ticket.comments.map((comments) => (
+  {comments ? comments.map((comments) => (
           <ListTile
             key={comments.id}
             leading={

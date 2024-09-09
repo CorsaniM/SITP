@@ -2,22 +2,8 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { relations, sql } from "drizzle-orm";
-import {
-  index,
-  int,
-  integer,
-  sqliteTable,
-  sqliteTableCreator,
-  text,
-} from "drizzle-orm/sqlite-core";
-import { number } from "zod";
+import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = sqliteTableCreator((name) => `stip_${name}`);
 
 export const tickets = createTable(
@@ -110,6 +96,9 @@ export const events = createTable(
     ticketId: int("ticketId")
       .references(() => tickets.id)
       .notNull(),
+    commentsId: int("commentsId")
+      .references(() => comments.id)
+      .notNull(),
     type: text("type", { length: 256 }),
     description: text("description"),
     createdAt: int("created_at", { mode: "timestamp" })
@@ -125,6 +114,10 @@ export const eventsRelations = relations(events, ({ one }) => ({
   ticket: one(tickets, {
     fields: [events.ticketId],
     references: [tickets.id],
+  }),
+  comments: one(comments, {
+    fields: [events.commentsId],
+    references: [comments.id],
   }),
 }));
 
