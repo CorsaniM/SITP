@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useQueryClient } from "@tanstack/react-query";
 import LayoutContainer from '~/app/_components/layout-container';
+import { Messages, MessageTile } from './mensajes';
 dayjs.extend(utc);
 dayjs.locale("es");
 
@@ -89,22 +90,18 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         </div>
         <div className='w-full p-2 bg-gray-800 text:border-collapse text-lg'>
           <CardTitle>Mensajes :</CardTitle>
-          <List className='w-full h-full text-lg overflow-y-auto
+          
+          <Messages className='w-full h-full text-lg overflow-y-auto
           border-collapse border border-gray-700 hover:border-collapse'>
   {comments ? comments.map((comments) => (
-          <ListTile
-            key={comments.id}
-            leading={
-              <div className="flex flex-col space-y-1 max-w-full">
-                <span className="font-bold">{comments.title}</span>
-                <p className="flex flex-auto break-words max-w-xl">
-                  {comments.description}
-                </p>
-              </div>
-            }
-          />
-        )) : (<h1>No hay notificaciones</h1>)}
-      </List>
+          <MessageTile
+                key={comments.id}
+                title={comments.title}
+                description={comments.description}
+                from={comments.userId}
+              />
+          )) : (<h1>No hay mensajes</h1>)}
+      </Messages>
         </div>
         <div className="h-1/5 flex flex-col m-2 text-center text-white text-lg text-wrap">
         <h1 className='text-lg'>Titulo</h1>

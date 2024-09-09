@@ -34,7 +34,7 @@ export default function Page() {
 
      <div className="w-screen ml-36 mt-16">
       <div className="flex h-28 place-content-right">
-   <div>Loading...</div>;
+   <div>Loading...</div>
    </div>
    </div>
   )
