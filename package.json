@@ -30,6 +30,7 @@
     "@trpc/client": "^11.0.0-rc.446",
     "@trpc/react-query": "11.0.0-rc.467",
     "@trpc/server": "^11.0.0-rc.446",
+    "@uploadthing/react": "^6.8.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.12",
@@ -48,6 +49,7 @@
     "tailwind": "^4.0.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.13.3",
     "zod": "^3.23.3"
   },
   "devDependencies": {

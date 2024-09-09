@@ -67,7 +67,7 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
 });
 
 postDimetallo.post("/comments/post", async (c) => {
-  const { id, title, description } = await c.req.json();
+  // const { id, title, description } = await c.req.json();
   return c.json("Comentario creado");
 });
 

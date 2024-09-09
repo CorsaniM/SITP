@@ -1,12 +1,12 @@
 "use server";
 import { clerkClient } from "@clerk/nextjs/server";
-import { setRole } from "~/app/_actions";
+import { SetRole } from "~/app/_actions";
 import { List, ListTile } from "~/app/_components/ui/list";
 
 import { Title } from "~/app/_components/ui/title";
 import { Input } from "~/app/_components/ui/input";
 import { Button } from "~/app/_components/ui/button";
-import { checkRole } from "~/lib/server/roles";
+import { UseCheckRole } from "~/lib/server/roles";
 import { getServerAuthSession } from "~/server/auth";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import LayoutContainer from "~/app/_components/layout-container";
@@ -23,7 +23,7 @@ export default async function AdminDashboard() {
     await clerkClient.organizations.getOrganizationList({})
   ).data;
 
-  const session = await getServerAuthSession();
+  const session = getServerAuthSession();
 
   const user = usersList.find((users) => users.id === session!.user.id);
 
@@ -112,21 +112,21 @@ function FormSetRole({ user }: { user: UsersType }) {
   return (
     <div className="flex gap-2">
       <div>
-        <form action={setRole}>
+        <form action={SetRole}>
           <Input type="hidden" value={user.id} name="id" />
           <Input type="hidden" value="admin" name="role" />
           <Button type="submit">Hacer admin </Button>
         </form>
       </div>
       <div>
-        <form action={setRole}>
+        <form action={SetRole}>
           <Input type="hidden" value={user.id} name="id" />
           <Input type="hidden" value="user" name="role" />
           <Button type="submit">Autorizar usuario</Button>
         </form>
       </div>
       <div>
-        <form action={setRole}>
+        <form action={SetRole}>
           <Input type="hidden" value={user.id} name="id" />
           <Input type="hidden" value="unauthorized" name="role" />
           <Button type="submit">Desautorizar</Button>

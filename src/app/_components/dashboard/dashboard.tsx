@@ -1,47 +1,33 @@
-"use client"
-import React, { useState } from 'react';
-import { NumeroGrande, Subtitle, Title } from '../ui/title';
+"use client";
+import React from 'react';
+import { NumeroGrande, Subtitle } from '../ui/title';
 import { api } from '~/trpc/react';
 import { useUser } from '@clerk/nextjs';
 
+export default function Dashboard() {
+  const { user } = useUser();
+  const { data: tickets } = api.tickets.getByUser.useQuery({ userId: user?.id ?? '' });
 
+  // Manejo de tickets
+  const ticketpend = tickets?.filter((pend) => pend.state === "Pendiente");
+  const ticketasig = tickets?.filter((asig) => asig.state === "Asignado");
+  const ticketfin = tickets?.filter((fin) => fin.state === "Finalizado");
 
-export default function Dashboard() { 
-  
-  try{
-
-    const { user } = useUser();
-    const tickets =api.tickets.getByUser.useQuery({userId: user!.id}).data
-    const ticketpend = tickets?.filter((pend)=> pend.state === "Pendiente")
-    const ticketasig = tickets?.filter((asig)=> asig.state === "Asignado")
-    const ticketfin = tickets?.filter((fin)=> fin.state === "Finalizado")
-    
-
-    return(
-      <div className='flex flex-auto p-2 border-solid border-2 border-gray-400 place-content-center bg-gray-800 hover:bg-gray-700'>
-        <h1 className="flex flex-auto basis-1/12 text-lg font-semibold justify-center place-self-center">Tickets</h1>
-        <div  className='flex-auto basis-1/3  place-content-center'>
-        <NumeroGrande>3{ticketpend?.length}</NumeroGrande>
+  return (
+    <div className='flex flex-auto p-2 border-solid border-2 border-gray-400 place-content-center bg-gray-800 hover:bg-gray-700'>
+      <h1 className="flex flex-auto basis-1/12 text-lg font-semibold justify-center place-self-center">Tickets</h1>
+      <div className='flex-auto basis-1/3 place-content-center'>
+        <NumeroGrande>{ticketpend?.length ?? 0}</NumeroGrande>
         <Subtitle>Pendientes</Subtitle>
-        </div>
-        <div className='flex-auto basis-1/3 place-content-center'>
-        <NumeroGrande>6{ticketasig?.length}</NumeroGrande>
-        <Subtitle>En espera</Subtitle>
-        </div>
-        <div className='flex-auto basis-1/3 place-content-center'>
-        <NumeroGrande>4{ticketfin?.length}</NumeroGrande>
-        <Subtitle>Finalizados</Subtitle>
-        </div>
       </div>
-    )
-  }
-  catch{
-return (
-  <div>
-    No hay tickets creados
-  </div>
-)
-  }
-  
-  
-};
+      <div className='flex-auto basis-1/3 place-content-center'>
+        <NumeroGrande>{ticketasig?.length ?? 0}</NumeroGrande>
+        <Subtitle>En espera</Subtitle>
+      </div>
+      <div className='flex-auto basis-1/3 place-content-center'>
+        <NumeroGrande>{ticketfin?.length ?? 0}</NumeroGrande>
+        <Subtitle>Finalizados</Subtitle>
+      </div>
+    </div>
+  );
+}

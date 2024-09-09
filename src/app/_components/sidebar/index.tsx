@@ -11,11 +11,11 @@ import {
   } from "lucide-react";
 import Sidenav, { SidenavItem } from '../sidenav';
 import { useOrganization, useUser } from "@clerk/nextjs";
-import { checkRole } from "~/lib/react/roles";
+import { UseCheckRole } from "~/lib/react/roles";
 
 export default function Page() {
 
-    const isAdmin = checkRole("admin");
+    const isAdmin = UseCheckRole("admin");
     
     if(!isAdmin){
         return (

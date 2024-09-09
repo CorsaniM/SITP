@@ -40,7 +40,7 @@ export default function CrearTicket() {
                     body: formData,
                 });
                 const data = await response.json();
-                console.log("Llego")
+                console.log("Llego", data)
             }
             await createTicket({
                 state: "pendiente",

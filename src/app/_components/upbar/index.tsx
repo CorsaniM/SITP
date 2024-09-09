@@ -1,13 +1,13 @@
 "use client"
 import { OrganizationSwitcher, UserButton, useOrganization, useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { checkRole } from "~/lib/react/roles";
+import { UseCheckRole } from "~/lib/react/roles";
 
 
 export default function Upbar() {
     const { organization } = useOrganization();
     const { user } = useUser()
-    const isAdmin = checkRole("admin" || "owner")
+    const isAdmin = UseCheckRole("admin" || "owner")
 
     return (
         <div className="flex w-screen h-16 drop-shadow-xl bg-gray-800 justify-between

@@ -2,10 +2,10 @@
 
 import { clerkClient } from "@clerk/nextjs/server";
 import {} from "next/navigation";
-import { checkRole } from "~/lib/server/roles";
+import { UseCheckRole } from "~/lib/server/roles";
 
-export async function setRole(formData: FormData) {
-  if (!checkRole("admin")) {
+export async function SetRole(formData: FormData) {
+  if (!UseCheckRole("admin")) {
     return { message: "Not Authorized" };
   }
   try {

@@ -26,7 +26,7 @@ import { getServerAuthSession } from "../auth";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await getServerAuthSession();
+  const session = getServerAuthSession();
 
   return {
     db,

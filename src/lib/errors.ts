@@ -55,7 +55,7 @@ export function newServerInternalError(
 export function asTRPCError(error: any) {
   if (isTRPCClientError(error)) {
     return {
-      data: error.data as { zodError?: ZodError },
+      data: error.data as unknown as { zodError?: ZodError },
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       cause: ((error.data as any).cause as string) ?? "UNKNOWN",
       message: error.message as string,

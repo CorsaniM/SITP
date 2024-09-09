@@ -30,7 +30,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
   console.log(title, "Titulo")
 
 
-  const comments = ticket?.comments.sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime())
+  const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   async function handleCreate() {
     try {
         await createMensaje({
@@ -44,7 +44,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         })  
          
         toast.success('Mensaje enviado')
-        router.invalidateQueries()
+        await router.invalidateQueries()
         setDescription("")
         setTitle("")
 

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { db, schema } from "~/server/db";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
-import { checkRole } from "~/lib/server/roles";
+import { UseCheckRole } from "~/lib/server/roles";
 
 export const clerkRouter = createTRPCRouter({
   getUserbyId: protectedProcedure
@@ -28,7 +28,7 @@ export const clerkRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      // if (!checkRole("Admin")) {
+      // if (!UseCheckRole("Admin")) {
       //   return { message: "Not Authorized" };
       // }
       try {
