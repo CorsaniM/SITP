@@ -7,7 +7,7 @@ import { participants } from "~/server/db/schema";
 export const participantsRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ 
-      userId: z.string(),
+      userName: z.string(),
       ticketId: z.number(),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -32,12 +32,12 @@ export const participantsRouter = createTRPCRouter({
   getByUser: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
+        userName: z.string(),
       }),
     )
   .query(async ({ input, ctx }) => {
     const ticketWithRelations = await ctx.db.query.participants.findMany({
-        where: eq(participants.userId, input.userId),
+        where: eq(participants.userName, input.userName),
         with: {ticket: true},
       });
       return ticketWithRelations;
@@ -47,7 +47,7 @@ export const participantsRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
-        userId: z.string(),
+        userName: z.string(),
         ticketId: z.number(),
         updatedAt: z.date(),
       }),

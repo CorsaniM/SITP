@@ -10,7 +10,7 @@ export default function LayoutContainer({
   return (
     <div
       className={cn(
-        ` ml-56 mt-10 max-w-[1500px] space-y-5 overflow-visible`,
+        `m-8 space-y-5 `,
         className
       )}
     >

@@ -27,20 +27,19 @@ export default function RootLayout({
     <ClerkProvider signInFallbackRedirectUrl={"/"}>
       <SyncActiveOrganization membership={sessionClaims!.membership!}/>
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="bg-gray-600  text-gray-200">
-        <div className="fixed h-16 left-0 w-full bg-gray-800 text-white shadow-md z-50 ">
+      <body className=" bg-gray-600  text-gray-200">
+        <div className="fixed h-16 left-0 w-full bg-gray-800 text-white shadow-md z-20 ">
           <Upbar/>
         </div>
-        <div className='list-none w-36 fixed top-16 bottom-0 left-0 flex-col
-        shadow-2xl bg-gray-800 sm:flex h-full'>
-          <Sidebar/>
+        <div className='fixed pt-16 flex-1 h-full list-none w-36  shadow-2xl bg-gray-800 z-10'>
+            <Sidebar/>
         </div>
-          <div className='flex'>
+        <div className='flex-1 pt-16 pl-36'>
             <TRPCReactProvider>
               {children}
               <Toaster />
             </TRPCReactProvider>
-          </div>
+        </div>
       </body>
     </html>
     </ClerkProvider>

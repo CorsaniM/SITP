@@ -31,7 +31,6 @@ export const tickets = createTable(
 export const ticketsRelations = relations(tickets, ({ many }) => ({
   comments: many(comments),
   images: many(images),
-  events: many(events),
   participants: many(participants),
 }));
 
@@ -39,7 +38,7 @@ export const comments = createTable(
   "comments",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    userId: text("userId").notNull(),
+    userName: text("userName").notNull(),
     ticketId: int("ticketId")
       .references(() => tickets.id)
       .notNull(),
@@ -83,7 +82,7 @@ export const images = createTable(
   "images",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    userId: text("userId").notNull(),
+    userName: text("userName").notNull(),
     ticketId: int("ticketId")
       .references(() => tickets.id)
       .notNull(),
@@ -108,7 +107,7 @@ export const events = createTable(
   "events",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    userId: text("userId").notNull(),
+    userName: text("userName"),
     ticketId: int("ticketId"),
     commentsId: int("commentsId"),
     type: text("type", { length: 256 }),
@@ -126,7 +125,7 @@ export const participants = createTable(
   "participants",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    userId: text("userId").notNull(),
+    userName: text("userName").notNull(),
     ticketId: int("ticketId")
       .references(() => tickets.id)
       .notNull(),

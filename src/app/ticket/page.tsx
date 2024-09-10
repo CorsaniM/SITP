@@ -6,6 +6,7 @@ import { Button } from "../_components/ui/button";
 import { DataTable } from "./table";
 import { columns } from "./columns";
 import { api } from "~/trpc/react";
+import { NumeroGrande, Title } from "../_components/ui/title";
 
 export default function Page() {
  
@@ -32,30 +33,24 @@ export default function Page() {
 
    if (!ticketsPorOrg) return (
 
-     <div className="w-screen ml-36 mt-16">
-      <div className="flex h-28 place-content-right">
-   <div>Loading...</div>;
-   </div>
+    <div className="">
+          <div className="flex flex-1 align-middle justify-center">
+            <NumeroGrande>Loading...</NumeroGrande>
+          </div>
    </div>
   )
 
   return (
-    <div className="w-screen ml-36 mt-16">
-      <div className="flex h-28 place-content-right">
+    <div className="flex flex-1 flex-col">
+      <div className="sticky top-16 flex h-28 place-content-right z-10">
         <Dashboard />
       </div>
       <div className="flex place-content-center flex-column">
-        <div className="flex min-w-40 flex-col align-center">
-          <div className="px-10">
-            <div className="container mx-auto py-10 h-fixed ">
               <DataTable
                   columns={columns}
                   data={ticketsPorOrg}
                 />
             </div>
-          </div>
-        </div>
-      </div>
       <div>
         <Button onClick={Creator}>Crear ticket</Button>
       </div>

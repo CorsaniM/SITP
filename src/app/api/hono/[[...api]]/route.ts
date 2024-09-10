@@ -29,12 +29,13 @@ app.get("/ticket/get/:orgid/:urgency/:title/:description", async (c) => {
   try {
     const newTicket = await api.tickets.create({
       orgId,
-      state: "nuevo", // Asignar el estado por defecto
+      state: "pendiente", // Asignar el estado por defecto
       urgency,
       suppUrgency: 0, // Asignar suppUrgency por defecto a 0
       title,
       description,
     });
+    
     return c.json("Ticket creado"); // Devuelve el ticket creado con un código 201
   } catch (error) {
     return c.json({ error: "Error creando el ticket" }, 500);
@@ -56,7 +57,7 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
       title: title,
       description: description,
       createdAt: new Date(),
-      userId: "",
+      userName: "",
       ticketId: parseInt(ticketId),
       type: "recibido",
     });
