@@ -1,14 +1,14 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { db } from "~/server/db";
+import { db, schema } from "~/server/db";
 import { comments, images } from "~/server/db/schema";
 
 export const commentsRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
+        userName: z.string(),
         ticketId: z.number(),
         type: z.string(), //(Actualización, Ticket Rechazado, Ticket Finalizado)
         state: z.string(), //(leído o no por el creador asignado)
@@ -25,6 +25,21 @@ export const commentsRouter = createTRPCRouter({
         .values(input)
         .returning();
 
+        if (respuesta?.userName) {
+          await ctx.db.insert(schema.events).values({
+            userName: respuesta?.userName,
+            ticketId: respuesta?.id,
+            type: "sent",
+            description: "Comentario enviado" 
+          });
+          } else {
+            await ctx.db.insert(schema.events).values({
+              ticketId: respuesta?.id,
+              type: "recieved",
+              description: "Comentario recibido" 
+            });
+          }
+          
       if (!respuesta) {
         throw new Error("Error al crear el comentario");
       }

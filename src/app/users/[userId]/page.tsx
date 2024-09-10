@@ -71,6 +71,8 @@ export default function UserPage(props: { params: { userId: string } }) {
       } as UserUpdatePayload);
 
       SetRole(newRole);
+      toast.success("Se ha guardado el nuevo rol");
+      router.refresh();
     } catch (err) {
       console.error(err);
     }
@@ -98,6 +100,8 @@ export default function UserPage(props: { params: { userId: string } }) {
 
   return (
     <LayoutContainer>
+      <div className="">
+      <Title>Usuarios</Title>
       <div className="mt-20">
         {isLoading ? (
           <div> cargando...</div>
@@ -105,7 +109,7 @@ export default function UserPage(props: { params: { userId: string } }) {
           <section className="space-y-2">
             <div className="flex justify-between">
               <Title>
-                {user?.firstName} {user?.lastName}
+                {firstName} {lastName}
               </Title>
               <Button onClick={handleChange} disabled={isLoading}>
                 <CheckIcon className="mr-2" />
@@ -146,7 +150,6 @@ export default function UserPage(props: { params: { userId: string } }) {
                         <Input
                           id="username"
                           value={username}
-                          disabled
                           onChange={(e) => setUsername(e.target.value)}
                         />
                       </div>
@@ -184,6 +187,7 @@ export default function UserPage(props: { params: { userId: string } }) {
             </Accordion>
           </section>
         )}
+      </div>
       </div>
     </LayoutContainer>
   );

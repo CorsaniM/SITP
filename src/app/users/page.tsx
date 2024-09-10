@@ -43,7 +43,7 @@ const isAdmin = true
   return (
     <>
     <LayoutContainer>
-      <div className="mt-8">
+      <div className="m-5 space-y-5">
       <Title>Usuarios</Title>
       {isAdmin ? (
         <List>

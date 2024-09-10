@@ -7,10 +7,11 @@ import { events } from "~/server/db/schema";
 export const eventsRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ 
-      userId: z.string(),
-      ticketId: z.number(),
+      userName: z.string().optional(),
+      ticketId: z.number().optional(),
       type: z.string(),
       description: z.string(),
+      commentsId: z.number().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 500));

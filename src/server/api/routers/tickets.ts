@@ -19,7 +19,12 @@ export const ticketsRouter = createTRPCRouter({
         .insert(schema.tickets)
         .values(input)
         .returning();
-
+        await ctx.db.insert(schema.events).values({
+          userName: respuesta?.orgId,
+          ticketId: respuesta?.id,
+          type: "recieved",
+          description: "Ticket recibido",
+        });
       if (!respuesta) {
         throw new Error("Error al crear el ticket");
       }
@@ -72,12 +77,12 @@ export const ticketsRouter = createTRPCRouter({
     getByUser: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
+        userName: z.string(),
       }),
     )
     .query(async ({ input, ctx }) => {      
       const ticketWithRelations = await ctx.db.query.tickets.findMany({
-        where: eq(participants.userId, input.userId),
+        where: eq(participants.userName, input.userName),
         with: {
           comments: true,
           images: true,
@@ -92,9 +97,9 @@ export const ticketsRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
-        orgId: z.string(),
-        state: z.string(),
-        suppUrgency: z.number(),
+        orgId: z.string().optional(),
+        state: z.string().optional(),
+        suppUrgency: z.number().optional(),
         updatedAt: z.date(),
       }),
     )

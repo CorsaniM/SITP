@@ -11,6 +11,8 @@ import utc from "dayjs/plugin/utc";
 import { useQueryClient } from "@tanstack/react-query";
 import LayoutContainer from '~/app/_components/layout-container';
 import { Messages, MessageTile } from './mensajes';
+import { AsignarUsuario } from '../dialogs/asignarUsuario';
+import { AsignarPrioridad } from '../dialogs/asigPrioridad';
 dayjs.extend(utc);
 dayjs.locale("es");
 
@@ -36,7 +38,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
     try {
         await createMensaje({
             title: title || "",
-            userId: user!.id,
+            userName: user!.id,
             ticketId: ticket!.id,
             type: "actualización",
             state: "no leido",
@@ -54,6 +56,10 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
         toast.error('No se pudo crear el mensaje')
     }
 }
+
+
+
+
 // const { mutateAsync: updateMensaje} = api.comments.update.useMutation();
 // useEffect(()=>{
 //   ticket?.comments.map((mensaje)=>{
@@ -66,7 +72,11 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
 
   return (
     <LayoutContainer>
-    <div className="resize-y px-10 py-24 w-full md:px-20 lg:px-32 xl:px-40">
+      
+
+      
+
+    <div className="w-full md:px-20 lg:px-32 xl:px-40">
         {ticket ? (
           <Card>
         <div className='bg-gray-800 p-2 border-collapse text-lg text-wrap'>
@@ -87,8 +97,17 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
               <h1>No contiene images</h1>
             )}
           <hr className='mt-3 bg-gray-800'/>
+          <div className='flex-wrap place-content-center'>
+          <AsignarUsuario ticketId={parseInt(id)}/>
+          <AsignarPrioridad ticket={ticket}/>
+          <AsignarUsuario ticketId={parseInt(id)}/>
+          <AsignarUsuario ticketId={parseInt(id)}/>
+          </div>
         </div>
+               
         <div className='w-full p-2 bg-gray-800 text:border-collapse text-lg'>
+        
+
           <CardTitle>Mensajes :</CardTitle>
           
           <Messages className='w-full h-full text-lg overflow-y-auto
@@ -98,7 +117,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
                 key={comments.id}
                 title={comments.title}
                 description={comments.description}
-                from={comments.userId}
+                from={comments.userName}
               />
           )) : (<h1>No hay mensajes</h1>)}
       </Messages>
@@ -124,6 +143,8 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
                       disabled={isPending}
                       onClick={handleCreate}>
                     {isPending ? "Creando..." : "Crear mensaje"} </Button>
+
+                    
                 </div>
       </Card>
         ): (null)}
