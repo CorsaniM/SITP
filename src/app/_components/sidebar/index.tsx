@@ -29,6 +29,9 @@ export default function Page() {
             <SidenavItem icon={<Rows3 />} href="/events">
               Eventos
             </SidenavItem>
+            <SidenavItem icon={<Rows3 />} href="/empresas">
+              Empresas
+            </SidenavItem>
           </Sidenav>
             )
     }  

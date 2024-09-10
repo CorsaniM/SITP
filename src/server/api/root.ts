@@ -5,6 +5,8 @@ import { commentsRouter } from "./routers/comments";
 import { participantsRouter } from "./routers/participants";
 import { eventsRouter } from "./routers/events";
 import { clerkRouter } from "./routers/clerk-router";
+import { companies } from "../db/schema";
+import { companiesRouter } from "./routers/companies-router";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +20,7 @@ export const appRouter = createTRPCRouter({
   images: imagesRouter,
   events: eventsRouter,
   clerk: clerkRouter,
+  companies: companiesRouter,
 });
 
 // export type definition of API

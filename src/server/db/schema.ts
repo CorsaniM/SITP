@@ -43,8 +43,8 @@ export const comments = createTable(
     ticketId: int("ticketId")
       .references(() => tickets.id)
       .notNull(),
-    type: text("type"), //(Actualización, Ticket Rechazado, Ticket Finalizado)
-    state: text("state"), //(leído o no por el creador asignado)
+    type: text("type"),
+    state: text("state"),
     title: text("title"),
     description: text("description"),
     createdAt: int("created_at", { mode: "timestamp" })
@@ -55,6 +55,22 @@ export const comments = createTable(
     descriptionIndex: index("description_idx").on(example.description),
   }),
 );
+
+export const companies = createTable("companies", {
+  id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  name: text("name", { length: 255 }).notNull(),
+  razon_social: text("razon_social"),
+  description: text("description", { length: 255 }).notNull(),
+  state: text("state", { length: 255 }).notNull(),
+  phone_number: text("phone_number"),
+  address: text("address"),
+  createdAt: int("created_at", { mode: "timestamp" })
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
+    () => new Date(),
+  ),
+});
 
 export const commentsRelations = relations(comments, ({ one }) => ({
   ticket: one(tickets, {
@@ -93,12 +109,8 @@ export const events = createTable(
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userId: text("userId").notNull(),
-    ticketId: int("ticketId")
-      .references(() => tickets.id)
-      .notNull(),
-    commentsId: int("commentsId")
-      .references(() => comments.id)
-      .notNull(),
+    ticketId: int("ticketId"),
+    commentsId: int("commentsId"),
     type: text("type", { length: 256 }),
     description: text("description"),
     createdAt: int("created_at", { mode: "timestamp" })
@@ -109,17 +121,6 @@ export const events = createTable(
     typeIndex: index("type_idx").on(example.type),
   }),
 );
-
-export const eventsRelations = relations(events, ({ one }) => ({
-  ticket: one(tickets, {
-    fields: [events.ticketId],
-    references: [tickets.id],
-  }),
-  comments: one(comments, {
-    fields: [events.commentsId],
-    references: [comments.id],
-  }),
-}));
 
 export const participants = createTable(
   "participants",
