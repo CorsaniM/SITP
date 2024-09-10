@@ -5,16 +5,29 @@ import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
 
-export function AsignarUsuario(props: { ticketId: number }) {
+interface ticket {
+    id: number;
+    orgId: string | null;
+    state: string | null;
+    urgency: number | null;
+    suppUrgency: number | null;
+    title: string | null;
+    description: string | null;
+    createdAt: Date;
+    updatedAt: Date | null;
+}
+
+export function Rechazar(props: { ticket: ticket }) {
   const [open, setOpen] = useState(false);
 
-  const { mutateAsync: createParticipants } = api.participants.create.useMutation();
+  const { mutateAsync: cambiar } = api.tickets.update.useMutation();
   const user = useUser();
-
-  async function HandleCreate() {
-    await createParticipants({
-      userName: user.user?.fullName ?? "",
-      ticketId: props.ticketId ?? 0,
+const ticket = props.ticket
+  async function HandleUpdate() {
+    await cambiar({
+        id: ticket.id,
+        state: "rechazado",
+        updatedAt: new Date,
     });
     setOpen(false); // Cerrar el diálogo tras la creación
   }
@@ -23,10 +36,10 @@ export function AsignarUsuario(props: { ticketId: number }) {
     <>
       {/* Botón que abre el diálogo */}
       <Button
-        className="m-4 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
+        className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-[#581e1e] border hover:bg-[#8d3030] hover:text-black"
         onClick={() => setOpen(true)}
       >
-        Asignar usuario
+        Rechazar
       </Button>
 
       {/* Dialogo */}
@@ -45,7 +58,7 @@ export function AsignarUsuario(props: { ticketId: number }) {
                 </Dialog.Description>
               </DialogHeader>
               <DialogFooter>
-                <Button onClick={HandleCreate}>Confirmar</Button>
+                <Button onClick={HandleUpdate}>Confirmar</Button>
                 <Button onClick={() => setOpen(false)}>Cancelar</Button>
               </DialogFooter>
             </div>
