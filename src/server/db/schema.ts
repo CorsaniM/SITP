@@ -63,6 +63,7 @@ export const comments = createTable(
 
 export const companies = createTable("companies", {
   id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  orgId: text("orgId").notNull(),
   name: text("name", { length: 255 }).notNull(),
   razon_social: text("razon_social"),
   description: text("description", { length: 255 }).notNull(),

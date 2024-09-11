@@ -93,7 +93,7 @@ export default function CompanyPage({
             )}
             Aplicar
           </Button>
-            <AsignarUsuario orgId={company?.id ?? ""}/>
+            <AsignarUsuario orgId={company?.id ?? 0}/>
         </div>
 
         <Accordion type="single" collapsible className="w-full">

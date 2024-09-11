@@ -54,7 +54,7 @@ export const ticketsRouter = createTRPCRouter({
   getByOrg: publicProcedure
     .input(
       z.object({
-        orgId: z.string(),
+        orgId: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -105,7 +105,7 @@ export const ticketsRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
-        orgId: z.string().optional(),
+        orgId: z.number().optional(),
         state: z.string().optional(),
         suppUrgency: z.number().optional(),
         updatedAt: z.date(),

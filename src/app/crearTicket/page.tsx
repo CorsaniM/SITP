@@ -49,7 +49,7 @@ export default function CrearTicket() {
                 title: motivo,
                 description: description,
                 suppUrgency: 0,
-                orgId: "dimetallo",
+                orgId: 1,
             })  
              
             toast.success('ticket creado correctamente')
