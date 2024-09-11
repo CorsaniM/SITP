@@ -11,7 +11,7 @@ import { NumeroGrande, Title } from "../_components/ui/title";
 export default function Page() {
  
   const { data: ticketsPorOrg } = api.tickets.getByOrg.useQuery({
-    orgId: "dimetallo",
+    orgId: 1,
   });
   
   const router = useRouter()
@@ -20,7 +20,7 @@ export default function Page() {
   
   async function Creator() {
     await CreateTicket({
-      orgId: "dimetallo",
+      orgId: 1,
       state: "test",
       urgency: 3,
       suppUrgency: 0,

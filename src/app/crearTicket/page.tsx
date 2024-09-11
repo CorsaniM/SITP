@@ -102,7 +102,7 @@ export default function CrearTicket() {
                 </div>
                 <div>
                 <Select >
-      <SelectTrigger className="w-[180px] bg-white">
+      <SelectTrigger className="w-[180px] bg-gray-700">
         <SelectValue placeholder="Urgencia" />
       </SelectTrigger>
       <SelectContent>

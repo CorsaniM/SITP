@@ -50,9 +50,9 @@ const ticket = props.ticket
 
           {/* Contenido del diálogo */}
           <Dialog.Content className="fixed z-50 inset-0 m-auto flex max-w-lg items-center justify-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
               <DialogHeader>
-                <Dialog.Title>¿Estás seguro?</Dialog.Title>
+                <Dialog.Title>Rechazar ticket</Dialog.Title>
                 <Dialog.Description>
                   Esta acción no se puede deshacer. ¿Estás seguro de que quieres continuar?
                 </Dialog.Description>
