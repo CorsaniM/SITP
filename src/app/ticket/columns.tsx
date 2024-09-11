@@ -18,7 +18,7 @@ import {
 // You can use a Zod schema here if you want.
 export type TablaTickets = {
   id: number
-  orgId: string|null
+  orgId: number|null
   state: string|null
   urgency: number|null
   createdAt: Date
