@@ -7,7 +7,7 @@ import { api } from "~/trpc/react";
 
 interface ticket {
     id: number;
-    orgId: string | null;
+    orgId: number | null;
     state: string | null;
     urgency: number | null;
     suppUrgency: number | null;
