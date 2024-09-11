@@ -21,6 +21,7 @@ export type TablaEvents = {
   orgId: number|null
   state: string|null
   urgency: number|null
+  suppUrgency: number|null
   createdAt: Date
 }
 
@@ -79,9 +80,16 @@ export const columns: ColumnDef<TablaEvents>[] = [
           Urgencia
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
-  },
+     cell: ({ row }) => row.getValue("suppUrgency") === 0 ? row.getValue("urgency") : row.getValue("suppUrgency"),
+     }
+    //   const urgency = row.getValue("urgency");
+    //   const suppUrgency = ;
+      
+    //   return suppUrgency !== 0 ? suppUrgency : urgency;
+    // },
+  
   // {
   //   id: "actions",
   //   cell: ({ row }) => {

@@ -58,12 +58,13 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
               <h1>No contiene images</h1>
             )}
           <hr className='mt-3 bg-gray-800'/>
-          <div className='flex-wrap place-content-center p-2 space-y-3'>
+          <div className='flex-wrap place-content-center justify-center p-2 space-y-3'>
           <Aprobar ticket={ticket}/> 
           <Rechazar ticket={ticket}/>
           <AsignarUsuario ticketId={parseInt(id)}/>
-          <AsignarPrioridad ticket={ticket}/>
           <CrearComentario ticketId={parseInt(id)}/>
+          <AsignarPrioridad ticket={ticket}/>
+
           </div>
           
         </div>

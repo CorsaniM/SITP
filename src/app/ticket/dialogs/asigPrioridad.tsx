@@ -1,10 +1,13 @@
 "use client"
 import { useUser } from "@clerk/nextjs";
-import * as Dialog from "@radix-ui/react-dialog";
 import { ReactElement, useState } from "react";
 import { Button } from "~/app/_components/ui/button";
-import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
+import { DialogHeader, DialogFooter, DialogContent, DialogTitle, Dialog } from "~/app/_components/ui/dialog";
+import { Label } from "~/app/_components/ui/label";
+import { Input } from "~/app/_components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue  } from "~/app/_components/ui/select";
+import { Loader2Icon } from "lucide-react";
 
 interface ticket {
     id: number;
@@ -21,13 +24,15 @@ interface ticket {
 export function AsignarPrioridad(props: { ticket: ticket }) {
   const [open, setOpen] = useState(false);
 
-  const { mutateAsync: cambiar } = api.tickets.update.useMutation();
-  const user = useUser();
+  const { mutateAsync: cambiar, isPending: isLoading } = api.tickets.update.useMutation();
+
+  const [prio, setPrio] = useState(0);
+
 const ticket = props.ticket
   async function HandleUpdate() {
     await cambiar({
         id: ticket.id,
-        suppUrgency: 3,
+        suppUrgency: prio,
         updatedAt: new Date,
     });
     setOpen(false); // Cerrar el diálogo tras la creación
@@ -35,37 +40,26 @@ const ticket = props.ticket
 
   return (
     <>
-      {/* Botón que abre el diálogo */}
-      <Button
-        className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
-        onClick={() => setOpen(true)}
-      >
-        Asignar prioridad
-      </Button>
+      <div  className="inline-flex m-2 text-white disabled:opacity-50 text-lg w-1/5 bg-gray-800  hover:bg-gray-500 hover:text-black">
 
-      {/* Dialogo */}
-      <Dialog.Root open={open} onOpenChange={setOpen}>
-        <Dialog.Portal>
-          {/* Este contenedor envuelve el contenido y proporciona el fondo con el blur */}
-          <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
+              <Select open={open} onOpenChange={setOpen} onValueChange={(e) =>setPrio(Number(e))}>
+      <SelectTrigger className=" bg-gray-700">
+        <SelectValue placeholder="prio" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel >Nivel de urgencia</SelectLabel>
+          <SelectItem value="1">Leve</SelectItem>
+          <SelectItem value="2">Baja</SelectItem>
+          <SelectItem value="3">Moderado</SelectItem>
+          <SelectItem value="4">Alto</SelectItem>
+          <SelectItem value="5">Urgente</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+      </Select>
+      </div>
 
-          {/* Contenido del diálogo */}
-          <Dialog.Content className="fixed z-50 inset-0 m-auto flex max-w-lg items-center justify-center">
-            <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
-              <DialogHeader>
-                <Dialog.Title>Asignar prioridad</Dialog.Title>
-                <Dialog.Description>
-                  Esta acción no se puede deshacer. ¿Estás seguro de que quieres continuar?
-                </Dialog.Description>
-              </DialogHeader>
-              <DialogFooter>
-                <Button onClick={HandleUpdate}>Confirmar</Button>
-                <Button onClick={() => setOpen(false)}>Cancelar</Button>
-              </DialogFooter>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+
     </>
   );
 }

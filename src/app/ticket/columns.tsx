@@ -21,6 +21,7 @@ export type TablaTickets = {
   orgId: number|null
   state: string|null
   urgency: number|null
+  suppUrgency: number|null
   createdAt: Date
 }
 
