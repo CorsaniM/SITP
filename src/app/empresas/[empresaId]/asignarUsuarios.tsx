@@ -62,7 +62,6 @@ export function AsignarUsuario(props: { orgId: number }) {
           });
         }
         setOpen(false);
-        // Optionally, refresh or reload data
       } catch (error) {
         console.error("Error creating participants:", error);
       }
