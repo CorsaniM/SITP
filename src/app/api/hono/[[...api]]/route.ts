@@ -28,14 +28,14 @@ app.get("/ticket/get/:orgid/:urgency/:title/:description", async (c) => {
 
   try {
     const newTicket = await api.tickets.create({
-      orgId,
-      state: "pendiente", // Asignar el estado por defecto
+      orgId: parseInt(orgId),
+      state: "pendiente",
       urgency,
-      suppUrgency: 0, // Asignar suppUrgency por defecto a 0
+      suppUrgency: 0,
       title,
       description,
     });
-    
+
     return c.json("Ticket creado"); // Devuelve el ticket creado con un código 201
   } catch (error) {
     return c.json({ error: "Error creando el ticket" }, 500);

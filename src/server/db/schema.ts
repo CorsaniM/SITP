@@ -10,7 +10,9 @@ export const tickets = createTable(
   "tickets",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    orgId: text("orgId", { length: 256 }),
+    orgId: int("orgId")
+      .references(() => companies.id)
+      .notNull(),
     state: text("state", { length: 256 }),
     urgency: int("urgency"),
     suppUrgency: int("suppUrgency"),
@@ -28,10 +30,14 @@ export const tickets = createTable(
   }),
 );
 
-export const ticketsRelations = relations(tickets, ({ many }) => ({
+export const ticketsRelations = relations(tickets, ({ many, one }) => ({
   comments: many(comments),
   images: many(images),
   participants: many(participants),
+  companies: one(companies, {
+    fields: [tickets.orgId],
+    references: [companies.id],
+  }),
 }));
 
 export const comments = createTable(

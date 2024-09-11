@@ -1,14 +1,35 @@
-import { useAuth, useUser } from "@clerk/nextjs";
+"use client";
+import { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { api } from "~/trpc/react";
 import { Roles } from "~/types/globals";
 
-export const UseCheckRole = (role: Roles) => {
-  const { orgRole } = useAuth();
+export function useCheckRole(role: Roles) {
+  const { user } = useUser();
+  const [hasRole, setHasRole] = useState<boolean | null>(null);
 
-  const user = useUser().user?.publicMetadata;
-  console.log(orgRole, "test");
+  useEffect(() => {
+    if (user?.publicMetadata) {
+      setHasRole(user?.publicMetadata.role === role);
+    }
+    console.log("role de verad", hasRole);
+  }, [role, user, hasRole]);
 
-  if (orgRole === role) return true;
-  else {
-    return false;
-  }
-};
+  return { hasRole };
+  // const {
+  //   data: usuario,
+  //   isLoading,
+  //   error,
+  // } = api.clerk.getUserbyId.useQuery(
+  //   { id: user?.id ?? "" },
+  //   { enabled: !!user },
+  // );
+
+  // useEffect(() => {
+  //   if (!isLoading && usuario) {
+  //     const userRole = usuario.publicMetadata?.role;
+  //     console.log("TEST", userRole);
+
+  //   }
+  // }, [isLoading, usuario, role, user]);
+}

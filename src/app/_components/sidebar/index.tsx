@@ -11,13 +11,13 @@ import {
   } from "lucide-react";
 import Sidenav, { SidenavItem } from '../sidenav';
 import { useOrganization, useUser } from "@clerk/nextjs";
-import { UseCheckRole } from "~/lib/react/roles";
+import { useCheckRole } from "~/lib/react/roles";
 
 export default function Page() {
 
-    const isAdmin = UseCheckRole("admin");
+    const isAdmin =  useCheckRole("Admin").hasRole;
     
-    if(!isAdmin){
+    if(isAdmin){
         return (
             <Sidenav>
             <SidenavItem icon={<Mails />} href="/ticket">

@@ -25,10 +25,10 @@ export default async function AdminDashboard() {
 
   const session = getServerAuthSession();
 
-  const user = usersList.find((users) => users.id === session!.user.id);
-
+  
   const organization = organizations.find((x) => x.id === session?.orgId);
-
+  
+  const user = usersList.find((users) => users.id === session!.user.id);
   console.log("Prueba", session, user)
 
 console.log("plop", usersList.length)
@@ -47,25 +47,25 @@ const isAdmin = true
       <Title>Usuarios</Title>
       {isAdmin ? (
         <List>
-          {usersList.map((user) => (
+          {usersList.map((usuario) => (
             <ListTile
-              key={user.id}
-              href={`./users/${user.id}`}
+              key={usuario.id}
+              href={`./users/${usuario.id}`}
               title={
                 <>
-                  {user.firstName} {user.lastName}
+                  {usuario.firstName} {usuario.lastName}
                 </>
               }
               subtitle={
-                user.emailAddresses.find(
-                  (email) => email.id === user.primaryEmailAddressId
+                usuario.emailAddresses.find(
+                  (email) => email.id === usuario.primaryEmailAddressId
                 )?.emailAddress
               }
               leading={
                 <div>
                   <img
                     className="h-10 rounded-full"
-                    src={user.imageUrl}
+                    src={usuario.imageUrl}
                     alt="User Profile"
                   />
                 </div>
@@ -73,32 +73,8 @@ const isAdmin = true
             />
           ))}
         </List>
-      ) : user ? (
-        <List>
-          <ListTile
-            href={`./users/${user.id}`}
-            title={
-              <>
-                {user.firstName} {user.lastName}
-              </>
-            }
-            subtitle={
-              user.emailAddresses.find(
-                (email) => email.id === user.primaryEmailAddressId
-              )?.emailAddress
-            }
-            leading={
-              <div>
-                <img
-                  className="h-10 rounded-full"
-                  src={user.imageUrl}
-                  alt="User Profile"
-                />
-              </div>
-            }
-          />
-        </List>
-      ) : (
+      ) 
+       : (
         <h1>Acceso denegado</h1>
       )}
       </div>

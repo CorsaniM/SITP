@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
@@ -6,30 +6,32 @@ import { images, participants, tickets } from "~/server/db/schema";
 
 export const ticketsRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ 
-      orgId: z.string(),
-      state: z.string(),
-      urgency: z.number(),
-      suppUrgency: z.number(),
-      title: z.string(),
-      description: z.string(),
-    }))
+    .input(
+      z.object({
+        orgId: z.number(),
+        state: z.string(),
+        urgency: z.number(),
+        suppUrgency: z.number(),
+        title: z.string(),
+        description: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-    const [respuesta] = await ctx.db
+      const [respuesta] = await ctx.db
         .insert(schema.tickets)
         .values(input)
         .returning();
-        await ctx.db.insert(schema.events).values({
-          userName: respuesta?.orgId,
-          ticketId: respuesta?.id,
-          type: "recieved",
-          description: "Ticket recibido",
-        });
+      await ctx.db.insert(schema.events).values({
+        userName: "",
+        ticketId: respuesta?.id,
+        type: "recieved",
+        description: "Ticket recibido",
+      });
       if (!respuesta) {
         throw new Error("Error al crear el ticket");
       }
     }),
-      
+
   getById: publicProcedure
     .input(
       z.object({
@@ -56,7 +58,6 @@ export const ticketsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-
       try {
         const ticketWithRelations = await ctx.db.query.tickets.findMany({
           where: eq(tickets.orgId, input.orgId),
@@ -66,23 +67,30 @@ export const ticketsRouter = createTRPCRouter({
             participants: true,
           },
         });
-  
+
         return ticketWithRelations;
-      }
-     catch {
-      return null
+      } catch {
+        return null;
       }
     }),
 
-    getByUser: publicProcedure
+  getByUser: publicProcedure
     .input(
       z.object({
         userName: z.string(),
       }),
     )
-    .query(async ({ input, ctx }) => {      
-      const ticketWithRelations = await ctx.db.query.tickets.findMany({
+    .query(async ({ input, ctx }) => {
+      const participantes = await ctx.db.query.participants.findMany({
         where: eq(participants.userName, input.userName),
+      });
+
+      const ticketIds = participantes.map(
+        (participant) => participant.ticketId,
+      );
+
+      const ticketsWithRelations = await ctx.db.query.tickets.findMany({
+        where: inArray(tickets.id, ticketIds),
         with: {
           comments: true,
           images: true,
@@ -90,10 +98,10 @@ export const ticketsRouter = createTRPCRouter({
         },
       });
 
-      return ticketWithRelations;
+      return ticketsWithRelations;
     }),
 
-    update: publicProcedure
+  update: publicProcedure
     .input(
       z.object({
         id: z.number(),
@@ -104,11 +112,10 @@ export const ticketsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      await db.update(tickets).set(input)
-      .where(eq(tickets.id, input.id));
+      await db.update(tickets).set(input).where(eq(tickets.id, input.id));
     }),
 
-    delete: publicProcedure
+  delete: publicProcedure
     .input(
       z.object({
         id: z.number(),
@@ -117,5 +124,4 @@ export const ticketsRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       await db.delete(tickets).where(eq(tickets.id, input.id));
     }),
-
 });

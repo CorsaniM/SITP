@@ -7,14 +7,16 @@ import { UseCheckRole } from "~/lib/server/roles";
 
 export const clerkRouter = createTRPCRouter({
   getUserbyId: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      }),
-    )
-    .query(async () => {
-      const response = await clerkClient.users.getUserList();
-      return response;
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const response = (await clerkClient.users.getUserList()).data.find(
+          (x) => x.id === input.id,
+        );
+        return response;
+      } catch (e) {
+        throw new Error("Error fetching user by ID");
+      }
     }),
   list: protectedProcedure.query(async () => {
     try {
@@ -54,3 +56,14 @@ export const clerkRouter = createTRPCRouter({
       }
     }),
 });
+
+// getUserbyId: protectedProcedure
+//   .input(
+//     z.object({
+//       id: z.string(),
+//     }),
+//   )
+//   .query(async () => {
+//     const response = await clerkClient.users.getUserList();
+//     return response;
+//   }),
