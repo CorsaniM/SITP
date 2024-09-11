@@ -30,66 +30,60 @@ export function AddCompanyDialog() {
 
     const user = useUser().user;
   const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
   const [address, setAddress] = useState("")
   const [organizationName, setOrganizationName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [phone_number, setPhone_number] = useState("");
   const [razon_social, setRazon_social] = useState("");
-  const [state, setState] = useState("");
 
   const router = useRouter();
   
-  const handleCreate: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    setError(null);
-    let organization: { id: string } | null = null;
+  async function handleCreate() {
+    try {
+      
+      let organization;
+      if (createOrganization) {
+        organization = await createOrganization({ name: organizationName });
+      } else {
+        console.warn("createOrganization is undefined");
+      }
+      if (organization) {
+        await createCompany({
+          orgId: organization.id ?? "",
+          description: description,
+          name: organizationName,
+          state: "activa",
+          address: address,
+          phone_number: phone_number,
 
-  
-    if (createOrganization) {
-      createOrganization({ name: organizationName })
-        .then((org) => {
-          organization = org;
-          return createCompany({
-            orgId: organization.id,
-            description,
-            name,
-            address: address,
-            phone_number: phone_number,
-            razon_social: razon_social,
-            state: state,
-            updatedAt: new Date(),
-          });
-        })
-        .then(() => {
-          return createEvent({
-            orgId: organization?.id ?? "",
-            type: "Creado por el administrador",
-            description: "Se ha creado una nueva entidad",
-            userName: user?.fullName ?? "admin",
-          });
-        })
-        .then(() => {
-          setName("");
-          setDescription("");
-          toast.success("Entidad creada correctamente");
-          router.refresh();
-          setOpen(false);
-        })
-        .catch((error) => {
-          setError("Ocurrió un error al crear la entidad");
-          const errorResult = asTRPCError(error);
-          if (errorResult) {
-            toast.error(errorResult.message);
-          } else {
-            console.error("Error conversion failed");
-          }
+          razon_social: razon_social,
+          updatedAt: new Date(),
         });
-    } else {
-      console.warn("createOrganization is undefined");
+       
+        await createEvent({
+          orgId: organization.id,
+          type: "Creado por el administrador",
+          description: "Se ha creado una nueva entidad",
+          userName: user?.fullName ?? "admin",
+        });
+      }
+      setDescription("");
+      
+      toast.success("Entidad creado correctamente");
+      router.refresh();
+      setOpen(false);
+    } catch (e) {
+      setError("ocurrio un error al crear entidad");
+      const errorResult = asTRPCError(e);
+      if (errorResult) {
+        toast.error(errorResult.message);
+      } else {
+        console.error("Error conversion failed");
+      }
     }
   };
+
   return (
     <>
       <Button onClick={() => setOpen(true)}>
@@ -104,15 +98,14 @@ export function AddCompanyDialog() {
                     
                 </DialogDescription> */}
           </DialogHeader>
-          <form onSubmit={void handleCreate}>
+          <form onSubmit={async (e) => { e.preventDefault();await handleCreate(); }}>
             <div>
               <Label htmlFor="name">Nombre de la entidad</Label>
               <Input
                 id="name"
                 placeholder="ej: bitcompay"
-                value={name}
+                value={organizationName}
                 onChange={(e) => {
-                  setName(e.target.value);
                   setOrganizationName(e.target.value);
                 }}
               />
@@ -126,7 +119,28 @@ export function AddCompanyDialog() {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-           
+            <div>
+              <Label htmlFor="phone_number">Telefono</Label>
+              <Input
+                id="phone_number"
+                placeholder="ej: 1140463445"
+                value={phone_number}
+                onChange={(e) => {
+                  setPhone_number(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <Label htmlFor="razon_social">Razon Social</Label>
+              <Input
+                id="razon_social"
+                placeholder="ej: Bitcompay"
+                value={razon_social}
+                onChange={(e) => {
+                  setRazon_social(e.target.value);
+                }}
+              />
+            </div>
             <br />
             <DialogFooter>
               <Button disabled={isLoadingEvent || isPending} type="submit">

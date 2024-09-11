@@ -62,7 +62,6 @@ export function AsignarUsuario(props: { orgId: number }) {
           });
         }
         setOpen(false);
-        // Optionally, refresh or reload data
       } catch (error) {
         console.error("Error creating participants:", error);
       }
@@ -84,7 +83,7 @@ export function AsignarUsuario(props: { orgId: number }) {
           </DialogHeader>
             <DialogTitle>Usuarios Disponibles</DialogTitle>
                 <ul>
-                  {response && response?.data.map((user: User) => (
+                  {response && response?.data.map(user => (
                     <li key={user.id} className="flex justify-between items-center py-2">
                       {user.fullName} - {user.firstName}
                       <Button onClick={() => handleAddUser(user)}>Agregar</Button>

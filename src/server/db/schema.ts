@@ -71,6 +71,25 @@ export const companies = createTable("companies", {
   ),
 });
 
+export const userCompanies = createTable("userCompanies", {
+  id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  userName: text("userName").notNull(),
+  userId: text("userId").notNull(),
+  orgId: int("orgId"),
+  createdAt: int("created_at", { mode: "timestamp" })
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
+    () => new Date(),
+  ),
+});
+export const userCompaniesRelations = relations(userCompanies, ({ one }) => ({
+  companies: one(companies, {
+    fields: [userCompanies.orgId],
+    references: [companies.id],
+  }),
+}));
+
 export const commentsRelations = relations(comments, ({ one }) => ({
   ticket: one(tickets, {
     fields: [comments.ticketId],
