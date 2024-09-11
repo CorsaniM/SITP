@@ -18,7 +18,7 @@ export type UsersType = Awaited<
 export default async function AdminDashboard() {
   
 
-  const usersList = (await clerkClient.users.getUserList({})).data;
+  const {data: usersList} = (await clerkClient.users.getUserList({}));
   const organizations = (
     await clerkClient.organizations.getOrganizationList({})
   ).data;

@@ -2,6 +2,7 @@ export {};
 export type Roles =
   | "org:admin"
   | "admin"
+  | "Admin"
   | "org:member"
   | "member"
   | "unathourized"

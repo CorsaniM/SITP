@@ -9,8 +9,6 @@ import { toast } from "sonner";
 
 
 
-// import { asTRPCError } from "~/lib/errors";
-// import { UserList } from "~/lib/types/clerk";
 import { api, RouterOutputs } from "~/trpc/react";
 import LayoutContainer from "~/app/_components/layout-container";
 import { Title } from "~/app/_components/ui/title";
@@ -31,12 +29,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger } from  "~/app/_components/ui/alert-dialog";
+import { AsignarUsuario } from "./asignarUsuarios";
 
-
-interface Brand {
-  name: string;
-  id: string;
-}
 
 type User = {
   id: string;
@@ -46,13 +40,13 @@ type User = {
 
 export default function CompanyPage({
   company,
-
   userList,
 }: {
   company: NonNullable<RouterOutputs["companies"]["get"]>;
   userList: User[];
 }) {
 
+  console.log("COMPANY", userList);
   const [phone, setPhone] = useState(company.phone_number ?? "");
   const [state, setState] = useState(company.state ?? "");
   const [name, setname] = useState(
@@ -99,6 +93,7 @@ export default function CompanyPage({
             )}
             Aplicar
           </Button>
+            <AsignarUsuario orgId={company?.id ?? ""}/>
         </div>
 
         <Accordion type="single" collapsible className="w-full">
@@ -142,22 +137,27 @@ export default function CompanyPage({
                       onChange={(e) => setAddress(e.target.value)}
                     />
                   </div>
+                  <div>
+                    <Label htmlFor="phone">Celular</Label>
+                    <Input
+                      id="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="state">Estado</Label>
+                    <Input
+                      id="state"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                    />
+                  </div>
                 </div>
               </Card>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>
-              <Label htmlFor="Info de facturacion">Info. de facturacion</Label>
-            </AccordionTrigger>
-            <AccordionContent>
-              <Card className="p-5">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  
-                </div>
-              </Card>
-            </AccordionContent>
-          </AccordionItem>
+         
           <AccordionItem value="item-5">
             <AccordionTrigger>
               <h2 className="text-md">Usuarios</h2>

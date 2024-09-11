@@ -4,18 +4,23 @@ import { db, schema } from "~/server/db";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import { UseCheckRole } from "~/lib/server/roles";
+import { userCompanies } from "~/server/db/schema";
 
-export const clerkRouter = createTRPCRouter({
-  getUserbyId: protectedProcedure
+export const userCompaniesRouter = createTRPCRouter({
+    create: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        userName: z.string(),
+        orgId: z.number(),
+        updatedAt: z.date(),
+        userId: z.string(),
       }),
     )
-    .query(async () => {
-      const response = await clerkClient.users.getUserList();
-      return response;
+    .mutation(async ({ ctx, input }) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await ctx.db.insert(userCompanies).values(input);
     }),
+
   list: protectedProcedure.query(async () => {
     try {
       const response = await clerkClient.users.getUserList();
@@ -24,20 +29,21 @@ export const clerkRouter = createTRPCRouter({
       throw new Error("Error listing users");
     }
   }),
+
   editUser: protectedProcedure
     .input(
       z.object({
-        userId: z.string().min(0).max(1023),
-        role: z.string().min(0).max(1023),
-        firstName: z.string().min(0).max(1023).optional().nullable(),
-        lastName: z.string().min(0).max(1023).optional().nullable(),
-        username: z.string().min(0).max(1023).optional().nullable(),
-      }),
+        userId: z.string().nonempty(),
+        role: z.string().nonempty(),
+        firstName: z.string().optional().nullable(),
+        lastName: z.string().optional().nullable(),
+        username: z.string().optional().nullable(),
+      })
     )
     .mutation(async ({ input }) => {
-      // if (!UseCheckRole("Admin")) {
-      //   return { message: "Not Authorized" };
-      // }
+      if (!UseCheckRole("Admin" || "admin")) {
+        throw new Error("Not Authorized");
+      }
       try {
         const res = await clerkClient.users.updateUser(input.userId, {
           publicMetadata: { role: input.role },
@@ -46,11 +52,9 @@ export const clerkRouter = createTRPCRouter({
           username: input.username ?? undefined,
         });
 
-        console.log("usuario: ", res.firstName, res.publicMetadata.role);
-
         return { res };
       } catch (e) {
-        return { message: "Error updating user" };
+        throw new Error("Error updating user");
       }
     }),
 });
