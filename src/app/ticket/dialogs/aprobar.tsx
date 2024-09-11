@@ -26,15 +26,15 @@ const ticket = props.ticket
   async function HandleUpdate() {
     await cambiar({
         id: ticket.id,
-        state: "aprobado",
+        state: "Finalizado",
         updatedAt: new Date,
     });
-    setOpen(false); // Cerrar el diálogo tras la creación
+    setOpen(false);
   }
 
   return (
     <>
-      {/* Botón que abre el diálogo */}
+    
       <Button
         className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-[#1d661a] border hover:bg-[#288f24] hover:text-black"
         onClick={() => setOpen(true)}
@@ -42,13 +42,13 @@ const ticket = props.ticket
         Aprobar
       </Button>
 
-      {/* Dialogo */}
+     
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
-          {/* Este contenedor envuelve el contenido y proporciona el fondo con el blur */}
+         
           <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
 
-          {/* Contenido del diálogo */}
+        
           <Dialog.Content className="fixed z-50 inset-0 m-auto flex max-w-lg items-center justify-center">
             <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
               <DialogHeader>

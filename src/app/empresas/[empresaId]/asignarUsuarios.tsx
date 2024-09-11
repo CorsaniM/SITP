@@ -1,7 +1,10 @@
 "use client"
 import { useUser } from "@clerk/nextjs";
+import { or } from "drizzle-orm";
 import { Loader2Icon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect, use } from "react";
+import { toast } from "sonner";
 import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter, DialogTitle, DialogContent, Dialog, DialogTrigger, DialogClose , DialogDescription } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
@@ -13,60 +16,83 @@ interface User {
   fullName: string | null;
 }
 export function AsignarUsuario(props: { orgId: number }) {
-    const [open, setOpen] = useState(false);
-    const [availableUsers, setAvailableUsers] = useState<User[]>([]);
-    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-    const { mutateAsync: createUserCompanies, isPending: isLoading } = api.userCompanies.create.useMutation();
-  
+  const [open, setOpen] = useState(false);
+  const [availableUsers, setAvailableUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [usuariosAEliminar, setUsuariosAEliminar] = useState<User[]>([]); 
 
-    const { data: response } = api.clerk.list.useQuery(); 
+  const { mutateAsync: createUserCompanies, isPending: isLoading } = api.userCompanies.create.useMutation();
+  const { mutateAsync: deleteUserCompanies } = api.userCompanies.deleteByUserAndOrg.useMutation();
+  const { data: userCompanies } = api.userCompanies.getByOrg.useQuery({ orgId: props.orgId ?? 0 });
+  const { data: response } = api.clerk.list.useQuery(); 
 
-    // setAvailableUsers(response?.data ?? []);
-    // Fetch available users (or any other source of users)
-    // useEffect(() => {
-    //   const fetchUsers = async () => {
-    //     try {
-    //       console.log("Testamento", response);
-  
-    //       if (response) {
-    //         setAvailableUsers(response?.data);
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching users:", error);
-    //     }
-    //   }; 
-  
-    //   fetchUsers();
-    // }, []);
-  
-    const handleAddUser = (user: User) => {
-      setAvailableUsers(availableUsers.filter(u => u.id !== user.id));
-      setSelectedUsers([...selectedUsers, user]);
-    };
-  
-    const handleRemoveUser = (user: User) => {
-      setSelectedUsers(selectedUsers.filter(u => u.id !== user.id));
-      setAvailableUsers([...availableUsers, user]);
-    };
-  
-    const handleCreate = async () => {
+  const router = useRouter();
 
-        console.log("Testamento", selectedUsers);
+  useEffect(() => {
+    if (userCompanies && response) {
+      const usersInOrg = response.data.filter(user =>
+        userCompanies.some(p => p.userName === user.id)
+      );
+      setSelectedUsers(usersInOrg);
+      setAvailableUsers(response.data.filter(user =>
+        !userCompanies.some(p => p.userName === user.id)
+      ));
+    }
+  }, [userCompanies, response]);
+
+  const handleAddUser = (user: User) => {
+    setAvailableUsers(prev => prev.filter(u => u.id !== user.id));
+    setSelectedUsers(prev => [...prev, user]);
+  };
+
+  const handleRemoveUser = async (user: User) => {
+    setSelectedUsers(prev => prev.filter(u => u.id !== user.id));
+    setAvailableUsers(prev => [...prev, user]);
+    setUsuariosAEliminar(prev => [...prev, user]);
+
+    if (userCompanies?.some((x) => x.userName === user.id && x.orgId === props.orgId)) {
       try {
-        for (const user of selectedUsers) {
-          await createUserCompanies({
-              userName: user.firstName ?? "",
-              orgId: props.orgId,
-              updatedAt: new Date,
-              userId: user.id ?? "",
-          });
-        }
-        setOpen(false);
+        await deleteUserCompanies({
+          user: user.id ?? "",
+          orgId: props.orgId ?? 0,
+        });
+        toast.message(`Usuario ${user.fullName} eliminado`);
       } catch (error) {
-        console.error("Error creating participants:", error);
+        toast.error(`Error al eliminar el usuario ${user.fullName}`);
       }
-    };
-  
+    }
+  };
+
+  const handleCreate = async () => {
+    if (selectedUsers.length === 0 && usuariosAEliminar.length === 0) {
+      return toast.error("Seleccione al menos un usuario");
+    }
+
+    for (const selectedUser of selectedUsers) {
+      const existingParticipant = userCompanies?.find(
+        (x) => x.userName === selectedUser.id && x.orgId === props.orgId
+      );
+      if (!existingParticipant) {
+        try {
+          await createUserCompanies({
+            userName: selectedUser.firstName ?? "",
+            orgId: props.orgId ?? 0,
+            updatedAt: new Date(),
+            userId: selectedUser.id ?? ""
+          });
+        } catch (error) {
+          toast.error(`Error al asignar el usuario ${selectedUser.fullName}`);
+        }
+      }
+    }
+
+    router.refresh();
+    setOpen(false);
+    setUsuariosAEliminar([]);
+  };
+
+
+
     return (
       <>
         <Button
@@ -77,10 +103,12 @@ export function AsignarUsuario(props: { orgId: number }) {
         </Button>
   
         <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[800px] bg-gray-700">
           <DialogHeader>
             <DialogTitle>Asignar usuarios a Esta</DialogTitle>
           </DialogHeader>
+          <div className="flex flex-row">
+          <div className="flex flex-col flex-auto w-1/2 p-4">
             <DialogTitle>Usuarios Disponibles</DialogTitle>
                 <ul>
                   {response && response?.data.map(user => (
@@ -90,7 +118,8 @@ export function AsignarUsuario(props: { orgId: number }) {
                     </li>
                   ))}
                 </ul>
-              <div className="w-1/2">
+                </div>
+                <div className="flex flex-col flex-auto w-1/2 p-4">
                 <DialogHeader>
                   <DialogTitle>Usuarios Seleccionados</DialogTitle>
                 </DialogHeader>
@@ -103,6 +132,8 @@ export function AsignarUsuario(props: { orgId: number }) {
                   ))}
                 </ul>
               </div>
+          </div>
+
               <DialogFooter>
             <Button disabled={isLoading} onClick={handleCreate}>
               {isLoading && (

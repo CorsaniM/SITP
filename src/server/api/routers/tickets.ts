@@ -1,6 +1,10 @@
 import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
 import { images, participants, tickets } from "~/server/db/schema";
 
@@ -50,6 +54,11 @@ export const ticketsRouter = createTRPCRouter({
 
       return ticketWithRelations;
     }),
+  list: protectedProcedure.query(async ({}) => {
+    const tickets = await db.query.tickets.findMany();
+
+    return tickets;
+  }),
 
   getByOrg: publicProcedure
     .input(
@@ -89,6 +98,11 @@ export const ticketsRouter = createTRPCRouter({
         (participant) => participant.ticketId,
       );
 
+      if (ticketIds.length === 0) {
+        return [];
+      }
+
+      // Obtén los tickets con relaciones
       const ticketsWithRelations = await ctx.db.query.tickets.findMany({
         where: inArray(tickets.id, ticketIds),
         with: {
@@ -100,7 +114,6 @@ export const ticketsRouter = createTRPCRouter({
 
       return ticketsWithRelations;
     }),
-
   update: publicProcedure
     .input(
       z.object({

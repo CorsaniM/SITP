@@ -29,9 +29,7 @@ export default async function AdminDashboard() {
   const organization = organizations.find((x) => x.id === session?.orgId);
   
   const user = usersList.find((users) => users.id === session!.user.id);
-  console.log("Prueba", session, user)
 
-console.log("plop", usersList.length)
 
 
 const isAdmin = true

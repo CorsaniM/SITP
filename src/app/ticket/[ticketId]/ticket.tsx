@@ -48,7 +48,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             </div>
             <div className='flex flex-auto w-1/2 px-2 justify-end bg-gray-800'>
             Estado: {ticket?.state} <br />
-            Urgencia: {ticket?.urgency}
+            Urgencia: {ticket.suppUrgency === 0 ? ticket?.urgency : ticket?.suppUrgency}
             </div>
           </div>
 

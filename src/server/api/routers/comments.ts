@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
-import { comments, images } from "~/server/db/schema";
+import { comments, images, tickets } from "~/server/db/schema";
 
 export const commentsRouter = createTRPCRouter({
   create: publicProcedure
@@ -25,21 +25,29 @@ export const commentsRouter = createTRPCRouter({
         .values(input)
         .returning();
 
-        if (respuesta?.userName) {
-          await ctx.db.insert(schema.events).values({
-            userName: respuesta?.userName,
-            ticketId: respuesta?.id,
-            type: "sent",
-            description: "Comentario enviado" 
-          });
-          } else {
-            await ctx.db.insert(schema.events).values({
-              ticketId: respuesta?.id,
-              type: "recieved",
-              description: "Comentario recibido" 
-            });
-          }
-          
+      if (respuesta?.userName) {
+        await ctx.db.insert(schema.events).values({
+          userName: respuesta?.userName,
+          ticketId: respuesta?.id,
+          type: "sent",
+          description: "Comentario enviado",
+        });
+        await ctx.db
+          .update(schema.tickets)
+          .set({ state: "En espera" })
+          .where(eq(schema.tickets.id, input.ticketId));
+      } else {
+        await ctx.db.insert(schema.events).values({
+          ticketId: respuesta?.id,
+          type: "recieved",
+          description: "Comentario recibido",
+        });
+        await ctx.db
+          .update(schema.tickets)
+          .set({ state: "En curso" })
+          .where(eq(schema.tickets.id, input.ticketId));
+      }
+
       if (!respuesta) {
         throw new Error("Error al crear el comentario");
       }

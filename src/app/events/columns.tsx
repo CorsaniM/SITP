@@ -18,7 +18,7 @@ import {
 // You can use a Zod schema here if you want.
 export type TablaEvents = {
   id: number
-  orgId: number|null
+  orgId: string|null
   state: string|null
   urgency: number|null
   suppUrgency: number|null
@@ -74,50 +74,20 @@ export const columns: ColumnDef<TablaEvents>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Urgencia
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
-     cell: ({ row }) => row.getValue("suppUrgency") === 0 ? row.getValue("urgency") : row.getValue("suppUrgency"),
-     }
-    //   const urgency = row.getValue("urgency");
-    //   const suppUrgency = ;
-      
-    //   return suppUrgency !== 0 ? suppUrgency : urgency;
-    // },
+    
+    cell: ({ row }) => {
+      const { suppUrgency, urgency } = row.original;
+      return suppUrgency && suppUrgency !== 0 ? suppUrgency : urgency;
+    },
+  },
   
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const event = row.original
- 
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(JSON.stringify(event.id))}
-  //           >
-  //             Copy event ID
-  //           </DropdownMenuItem>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem>View customer</DropdownMenuItem>
-  //           <DropdownMenuItem>View event details</DropdownMenuItem>
-            
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     )
-  //   },
-  // },
 ]
 

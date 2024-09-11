@@ -1,17 +1,24 @@
 "use client";
 import React from 'react';
 import { NumeroGrande, Subtitle } from '../ui/title';
-import { api } from '~/trpc/react';
+import { api, RouterOutputs } from '~/trpc/react';
 import { useUser } from '@clerk/nextjs';
 
-export default function Dashboard() {
+export default function Dashboard({
+  tickets,
+}: {
+  tickets: NonNullable<RouterOutputs["tickets"]["list"]>;
+}) {
   const { user } = useUser();
-  const { data: tickets } = api.tickets.getByUser.useQuery({ userName: user?.fullName ?? '' });
-
+  // const { data: tickets } = api.tickets.getByUser.useQuery({ userName: user?.fullName ?? '' });
+console.log(tickets)
   // Manejo de tickets
   const ticketpend = tickets?.filter((pend) => pend.state === "Pendiente");
-  const ticketasig = tickets?.filter((asig) => asig.state === "Asignado");
+  const ticketEspera = tickets?.filter((pend) => pend.state === "En espera");
+  const ticketRechazado = tickets?.filter((pend) => pend.state === "Rechazado");
+  const ticketasig = tickets?.filter((asig) => asig.state === "En curso");
   const ticketfin = tickets?.filter((fin) => fin.state === "Finalizado");
+
 
   return (
     <div className='flex flex-auto p-2 border-solid border-2 border-gray-400 bg-gray-800 hover:bg-gray-700'>
@@ -21,12 +28,20 @@ export default function Dashboard() {
         <Subtitle>Pendientes</Subtitle>
       </div>
       <div className='basis-1/3 place-content-center'>
-        <NumeroGrande>{ticketasig?.length ?? 0}</NumeroGrande>
+        <NumeroGrande>{ticketEspera?.length ?? 0}</NumeroGrande>
         <Subtitle>En espera</Subtitle>
+      </div>
+      <div className='basis-1/3 place-content-center'>
+        <NumeroGrande>{ticketasig?.length ?? 0}</NumeroGrande>
+        <Subtitle>En curso</Subtitle>
       </div>
       <div className='basis-1/3 place-content-center'>
         <NumeroGrande>{ticketfin?.length ?? 0}</NumeroGrande>
         <Subtitle>Finalizados</Subtitle>
+      </div>
+      <div className='basis-1/3 place-content-center'>
+        <NumeroGrande>{ticketRechazado?.length ?? 0}</NumeroGrande>
+        <Subtitle>Rechazado</Subtitle>
       </div>
     </div>
   );

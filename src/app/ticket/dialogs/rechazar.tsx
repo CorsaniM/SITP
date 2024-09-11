@@ -26,15 +26,14 @@ const ticket = props.ticket
   async function HandleUpdate() {
     await cambiar({
         id: ticket.id,
-        state: "rechazado",
+        state: "Rechazado",
         updatedAt: new Date,
     });
-    setOpen(false); // Cerrar el diálogo tras la creación
+    setOpen(false); 
   }
 
   return (
     <>
-      {/* Botón que abre el diálogo */}
       <Button
         className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-[#581e1e] border hover:bg-[#8d3030] hover:text-black"
         onClick={() => setOpen(true)}

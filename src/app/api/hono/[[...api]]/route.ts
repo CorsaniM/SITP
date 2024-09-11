@@ -29,7 +29,7 @@ app.get("/ticket/get/:orgid/:urgency/:title/:description", async (c) => {
   try {
     const newTicket = await api.tickets.create({
       orgId: parseInt(orgId),
-      state: "pendiente",
+      state: "Pendiente",
       urgency,
       suppUrgency: 0,
       title,

@@ -48,8 +48,6 @@ export const clerkRouter = createTRPCRouter({
           username: input.username ?? undefined,
         });
 
-        console.log("usuario: ", res.firstName, res.publicMetadata.role);
-
         return { res };
       } catch (e) {
         return { message: "Error updating user" };

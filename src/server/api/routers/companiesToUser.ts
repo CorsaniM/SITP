@@ -1,13 +1,13 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db, schema } from "~/server/db";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import { UseCheckRole } from "~/lib/server/roles";
 import { userCompanies } from "~/server/db/schema";
 
 export const userCompaniesRouter = createTRPCRouter({
-    create: protectedProcedure
+  create: protectedProcedure
     .input(
       z.object({
         userName: z.string(),
@@ -29,7 +29,18 @@ export const userCompaniesRouter = createTRPCRouter({
       throw new Error("Error listing users");
     }
   }),
-
+  getByOrg: publicProcedure
+    .input(
+      z.object({
+        orgId: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const channel = await ctx.db.query.userCompanies.findMany({
+        where: eq(userCompanies.orgId, input.orgId),
+      });
+      return channel;
+    }),
   editUser: protectedProcedure
     .input(
       z.object({
@@ -38,7 +49,7 @@ export const userCompaniesRouter = createTRPCRouter({
         firstName: z.string().optional().nullable(),
         lastName: z.string().optional().nullable(),
         username: z.string().optional().nullable(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       if (!UseCheckRole("Admin" || "admin")) {
@@ -56,5 +67,22 @@ export const userCompaniesRouter = createTRPCRouter({
       } catch (e) {
         throw new Error("Error updating user");
       }
+    }),
+  deleteByUserAndOrg: publicProcedure
+    .input(
+      z.object({
+        user: z.string(),
+        orgId: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db
+        .delete(userCompanies)
+        .where(
+          and(
+            eq(userCompanies.orgId, input.orgId),
+            eq(userCompanies.userName, input.user),
+          ),
+        );
     }),
 });

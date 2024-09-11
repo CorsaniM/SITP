@@ -35,7 +35,7 @@ export default async function Page(props: { params: { empresaId: string } }) {
     userList = userResults.map(user => ({
       id: user.id,
       name: user.name,
-      email: "", // Aquí deberías obtener el email si está disponible en otra parte
+      email: "",
     }));
 
     console.log("User list:", userList); // Verifica la lista de usuarios obtenida

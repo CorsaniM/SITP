@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { db } from "~/server/db";
+import { db, schema } from "~/server/db";
 import { participants } from "~/server/db/schema";
 
 export const participantsRouter = createTRPCRouter({
@@ -16,6 +16,11 @@ export const participantsRouter = createTRPCRouter({
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       await ctx.db.insert(participants).values(input);
+
+      const ticket = await ctx.db
+        .update(schema.tickets)
+        .set({ state: "En curso" })
+        .where(eq(schema.tickets.id, input.ticketId));
     }),
 
   getByTicket: publicProcedure

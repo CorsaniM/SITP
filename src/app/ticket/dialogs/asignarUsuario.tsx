@@ -28,7 +28,6 @@ export function AsignarUsuario(props: { ticketId: number }) {
 
 
   const router = useRouter()
-  // useEffect para cargar automáticamente los selectedUsers cuando se montan los participantes
   useEffect(() => {
     if (participantes) {
       const usersInTicket = response?.data?.filter(user => 

@@ -12,7 +12,6 @@ export function useCheckRole(role: Roles) {
     if (user?.publicMetadata) {
       setHasRole(user?.publicMetadata.role === role);
     }
-    console.log("role de verad", hasRole);
   }, [role, user, hasRole]);
 
   return { hasRole };

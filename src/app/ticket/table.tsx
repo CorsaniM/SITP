@@ -114,32 +114,42 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                className=" cursor-pointer hover:bg-gray-500 hover:text-gray-900 active:bg-gray-700 "
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                onClick={() => handleRowClick(row)}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell className="text-center" key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center justify-center">
-                No results.
+  {table.getRowModel().rows?.length ? (
+    table.getRowModel().rows.map((row) => (
+      <TableRow
+        className="cursor-pointer hover:bg-gray-500 hover:text-gray-900 active:bg-gray-700"
+        key={row.id}
+        data-state={row.getIsSelected() && "selected"}
+        onClick={() => handleRowClick(row)}
+      >
+        {row.getVisibleCells().map((cell) => {
+          // Si es la columna de urgency, aplicamos la lógica personalizada
+          if (cell.column.id === "urgency") {
+            const { suppUrgency, urgency } = row.original as { suppUrgency: number | null, urgency: number | null };
+            return (
+              <TableCell className="text-center" key={cell.id}>
+                {suppUrgency && suppUrgency !== 0 ? suppUrgency : urgency}
               </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
+            );
+          }
+
+          // Renderiza el resto de las celdas de manera estándar
+          return (
+            <TableCell className="text-center" key={cell.id}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={columns.length} className="h-24 text-center justify-center">
+        No results.
+      </TableCell>
+    </TableRow>
+  )}
+</TableBody>
       </Table>
     </div>
     <div className="flex py-4 ">
