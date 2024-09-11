@@ -98,7 +98,7 @@ export function AddCompanyDialog() {
                     
                 </DialogDescription> */}
           </DialogHeader>
-          <form onSubmit={(e) => { e.preventDefault(); handleCreate(); }}>
+          <form onSubmit={async (e) => { e.preventDefault();await handleCreate(); }}>
             <div>
               <Label htmlFor="name">Nombre de la entidad</Label>
               <Input

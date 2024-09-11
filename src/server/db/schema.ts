@@ -166,6 +166,3 @@ export const participantsRelations = relations(participants, ({ one }) => ({
     references: [tickets.id],
   }),
 }));
-export function companyId(companyId: any) {
-  throw new Error("Function not implemented.");
-}

@@ -6,12 +6,17 @@ import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter, DialogTitle, DialogContent, Dialog, DialogTrigger, DialogClose , DialogDescription } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
 
+
+interface User {
+  id: string | null;
+  firstName: string | null;
+  fullName: string | null;
+}
 export function AsignarUsuario(props: { orgId: number }) {
     const [open, setOpen] = useState(false);
-    const [availableUsers, setAvailableUsers] = useState<any[]>([]);
-    const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+    const [availableUsers, setAvailableUsers] = useState<User[]>([]);
+    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
     const { mutateAsync: createUserCompanies, isPending: isLoading } = api.userCompanies.create.useMutation();
-    const { user } = useUser();
   
 
     const { data: response } = api.clerk.list.useQuery(); 
@@ -34,12 +39,12 @@ export function AsignarUsuario(props: { orgId: number }) {
     //   fetchUsers();
     // }, []);
   
-    const handleAddUser = (user: any) => {
+    const handleAddUser = (user: User) => {
       setAvailableUsers(availableUsers.filter(u => u.id !== user.id));
       setSelectedUsers([...selectedUsers, user]);
     };
   
-    const handleRemoveUser = (user: any) => {
+    const handleRemoveUser = (user: User) => {
       setSelectedUsers(selectedUsers.filter(u => u.id !== user.id));
       setAvailableUsers([...availableUsers, user]);
     };
@@ -53,7 +58,7 @@ export function AsignarUsuario(props: { orgId: number }) {
               userName: user.firstName ?? "",
               orgId: props.orgId,
               updatedAt: new Date,
-              userId: user.id,
+              userId: user.id ?? "",
           });
         }
         setOpen(false);
@@ -79,7 +84,7 @@ export function AsignarUsuario(props: { orgId: number }) {
           </DialogHeader>
             <DialogTitle>Usuarios Disponibles</DialogTitle>
                 <ul>
-                  {response?.data.map(user => (
+                  {response && response?.data.map(user => (
                     <li key={user.id} className="flex justify-between items-center py-2">
                       {user.fullName} - {user.firstName}
                       <Button onClick={() => handleAddUser(user)}>Agregar</Button>

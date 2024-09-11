@@ -42,9 +42,12 @@ import { useUser } from "@clerk/nextjs";
 
 export default function UserPage(props: { params: { userId: string } }) {
   const router = useRouter();
-  const { data: users } = api.clerk.getUserbyId.useQuery({
-    id: props.params.userId,
-  });
+
+
+  const userId = props.params.userId ?? "";
+  const users = api.clerk.getUserbyId.useQuery({
+    id: userId,
+  }).data?.data[0];
   const { mutateAsync: editUser } = api.clerk.editUser.useMutation();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
