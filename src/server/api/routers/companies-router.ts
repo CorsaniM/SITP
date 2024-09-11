@@ -12,6 +12,7 @@ export const companiesRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
+        orgId: z.string(),
         name: z.string(),
         razon_social: z.string(),
         description: z.string(),

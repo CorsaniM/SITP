@@ -17,7 +17,7 @@ export function CrearComentario(props: { ticketId: number }) {
   const { user } = useUser();
 
   const [description, setDescription] = useState("")
-  const [title, setTitle] = useState(ticket?.title || "")
+  const [title, setTitle] = useState(ticket?.title ?? "")
   
   const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   async function handleCreate() {

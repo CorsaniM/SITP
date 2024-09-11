@@ -10,6 +10,7 @@ export const eventsRouter = createTRPCRouter({
       z.object({
         userName: z.string().optional(),
         ticketId: z.number().optional(),
+        orgId: z.string().optional(),
         type: z.string(),
         description: z.string(),
         commentsId: z.number().optional(),

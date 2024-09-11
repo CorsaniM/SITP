@@ -17,7 +17,7 @@ const id = parseInt(props.params.companySubId)
     id: id,
   });
 
-  let userList: User[] = [];
+  const userList: User[] = [];
 
   try {
     const response =
@@ -38,9 +38,9 @@ const id = parseInt(props.params.companySubId)
         }`;
 
         userList.push({
-          id: user.publicUserData?.userId!,
-          name: fullName != " " ? fullName : "No name",
-          email: user.publicUserData?.identifier!,
+          id: user.publicUserData?.userId ?? "",
+          name:fullName ?? "No name",
+          email: user.publicUserData?.identifier ?? "",
         });
       }
     } else {

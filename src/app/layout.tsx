@@ -25,7 +25,7 @@ export default function RootLayout({
   
   return (
     <ClerkProvider signInFallbackRedirectUrl={"/"}>
-      <SyncActiveOrganization membership={sessionClaims!.membership!}/>
+      <SyncActiveOrganization membership={sessionClaims?.membership}/>
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className=" bg-gray-600  text-gray-200">
         <div className="fixed h-16 left-0 w-full bg-gray-800 text-white shadow-md z-20 ">

@@ -85,14 +85,6 @@ export default function CompanyPage({
     }
   }
 
-  // function changeCompanyChannel(channelId: string, enabled: boolean) {
-  //   if (enabled) {
-  //     companyProducts.add(channelId);
-  //   } else {
-  //     companyProducts.delete(channelId);
-  //   }
-  //   setCompanyProducts(new Set(companyProducts));
-  // }
 
   return (
     <LayoutContainer>
@@ -216,7 +208,7 @@ function DeleteChannel(props: { companySubId: number }) {
         router.refresh();
       })
       .catch((e) => {
-        toast.error(e.message);
+        toast.error("No se pudo eliminar la entidad");
       });
   };
   return (

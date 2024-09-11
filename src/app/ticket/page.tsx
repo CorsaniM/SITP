@@ -27,7 +27,7 @@ export default function Page() {
       title: "test",
       description: "test",
     });
-    await router.refresh()
+    router.refresh()
 
   }
 
