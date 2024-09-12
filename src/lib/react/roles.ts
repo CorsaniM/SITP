@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
-import { api } from "~/trpc/react";
 import { Roles } from "~/types/globals";
 
 export function useCheckRole(role: Roles) {

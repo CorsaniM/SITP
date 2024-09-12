@@ -1,8 +1,8 @@
 import React from 'react'
-import { List, ListTile } from '~/app/_components/ui/list'
+import { ListTile } from '~/app/_components/ui/list'
 import { cn } from '~/lib/utils'
 import { clerkClient } from "@clerk/nextjs/server";
-import { getServerAuthSession } from "~/server/auth";
+// import { getServerAuthSession } from "~/server/auth";
 import { useUser } from '@clerk/nextjs';
 
 export type MessagesProps = {

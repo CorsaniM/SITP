@@ -2,9 +2,8 @@
 
 import { PlusCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, FormEventHandler } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "../_components/ui/button";
 import {
   Dialog,
@@ -30,7 +29,7 @@ export function AddCompanyDialog() {
 
     const user = useUser().user;
   const [description, setDescription] = useState("");
-  const [address, setAddress] = useState("")
+  const address = ""
   const [organizationName, setOrganizationName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -41,7 +40,11 @@ export function AddCompanyDialog() {
   
   async function handleCreate() {
     try {
-      
+      if(!razon_social || !organizationName || !address || !phone_number){
+        setError("Todos los campos son obligatorios");
+        return toast.error("Todos los campos son obligatorios");
+        
+      }
       let organization;
       if (createOrganization) {
         organization = await createOrganization({ name: organizationName });
@@ -109,6 +112,7 @@ export function AddCompanyDialog() {
                   setOrganizationName(e.target.value);
                 }}
               />
+              {error && <p className="text-red-500">{error}</p>}
             </div>
             <div>
               <Label htmlFor="description">Descripción</Label>
@@ -118,7 +122,10 @@ export function AddCompanyDialog() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
+              {error && <p className="text-red-500">{error}</p>}
+
             </div>
+
             <div>
               <Label htmlFor="phone_number">Telefono</Label>
               <Input
@@ -129,6 +136,8 @@ export function AddCompanyDialog() {
                   setPhone_number(e.target.value);
                 }}
               />
+              {error && <p className="text-red-500">{error}</p>}
+
             </div>
             <div>
               <Label htmlFor="razon_social">Razon Social</Label>
@@ -140,6 +149,8 @@ export function AddCompanyDialog() {
                   setRazon_social(e.target.value);
                 }}
               />
+              {error && <p className="text-red-500">{error}</p>}
+
             </div>
             <br />
             <DialogFooter>

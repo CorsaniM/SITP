@@ -1,15 +1,13 @@
 "use client";
 import React from 'react';
 import { NumeroGrande, Subtitle } from '../ui/title';
-import { api, RouterOutputs } from '~/trpc/react';
-import { useUser } from '@clerk/nextjs';
+import {  RouterOutputs } from '~/trpc/react';
 
 export default function Dashboard({
   tickets,
 }: {
   tickets: NonNullable<RouterOutputs["tickets"]["list"]>;
 }) {
-  const { user } = useUser();
   // const { data: tickets } = api.tickets.getByUser.useQuery({ userName: user?.fullName ?? '' });
 console.log(tickets)
   // Manejo de tickets

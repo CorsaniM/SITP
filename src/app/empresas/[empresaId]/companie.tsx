@@ -16,7 +16,6 @@ import { Button } from "~/app/_components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/app/_components/ui/accordion";
 import { List, ListTile } from "~/app/_components/ui/list";
 import { Label } from "~/app/_components/ui/label";
-import { Switch } from "~/app/_components/ui/switch";
 import { Card } from "~/app/_components/ui/card";
 import { Input } from "~/app/_components/ui/input";
 import {
@@ -194,23 +193,27 @@ export default function CompanyPage({
 }
 
 function DeleteChannel(props: { companySubId: number }) {
-  const { mutateAsync: deleteChannel, isPending } =
+  const { mutateAsync: deleteCompanie, isPending } =
     api.companies.delete.useMutation();
 
   const router = useRouter();
 
   const handleDelete: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    deleteChannel({ id: props.companySubId })
+    deleteCompanie({ id: props.companySubId })
       .then(() => {
         toast.success("Se ha eliminado la entidad correctamente");
         router.push("./");
         router.refresh();
       })
-      .catch((e) => {
-        toast.error("No se pudo eliminar la entidad");
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          toast.error("No se pudo eliminar la entidad: " + err.message);
+        } else {
+          toast.error("No se pudo eliminar la entidad debido a un error desconocido");
+        }
       });
-  };
+};
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

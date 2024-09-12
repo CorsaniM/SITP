@@ -6,7 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
-import { images, participants, tickets } from "~/server/db/schema";
+import { participants, tickets } from "~/server/db/schema";
 
 export const ticketsRouter = createTRPCRouter({
   create: publicProcedure

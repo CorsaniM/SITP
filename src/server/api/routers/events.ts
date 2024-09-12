@@ -1,7 +1,5 @@
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { db } from "~/server/db";
 import { events } from "~/server/db/schema";
 
 export const eventsRouter = createTRPCRouter({

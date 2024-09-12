@@ -1,11 +1,6 @@
 "use client"
 import { api } from '~/trpc/react';
-import { Card, CardTitle, CardDescription } from "~/app/_components/ui/tarjeta";
-import { List, ListTile } from '~/app/_components/ui/list';
-import { useUser, useOrganization } from '@clerk/nextjs';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { Button } from '~/app/_components/ui/button';
+import { Card, CardTitle } from "~/app/_components/ui/tarjeta";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 

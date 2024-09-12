@@ -1,12 +1,10 @@
 "use client"
-import { useUser } from "@clerk/nextjs";
-import { or } from "drizzle-orm";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "~/app/_components/ui/button";
-import { DialogHeader, DialogFooter, DialogTitle, DialogContent, Dialog, DialogTrigger, DialogClose , DialogDescription } from "~/app/_components/ui/dialog";
+import { DialogHeader, DialogFooter, DialogTitle, DialogContent, Dialog } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
 
 
@@ -67,7 +65,7 @@ export function AsignarUsuario(props: { orgId: number }) {
     if (selectedUsers.length === 0 && usuariosAEliminar.length === 0) {
       return toast.error("Seleccione al menos un usuario");
     }
-
+console.log(availableUsers)
     for (const selectedUser of selectedUsers) {
       const existingParticipant = userCompanies?.find(
         (x) => x.userName === selectedUser.id && x.orgId === props.orgId

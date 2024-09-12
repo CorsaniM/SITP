@@ -36,7 +36,7 @@ app.get("/ticket/get/:orgid/:urgency/:title/:description", async (c) => {
       description,
     });
 
-    return c.json("Ticket creado"); // Devuelve el ticket creado con un código 201
+    return c.json("Ticket creado: " + newTicket); // Devuelve el ticket creado con un código 201
   } catch (error) {
     return c.json({ error: "Error creando el ticket" }, 500);
   }
@@ -52,7 +52,7 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
   }
 
   try {
-    const newTicket = await api.comments.create({
+    const newComment = await api.comments.create({
       state: "no leido",
       title: title,
       description: description,
@@ -61,7 +61,7 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
       ticketId: parseInt(ticketId),
       type: "recibido",
     });
-    return c.json("Comentario creado en Ticket " + ticketId + " id"); // Devuelve el ticket creado con un código 201
+    return c.json("Comentario creado en Ticket " + ticketId + newComment); // Devuelve el ticket creado con un código 201
   } catch (error) {
     return c.json({ error: "Error creando el comentario" }, 500);
   }

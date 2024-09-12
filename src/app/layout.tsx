@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "~/trpc/react";
-import { ClerkProvider, useUser} from '@clerk/nextjs'
+import { ClerkProvider} from '@clerk/nextjs'
 import { SyncActiveOrganization } from "./_components/SyncActiveOrganization";
 import { auth } from "@clerk/nextjs/server";
 import Upbar from "./_components/upbar";

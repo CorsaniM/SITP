@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/nextjs";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";

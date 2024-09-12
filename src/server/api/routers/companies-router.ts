@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -6,7 +6,14 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
-import { companies } from "~/server/db/schema";
+import {
+  companies,
+  tickets,
+  comments,
+  images,
+  participants,
+  userCompanies,
+} from "~/server/db/schema";
 
 export const companiesRouter = createTRPCRouter({
   create: publicProcedure
@@ -74,6 +81,27 @@ export const companiesRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      await db.delete(companies).where(eq(companies.id, input.id));
+      await db.transaction(async (tx) => {
+        await tx.delete(userCompanies).where(eq(userCompanies.orgId, input.id));
+
+        const ticketsToDelete = await tx
+          .delete(tickets)
+          .where(eq(tickets.orgId, input.id))
+          .returning();
+
+        const ticketIds = ticketsToDelete.map((ticket) => ticket.id);
+
+        if (ticketIds.length > 0) {
+          await tx
+            .delete(comments)
+            .where(inArray(comments.ticketId, ticketIds));
+          await tx.delete(images).where(inArray(images.ticketId, ticketIds));
+          await tx
+            .delete(participants)
+            .where(inArray(participants.ticketId, ticketIds));
+        }
+
+        await tx.delete(companies).where(eq(companies.id, input.id));
+      });
     }),
 });

@@ -21,6 +21,8 @@ export const participantsRouter = createTRPCRouter({
         .update(schema.tickets)
         .set({ state: "En curso" })
         .where(eq(schema.tickets.id, input.ticketId));
+
+      return ticket;
     }),
 
   getByTicket: publicProcedure

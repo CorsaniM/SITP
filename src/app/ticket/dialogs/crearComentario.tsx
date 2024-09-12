@@ -1,6 +1,6 @@
-import { useOrganization, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ReactElement, useState } from "react";
+import {  useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
@@ -19,8 +19,12 @@ export function CrearComentario(props: { ticketId: number }) {
   const [description, setDescription] = useState("")
   const [title, setTitle] = useState(ticket?.title ?? "")
   
-  const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+  // const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   async function handleCreate() {
+    if(!description || !title){
+      setError('Todos los campos son obligatorios')
+      return toast.error('Todos los campos son obligatorios')
+    }
     try {
         await createMensaje({
             title: title || "",
@@ -64,6 +68,8 @@ export function CrearComentario(props: { ticketId: number }) {
                                     value={title}
                                     placeholder='Titulo...'
                                     onChange={(e) => setTitle(e.target.value)}/>
+                    {error && <p className="text-red-500">{error}</p>}
+
                     <h1>Comentario</h1>
                 <textarea
                     className="h-[25vh] w-full border bg-gray-700 p-2 text-lg overflow-y-auto"
@@ -71,6 +77,7 @@ export function CrearComentario(props: { ticketId: number }) {
                     placeholder='Comentario...'
                     onChange={(e) => setDescription(e.target.value)}
                     />
+                    {error && <p className="text-red-500">{error}</p>}
                     </Dialog.Description>
                   </DialogHeader>
                   <DialogFooter>

@@ -5,7 +5,6 @@ import { commentsRouter } from "./routers/comments";
 import { participantsRouter } from "./routers/participants";
 import { eventsRouter } from "./routers/events";
 import { clerkRouter } from "./routers/clerk-router";
-import { companies } from "../db/schema";
 import { companiesRouter } from "./routers/companies-router";
 import { userCompaniesRouter } from "./routers/companiesToUser";
 

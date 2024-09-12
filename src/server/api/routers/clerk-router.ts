@@ -1,9 +1,6 @@
-import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { db, schema } from "~/server/db";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
-import { UseCheckRole } from "~/lib/server/roles";
 
 export const clerkRouter = createTRPCRouter({
   getUserbyId: protectedProcedure

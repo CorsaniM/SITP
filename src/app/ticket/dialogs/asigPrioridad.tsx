@@ -1,13 +1,7 @@
 "use client"
-import { useUser } from "@clerk/nextjs";
-import { ReactElement, useState } from "react";
-import { Button } from "~/app/_components/ui/button";
+import {useState } from "react";
 import { api } from "~/trpc/react";
-import { DialogHeader, DialogFooter, DialogContent, DialogTitle, Dialog } from "~/app/_components/ui/dialog";
-import { Label } from "~/app/_components/ui/label";
-import { Input } from "~/app/_components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue  } from "~/app/_components/ui/select";
-import { Loader2Icon } from "lucide-react";
 
 interface ticket {
     id: number;
@@ -29,20 +23,22 @@ export function AsignarPrioridad(props: { ticket: ticket }) {
   const [prio, setPrio] = useState(0);
 
 const ticket = props.ticket
-  async function HandleUpdate() {
+  async function HandleUpdate(number: number) {
+
+    setPrio(number);
     await cambiar({
         id: ticket.id,
         suppUrgency: prio,
         updatedAt: new Date,
     });
-    setOpen(false); // Cerrar el diálogo tras la creación
+    setOpen(false); 
   }
 
   return (
     <>
       <div  className="inline-flex m-2 text-white disabled:opacity-50 text-lg w-1/5 bg-gray-800  hover:bg-gray-500 hover:text-black">
 
-              <Select open={open} onOpenChange={setOpen} onValueChange={(e) =>setPrio(Number(e))}>
+              <Select disabled={isLoading} open={open} onOpenChange={setOpen} onValueChange={(e) =>HandleUpdate(Number(e))}>
       <SelectTrigger className=" bg-gray-700">
         <SelectValue placeholder="prio" />
       </SelectTrigger>

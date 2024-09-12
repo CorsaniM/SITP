@@ -1,6 +1,5 @@
 "use client";
-import { User } from "@clerk/nextjs/server";
-import { CheckIcon, Loader2 } from "lucide-react";
+import { CheckIcon} from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import LayoutContainer from "~/app/_components/layout-container";
@@ -25,7 +24,6 @@ import { Label } from "~/app/_components/ui/label";
 import { asTRPCError } from "~/lib/errors";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 
 export default function UserPage(props: { params: { userId: string } }) {
   const router = useRouter();
@@ -164,14 +162,7 @@ export default function UserPage(props: { params: { userId: string } }) {
     </LayoutContainer>
   );
 }
-interface UserUpdatePayload {
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-  publicMetadata?: {
-    role: string;
-  };
-}
+
 
 interface EditUserPayload {
   userId: string;

@@ -1,8 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Dashboard from "../_components/dashboard/dashboard";
-import { Button } from "../_components/ui/button";
 import { DataTable } from "./table";
 import { columns } from "./columns";
 import { api } from "~/trpc/react";
@@ -26,14 +25,12 @@ export default function Page() {
 
   const { hasRole: isAdmin } = useCheckRole("Admin");
   const { user } = useUser();
-  const router = useRouter();
+  // const router = useRouter();
 
-  // Hook para obtener tickets por organización o por usuario
   const ticketsQuery = isAdmin
     ? api.tickets.list.useQuery()
     : api.tickets.getByUser.useQuery({ userName: user?.username ?? "" });
 
-  // Controlar el estado de carga y los datos
   useEffect(() => {
     if (ticketsQuery.data) {
       setTicketsPorOrg(ticketsQuery.data);

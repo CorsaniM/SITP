@@ -22,11 +22,9 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
+
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
+ 
 } from "../_components/ui/pagination"
 
 

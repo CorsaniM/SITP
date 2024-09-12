@@ -1,15 +1,10 @@
 "use server";
 import { clerkClient } from "@clerk/nextjs/server";
-import { SetRole } from "~/app/_actions";
 import { List, ListTile } from "~/app/_components/ui/list";
 
 import { Title } from "~/app/_components/ui/title";
-import { Input } from "~/app/_components/ui/input";
-import { Button } from "~/app/_components/ui/button";
-import { UseCheckRole } from "~/lib/server/roles";
-import { getServerAuthSession } from "~/server/auth";
-import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import LayoutContainer from "~/app/_components/layout-container";
+import { UseCheckRole } from "~/lib/server/roles";
 
 export type UsersType = Awaited<
   ReturnType<typeof clerkClient.users.getUserList>
@@ -19,20 +14,19 @@ export default async function AdminDashboard() {
   
 
   const {data: usersList} = (await clerkClient.users.getUserList({}));
-  const organizations = (
-    await clerkClient.organizations.getOrganizationList({})
-  ).data;
+  // const organizations = (
+  //   await clerkClient.organizations.getOrganizationList({})
+  // ).data;
 
-  const session = getServerAuthSession();
 
   
-  const organization = organizations.find((x) => x.id === session?.orgId);
+  // const organization = organizations.find((x) => x.id === session?.orgId);
   
-  const user = usersList.find((users) => users.id === session!.user.id);
+  // const user = usersList.find((users) => users.id === session!.user.id);
 
 
 
-const isAdmin = true
+const isAdmin = UseCheckRole("Admin");
 
 
 
@@ -82,30 +76,30 @@ const isAdmin = true
   );
 }
 
-function FormSetRole({ user }: { user: UsersType }) {
-  return (
-    <div className="flex gap-2">
-      <div>
-        <form action={SetRole}>
-          <Input type="hidden" value={user.id} name="id" />
-          <Input type="hidden" value="admin" name="role" />
-          <Button type="submit">Hacer admin </Button>
-        </form>
-      </div>
-      <div>
-        <form action={SetRole}>
-          <Input type="hidden" value={user.id} name="id" />
-          <Input type="hidden" value="user" name="role" />
-          <Button type="submit">Autorizar usuario</Button>
-        </form>
-      </div>
-      <div>
-        <form action={SetRole}>
-          <Input type="hidden" value={user.id} name="id" />
-          <Input type="hidden" value="unauthorized" name="role" />
-          <Button type="submit">Desautorizar</Button>
-        </form>
-      </div>
-    </div>
-  );
-}
+// function FormSetRole({ user }: { user: UsersType }) {
+//   return (
+//     <div className="flex gap-2">
+//       <div>
+//         <form action={SetRole}>
+//           <Input type="hidden" value={user.id} name="id" />
+//           <Input type="hidden" value="admin" name="role" />
+//           <Button type="submit">Hacer admin </Button>
+//         </form>
+//       </div>
+//       <div>
+//         <form action={SetRole}>
+//           <Input type="hidden" value={user.id} name="id" />
+//           <Input type="hidden" value="user" name="role" />
+//           <Button type="submit">Autorizar usuario</Button>
+//         </form>
+//       </div>
+//       <div>
+//         <form action={SetRole}>
+//           <Input type="hidden" value={user.id} name="id" />
+//           <Input type="hidden" value="unauthorized" name="role" />
+//           <Button type="submit">Desautorizar</Button>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }

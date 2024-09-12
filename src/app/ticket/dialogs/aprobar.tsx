@@ -1,6 +1,5 @@
-import { useUser } from "@clerk/nextjs";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ReactElement, useState } from "react";
+import {  useState } from "react";
 import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
@@ -21,7 +20,6 @@ export function Aprobar(props: { ticket: ticket }) {
   const [open, setOpen] = useState(false);
 
   const { mutateAsync: cambiar } = api.tickets.update.useMutation();
-  const user = useUser();
 const ticket = props.ticket
   async function HandleUpdate() {
     await cambiar({
