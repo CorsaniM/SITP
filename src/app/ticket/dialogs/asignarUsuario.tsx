@@ -102,12 +102,12 @@ export function AsignarUsuario(props: { ticketId: number }) {
             <div className="flex flex-col flex-auto w-1/2 p-4">
               <DialogTitle>Usuarios Disponibles</DialogTitle>
               <ul>
-                {availableUsers && availableUsers.map(user => (
+                {availableUsers ? availableUsers.map(user => (
                   <li key={user.id} className="flex justify-between items-center py-2">
                     {user.fullName} - {user.firstName ?? user?.fullName}
                     <Button onClick={() => handleAddUser(user)}>Agregar</Button>
                   </li>
-                ))}
+                )): (<h1>Cargando...</h1>)}
               </ul>
             </div>
             <div className="flex flex-col flex-auto w-1/2 p-4">

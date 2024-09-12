@@ -9,9 +9,19 @@ import { api } from "~/trpc/react";
 import { NumeroGrande } from "../_components/ui/title";
 import { useUser } from "@clerk/nextjs";
 import { useCheckRole } from "~/lib/react/roles";
-
+type Ticket = {
+  id: number;
+  orgId: number;
+  description: string | null;
+  state: string | null;
+  createdAt: Date;
+  updatedAt: Date | null;
+  urgency: number | null;
+  suppUrgency: number | null;
+  title: string | null;
+};
 export default function Page() {
-  const [ticketsPorOrg, setTicketsPorOrg] = useState<any[]>([]);
+  const [ticketsPorOrg, setTicketsPorOrg] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { hasRole: isAdmin } = useCheckRole("Admin");
