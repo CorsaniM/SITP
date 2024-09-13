@@ -6,7 +6,6 @@ export const getServerAuthSession = () => {
   if (!userId) {
     return null;
   }
-
   return {
     ...session,
     user: {

@@ -7,7 +7,6 @@ export default function Page(props:{params:{ticketId: string}}) {
     const id = props.params.ticketId 
 
 
-    console.log(id)
     
 if (id) {
    return(

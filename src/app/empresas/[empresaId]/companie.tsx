@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger } from  "~/app/_components/ui/alert-dialog";
 import { AsignarUsuario } from "./asignarUsuarios";
+import { useCheckRole } from "~/lib/react/roles";
 
 
 type User = {
@@ -59,6 +60,7 @@ export default function CompanyPage({
 
   const { mutateAsync: changeCompany, isPending: isLoading } =
     api.companies.update.useMutation();
+    const isAdmin = useCheckRole("Admin");
 
   async function handleChange() {
     try {
@@ -79,6 +81,7 @@ export default function CompanyPage({
   }
 
 
+  if(!isAdmin) return <>Acceso denegado</>;
   return (
     <LayoutContainer>
       <section className="space-y-2">

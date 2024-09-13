@@ -1,4 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { useRouter } from "next/navigation";
 import {  useState } from "react";
 import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
@@ -17,9 +18,12 @@ interface ticket {
 }
 
 export function Aprobar(props: { ticket: ticket }) {
-  const [open, setOpen] = useState(false);
-
   const { mutateAsync: cambiar } = api.tickets.update.useMutation();
+  
+  const [open, setOpen] = useState(false);
+const router = useRouter()
+
+
 const ticket = props.ticket
   async function HandleUpdate() {
     await cambiar({
@@ -27,6 +31,7 @@ const ticket = props.ticket
         state: "Finalizado",
         updatedAt: new Date,
     });
+    router.refresh()
     setOpen(false);
   }
 

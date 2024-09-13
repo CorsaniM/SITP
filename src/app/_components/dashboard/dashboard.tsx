@@ -9,7 +9,6 @@ export default function Dashboard({
   tickets: NonNullable<RouterOutputs["tickets"]["list"]>;
 }) {
   // const { data: tickets } = api.tickets.getByUser.useQuery({ userName: user?.fullName ?? '' });
-console.log(tickets)
   // Manejo de tickets
   const ticketpend = tickets?.filter((pend) => pend.state === "Pendiente");
   const ticketEspera = tickets?.filter((pend) => pend.state === "En espera");

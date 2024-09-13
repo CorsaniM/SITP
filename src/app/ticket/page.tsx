@@ -25,11 +25,10 @@ export default function Page() {
 
   const { hasRole: isAdmin } = useCheckRole("Admin");
   const { user } = useUser();
-  // const router = useRouter();
 
   const ticketsQuery = isAdmin
     ? api.tickets.list.useQuery()
-    : api.tickets.getByUser.useQuery({ userName: user?.username ?? "" });
+    : api.tickets.getByUser.useQuery({ userId: user?.id ?? "" });
 
   useEffect(() => {
     if (ticketsQuery.data) {

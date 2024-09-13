@@ -1,30 +1,20 @@
-"use server";
-import { clerkClient } from "@clerk/nextjs/server";
+"use client";
+// import { clerkClient } from "@clerk/nextjs/react";
 import { List, ListTile } from "~/app/_components/ui/list";
 
 import { Title } from "~/app/_components/ui/title";
 import LayoutContainer from "~/app/_components/layout-container";
 import { UseCheckRole } from "~/lib/server/roles";
+import { api } from "~/trpc/react";
 
-export type UsersType = Awaited<
-  ReturnType<typeof clerkClient.users.getUserList>
->["data"][number];
+// export type UsersType = Awaited<
+//   ReturnType<typeof clerkClient.users.getUserList>
+// >["data"][number];
 
-export default async function AdminDashboard() {
+export default function AdminDashboard() {
   
 
-  const {data: usersList} = (await clerkClient.users.getUserList({}));
-  // const organizations = (
-  //   await clerkClient.organizations.getOrganizationList({})
-  // ).data;
-
-
-  
-  // const organization = organizations.find((x) => x.id === session?.orgId);
-  
-  // const user = usersList.find((users) => users.id === session!.user.id);
-
-
+  const {data: usersList} =  api.clerk.list.useQuery();
 
 const isAdmin = UseCheckRole("Admin");
 
@@ -39,7 +29,7 @@ const isAdmin = UseCheckRole("Admin");
       <Title>Usuarios</Title>
       {isAdmin ? (
         <List>
-          {usersList.map((usuario) => (
+          {usersList ? usersList.data.map((usuario) => (
             <ListTile
               key={usuario.id}
               href={`./users/${usuario.id}`}
@@ -63,7 +53,9 @@ const isAdmin = UseCheckRole("Admin");
                 </div>
               }
             />
-          ))}
+          )) : (
+            <h1>No hay usuarios</h1>
+          )}
         </List>
       ) 
        : (

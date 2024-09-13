@@ -6,7 +6,15 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
-import { participants, tickets } from "~/server/db/schema";
+import { participants, tickets, userCompanies } from "~/server/db/schema";
+
+const priority: { [key: string]: number } = {
+  "En curso": 1,
+  Pendiente: 2,
+  "En espera": 3,
+  Finalizado: 4,
+  Rechazado: 5,
+};
 
 export const ticketsRouter = createTRPCRouter({
   create: publicProcedure
@@ -54,10 +62,21 @@ export const ticketsRouter = createTRPCRouter({
 
       return ticketWithRelations;
     }),
-  list: protectedProcedure.query(async ({}) => {
-    const tickets = await db.query.tickets.findMany();
 
-    return tickets;
+  list: protectedProcedure.query(async ({}) => {
+    const ticketsList = await db.query.tickets.findMany();
+
+    const sortedTickets = ticketsList.sort((a, b) => {
+      const priorityA = priority[a.state ?? ""] ?? 6;
+      const priorityB = priority[b.state ?? ""] ?? 6;
+      const stateComparison = priorityA - priorityB;
+      if (stateComparison !== 0) {
+        return stateComparison;
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    return sortedTickets;
   }),
 
   getByOrg: publicProcedure
@@ -68,16 +87,23 @@ export const ticketsRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       try {
-        const ticketWithRelations = await ctx.db.query.tickets.findMany({
+        const ticketsByOrg = await ctx.db.query.tickets.findMany({
           where: eq(tickets.orgId, input.orgId),
-          with: {
-            comments: true,
-            images: true,
-            participants: true,
-          },
         });
 
-        return ticketWithRelations;
+        const sortedTickets = ticketsByOrg.sort((a, b) => {
+          const priorityA = priority[a.state ?? ""] ?? 6;
+          const priorityB = priority[b.state ?? ""] ?? 6;
+          const stateComparison = priorityA - priorityB;
+          if (stateComparison !== 0) {
+            return stateComparison;
+          }
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        });
+
+        return sortedTickets;
       } catch {
         return null;
       }
@@ -86,25 +112,24 @@ export const ticketsRouter = createTRPCRouter({
   getByUser: publicProcedure
     .input(
       z.object({
-        userName: z.string(),
+        userId: z.string(),
       }),
     )
     .query(async ({ input, ctx }) => {
-      const participantes = await ctx.db.query.participants.findMany({
-        where: eq(participants.userName, input.userName),
+      const companie = await ctx.db.query.userCompanies.findMany({
+        where: eq(userCompanies.userId, input.userId),
       });
 
-      const ticketIds = participantes.map(
-        (participant) => participant.ticketId,
-      );
+      const companies = companie.map((companie) => companie.orgId ?? 0);
 
-      if (ticketIds.length === 0) {
+      if (companie.length === 0) {
         return [];
       }
+      console.log(companies, "companies");
+      console.log(input.userId, "userId", companie[0]?.orgId, "orgId");
 
-      // Obtén los tickets con relaciones
       const ticketsWithRelations = await ctx.db.query.tickets.findMany({
-        where: inArray(tickets.id, ticketIds),
+        where: inArray(tickets.orgId, companies),
         with: {
           comments: true,
           images: true,
@@ -112,8 +137,21 @@ export const ticketsRouter = createTRPCRouter({
         },
       });
 
-      return ticketsWithRelations;
+      const sortedTickets = ticketsWithRelations.sort((a, b) => {
+        const priorityA = priority[a.state ?? ""] ?? 6;
+        const priorityB = priority[b.state ?? ""] ?? 6;
+        const stateComparison = priorityA - priorityB;
+        if (stateComparison !== 0) {
+          return stateComparison;
+        }
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+
+      return sortedTickets;
     }),
+
   update: publicProcedure
     .input(
       z.object({

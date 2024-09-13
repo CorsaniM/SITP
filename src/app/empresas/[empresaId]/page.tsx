@@ -23,7 +23,7 @@ export default async function Page(props: { params: { empresaId: string } }) {
   let userList: User[] = [];
 
   try {
-    // Consulta los usuarios de la tabla `userCompanies`
+   
     const userResults = await db
       .select({
         id: userCompanies.userId,
@@ -38,7 +38,7 @@ export default async function Page(props: { params: { empresaId: string } }) {
       email: "",
     }));
 
-    console.log("User list:", userList); // Verifica la lista de usuarios obtenida
+    console.log("User list:", userList); 
   } catch (error) {
     console.error("Error fetching or processing data:", error);
   }
