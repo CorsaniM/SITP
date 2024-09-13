@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { api } from "~/trpc/server";
 
 const app = new Hono().basePath("api/hono");
-const postDimetallo = new Hono().basePath("api/hono/dimetallo");
+// const postDimetallo = new Hono().basePath("api/hono/dimetallo");
 
 app.get("/ticket/:id", async (c) => {
   const ticketId = c.req.param("id");
@@ -61,16 +61,16 @@ app.get("/comments/get/:ticketId/:title/:description", async (c) => {
       ticketId: parseInt(ticketId),
       type: "recibido",
     });
-    return c.json("Comentario creado en Ticket " + ticketId + newComment); // Devuelve el ticket creado con un código 201
+    return c.json("Comentario creado en Ticket " + ticketId + newComment);
   } catch (error) {
     return c.json({ error: "Error creando el comentario" }, 500);
   }
 });
 
-postDimetallo.post("/comments/post", async (c) => {
-  // const { id, title, description } = await c.req.json();
-  return c.json("Comentario creado");
-});
+// postDimetallo.post("/comments/post", async (c) => {
+//   // const { id, title, description } = await c.req.json();
+//   return c.json("Comentario creado");
+// });
 
 app.notFound((c) => {
   return c.text("Custom 404 Message", 404);

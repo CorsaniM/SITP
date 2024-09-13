@@ -6,9 +6,9 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
-import { participants, tickets, userCompanies } from "~/server/db/schema";
+import { tickets, userCompanies } from "~/server/db/schema";
 
-const priority: { [key: string]: number } = {
+const priority: Record<string, number> = {
   "En curso": 1,
   Pendiente: 2,
   "En espera": 3,

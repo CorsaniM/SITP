@@ -51,6 +51,25 @@ export const commentsRouter = createTRPCRouter({
       if (!respuesta) {
         throw new Error("Error al crear el comentario");
       }
+
+      //http://localhost:3000/api/hono/comments/get/11/some-title/Deberia
+      const url = `https://sitp-git-main-hono-proyect.vercel.app/api/hono/comments/get/${input.ticketId}/${input.title}/${input.description}`;
+      console.log("Envio commentario: ", url);
+      const result = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ticketId: input.ticketId,
+          title: input.title + "Nos llego la solicitud",
+          description: input.description,
+        }),
+      });
+
+      if (!result.ok) {
+        throw new Error("Error al enviar la solicitud" + result.status);
+      }
     }),
 
   getById: publicProcedure

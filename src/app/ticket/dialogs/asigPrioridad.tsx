@@ -35,7 +35,7 @@ export function AsignarPrioridad(props: { ticket: Ticket }) {
       suppUrgency: number,
       updatedAt: new Date(),
     });
-    router.invalidateQueries();
+    await router.invalidateQueries();
     setOpen(false);
   }
 
