@@ -28,6 +28,8 @@ import { useRouter } from "next/navigation";
 export default function UserPage(props: { params: { userId: string } }) {
   const router = useRouter();
   const userId = props.params.userId ?? "";
+
+  
   const {data: user} = api.clerk.getUserbyId.useQuery({
     id: userId,
   });
