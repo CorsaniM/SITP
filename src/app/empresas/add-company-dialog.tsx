@@ -40,7 +40,7 @@ export function AddCompanyDialog() {
   
   async function handleCreate() {
     try {
-      if(!razon_social || !organizationName || !address || !phone_number){
+      if(!razon_social || !organizationName || !description || !phone_number){
         setError("Todos los campos son obligatorios");
         return toast.error("Todos los campos son obligatorios");
         
@@ -59,7 +59,6 @@ export function AddCompanyDialog() {
           state: "activa",
           address: address,
           phone_number: phone_number,
-
           razon_social: razon_social,
           updatedAt: new Date(),
         });
