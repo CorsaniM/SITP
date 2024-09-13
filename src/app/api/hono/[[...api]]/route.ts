@@ -16,56 +16,82 @@ app.get("/ticket/:id", async (c) => {
   }
 });
 
-app.get("/ticket/get/:orgid/:urgency/:title/:description", async (c) => {
-  const orgId = c.req.param("orgid");
-  const urgency = parseInt(c.req.param("urgency"));
-  const title = c.req.param("title");
-  const description = c.req.param("description");
+app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
+  const type = c.req.param("type");
+  if (type === "ticket") {
+    const orgId = c.req.param("orgid");
+    const urgency = parseInt(c.req.param("urgency"));
+    const title = c.req.param("title");
+    const description = c.req.param("description");
+    if (!orgId || !title || !description) {
+      return c.json({ error: "Faltan parámetros requeridos" }, 400);
+    }
 
-  if (!orgId || !title || !description) {
-    return c.json({ error: "Faltan parámetros requeridos" }, 400);
+    try {
+      const newTicket = await api.tickets.create({
+        orgId: parseInt(orgId),
+        state: "Pendiente",
+        urgency,
+        suppUrgency: 0,
+        title,
+        description,
+      });
+
+      return c.json("Ticket creado: " + newTicket);
+    } catch (error) {
+      return c.json({ error: "Error creando el ticket" }, 500);
+    }
   }
+  if (type === "comments") {
+    const ticketId = c.req.param("orgid");
+    const title = c.req.param("urgency");
+    const description = c.req.param("title");
 
-  try {
-    const newTicket = await api.tickets.create({
-      orgId: parseInt(orgId),
-      state: "Pendiente",
-      urgency,
-      suppUrgency: 0,
-      title,
-      description,
-    });
+    if (!ticketId || !title || !description) {
+      return c.json({ error: "Faltan parámetros requeridos" }, 400);
+    }
 
-    return c.json("Ticket creado: " + newTicket); // Devuelve el ticket creado con un código 201
-  } catch (error) {
-    return c.json({ error: "Error creando el ticket" }, 500);
+    try {
+      const newComment = await api.comments.create({
+        state: "no leido",
+        title: title,
+        description: description,
+        createdAt: new Date(),
+        userName: "",
+        ticketId: parseInt(ticketId),
+        type: "recibido",
+      });
+      return c.json("Comentario creado en Ticket " + newComment);
+    } catch (error) {
+      return c.json({ error: "Error creando el comentario" }, 500);
+    }
   }
 });
 
-app.get("/comments/get/:ticketId/:title/:description", async (c) => {
-  const ticketId = c.req.param("ticketId");
-  const title = c.req.param("title");
-  const description = c.req.param("description");
+// app.get("/comments/get/:ticketId/:title/:description", async (c) => {
+//   const ticketId = c.req.param("ticketId");
+//   const title = c.req.param("title");
+//   const description = c.req.param("description");
 
-  if (!ticketId || !title || !description) {
-    return c.json({ error: "Faltan parámetros requeridos" }, 400);
-  }
+//   if (!ticketId || !title || !description) {
+//     return c.json({ error: "Faltan parámetros requeridos" }, 400);
+//   }
 
-  try {
-    const newComment = await api.comments.create({
-      state: "no leido",
-      title: title,
-      description: description,
-      createdAt: new Date(),
-      userName: "",
-      ticketId: parseInt(ticketId),
-      type: "recibido",
-    });
-    return c.json("Comentario creado en Ticket " + ticketId + newComment);
-  } catch (error) {
-    return c.json({ error: "Error creando el comentario" }, 500);
-  }
-});
+//   try {
+//     const newComment = await api.comments.create({
+//       state: "no leido",
+//       title: title,
+//       description: description,
+//       createdAt: new Date(),
+//       userName: "",
+//       ticketId: parseInt(ticketId),
+//       type: "recibido",
+//     });
+//     return c.json("Comentario creado en Ticket " + newComment);
+//   } catch (error) {
+//     return c.json({ error: "Error creando el comentario" }, 500);
+//   }
+// });
 
 // postDimetallo.post("/comments/post", async (c) => {
 //   // const { id, title, description } = await c.req.json();

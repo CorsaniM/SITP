@@ -10,8 +10,8 @@ export const commentsRouter = createTRPCRouter({
       z.object({
         userName: z.string(),
         ticketId: z.number(),
-        type: z.string(), //(Actualización, Ticket Rechazado, Ticket Finalizado)
-        state: z.string(), //(leído o no por el creador asignado)
+        type: z.string(),
+        state: z.string(),
         title: z.string(),
         description: z.string(),
         createdAt: z.date(),
@@ -52,8 +52,10 @@ export const commentsRouter = createTRPCRouter({
         throw new Error("Error al crear el comentario");
       }
 
-      //http://localhost:3000/api/hono/comments/get/11/some-title/Deberia
-      const url = `https://sitp-git-main-hono-proyect.vercel.app/api/hono/comments/get/${input.ticketId}/${input.title}/${input.description}`;
+      //`http://localhost:3000/api/hono/comments/get/${input.ticketId}/${input.title}/${input.description}`
+      //`http://localhost:3000/api/hono/comments/get/1/Enviado/Envieado`
+
+      const url = `http://localhost:3000/api/hono/comments/get/${input.ticketId}/${input.title}/${input.description}/test`;
       console.log("Envio commentario: ", url);
       const result = await fetch(url, {
         method: "POST",
