@@ -44,7 +44,7 @@ export const comments = createTable(
   "comments",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    userName: text("userName").notNull(),
+    userName: text("userName"),
     ticketId: int("ticketId")
       .references(() => tickets.id)
       .notNull(),

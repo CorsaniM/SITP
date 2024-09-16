@@ -8,13 +8,13 @@ export const commentsRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
-        userName: z.string(),
+        userName: z.string().optional(),
         ticketId: z.number(),
-        type: z.string(),
+        type: z.string().optional(),
         state: z.string(),
         title: z.string(),
         description: z.string(),
-        createdAt: z.date(),
+        createdAt: z.date().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
