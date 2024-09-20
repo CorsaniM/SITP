@@ -15,8 +15,8 @@ interface ticket {
     description: string | null;
     createdAt: Date;
     updatedAt: Date | null;
-}
-
+  }
+    
 export function Rechazar(props: { ticket: ticket }) {
   const [open, setOpen] = useState(false);
 const router = useRouter()
