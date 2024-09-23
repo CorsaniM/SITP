@@ -78,9 +78,9 @@ export function AsignarUsuario(props: { ticketId: number }) {
 
 
     }
-    router.refresh();
     setOpen(false);
     setUsuariosAEliminar([]);
+    router.refresh();
   }
 
   return (

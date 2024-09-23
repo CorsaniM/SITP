@@ -28,8 +28,8 @@ const ticket = props.ticket
         state: "Rechazado",
         updatedAt: new Date,
     });
-    router.refresh()
     setOpen(false); 
+    router.refresh()
 
   }
 

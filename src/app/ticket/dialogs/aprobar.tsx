@@ -31,8 +31,8 @@ const ticket = props.ticket
         state: "Finalizado",
         updatedAt: new Date,
     });
-    router.refresh()
     setOpen(false);
+    router.refresh()
   }
 
   return (

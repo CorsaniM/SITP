@@ -6,13 +6,15 @@ import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function CrearComentario(props: { ticketId: number }) {
   const [open, setOpen] = useState(false);
   const id = props.ticketId
   const ticket = api.tickets.getById.useQuery({ id }).data;
   const { mutateAsync: createMensaje, isPending } = api.comments.create.useMutation();
-  const router = useQueryClient();
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
 
@@ -37,10 +39,11 @@ export function CrearComentario(props: { ticketId: number }) {
         })  
          
         toast.success('Mensaje enviado')
-        await router.invalidateQueries()
+        await queryClient.invalidateQueries()
         setDescription("")
         setTitle("")
         setOpen(false)
+        router.refresh();
 
     } catch (e) {
         setError('No se pudo crear el mensaje')
