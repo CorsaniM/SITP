@@ -15,6 +15,7 @@ app.get("/ticket/:id", async (c) => {
     return c.json("no existe el ticket " + ticketId);
   }
 });
+// http://localhost:3000/api/hono/ticket/get/8/2/Test%20Ticket/This%20is%20a%20test%20description
 
 app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
   const type = c.req.param("type");
@@ -41,16 +42,16 @@ app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
     } catch (error) {
       return c.json({ error: "Error creando el ticket" }, 500);
     }
-  }
-  if (type === "comments") {
-    const ticketId = c.req.param("orgid");
+  } else if (type === "comments") {
     const title = c.req.param("urgency");
+    const ticketId = c.req.param("orgid");
+    console.log(ticketId, "looooooolazo");
+
     const description = c.req.param("title");
 
     if (!ticketId || !title || !description) {
       return c.json({ error: "Faltan parámetros requeridos" }, 400);
     }
-
     try {
       const newComment = await api.comments.create({
         state: "no leido",
@@ -63,7 +64,7 @@ app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
       });
       return c.json("Comentario creado en Ticket " + newComment);
     } catch (error) {
-      return c.json({ error: "Error creando el comentario" }, 500);
+      return c.json({ error: "Error creando el comentario lol" }, 500);
     }
   }
 });
@@ -110,6 +111,6 @@ export const DELETE = async (request: Request) => app.fetch(request);
 export const PATCH = async (request: Request) => app.fetch(request);
 
 // TEST creación de ticket:
-// http://localhost:3000/api/hono/ticket/post/dimetallo/2/Test%20Ticket/This%20is%20a%20test%20description
+// http://localhost:3000/api/hono/ticket/post/1/2/Test%20Ticket/This%20is%20a%20test%20description
 // TEST envío de coment: (funciona)
 // http://localhost:3000/api/hono/comments/get/5/ExampleTitle/ExampleDescription
