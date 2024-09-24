@@ -6,47 +6,49 @@ import { images } from "~/server/db/schema";
 
 export const imagesRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ 
-      userName: z.string(),
-      ticketId: z.number(),
-      url: z.string(),
-    }))
+    .input(
+      z.object({
+        userName: z.string(),
+        commentId: z.number(),
+        url: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-     const [respuesta] = await ctx.db.insert(images).values(input).returning();
+      const [respuesta] = await ctx.db.insert(images).values(input).returning();
 
       if (respuesta?.userName) {
         await ctx.db.insert(schema.events).values({
           userName: respuesta?.userName,
           ticketId: respuesta?.id,
           type: "sent",
-          description: "Imagen enviada" 
+          description: "Imagen enviada",
         });
-        } else {
-          await ctx.db.insert(schema.events).values({
-            ticketId: respuesta?.id,
-            type: "recieved",
-            description: "Imagen recibida" 
-          });
-        }
+      } else {
+        await ctx.db.insert(schema.events).values({
+          ticketId: respuesta?.id,
+          type: "recieved",
+          description: "Imagen recibida",
+        });
+      }
     }),
-      
+
   getByTicket: publicProcedure
     .input(
       z.object({
-        ticketId: z.number(),
+        commentId: z.number(),
       }),
     )
-  .query(async ({ input, ctx }) => {
-    const channel = await ctx.db.query.images.findMany({
-      where: eq(images.ticketId, input.ticketId),
-    });
+    .query(async ({ input, ctx }) => {
+      const channel = await ctx.db.query.images.findMany({
+        where: eq(images.commentId, input.commentId),
+      });
 
-    return channel;
-  }),
+      return channel;
+    }),
 
-    delete: publicProcedure
+  delete: publicProcedure
     .input(
       z.object({
         id: z.number(),
@@ -55,5 +57,4 @@ export const imagesRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       await db.delete(images).where(eq(images.id, input.id));
     }),
-
 });

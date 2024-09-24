@@ -95,7 +95,7 @@ export const companiesRouter = createTRPCRouter({
           await tx
             .delete(comments)
             .where(inArray(comments.ticketId, ticketIds));
-          await tx.delete(images).where(inArray(images.ticketId, ticketIds));
+          await tx.delete(images).where(inArray(images.commentId, ticketIds));
           await tx
             .delete(participants)
             .where(inArray(participants.ticketId, ticketIds));

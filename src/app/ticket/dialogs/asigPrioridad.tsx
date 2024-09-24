@@ -20,8 +20,8 @@ interface Ticket {
 export function AsignarPrioridad(props: {
   ticket: Ticket, isRechazado: boolean, isFinalizado: boolean 
 }) {
-  let isRechazado = props.isRechazado
-  let isFinalizado = props.isFinalizado
+  const isRechazado = props.isRechazado
+  const isFinalizado = props.isFinalizado
 
   const [open, setOpen] = useState(false);
   const { mutateAsync: cambiar, isPending: isLoading } = api.tickets.update.useMutation();

@@ -55,7 +55,6 @@ export const ticketsRouter = createTRPCRouter({
         where: eq(tickets.id, input.id),
         with: {
           comments: true,
-          images: true,
           participants: true,
         },
       });
@@ -125,12 +124,11 @@ export const ticketsRouter = createTRPCRouter({
       if (companie.length === 0) {
         return [];
       }
-      
+
       const ticketsWithRelations = await ctx.db.query.tickets.findMany({
         where: inArray(tickets.orgId, companies),
         with: {
           comments: true,
-          images: true,
           participants: true,
         },
       });
@@ -163,7 +161,6 @@ export const ticketsRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       await db.update(tickets).set(input).where(eq(tickets.id, input.id));
     }),
-    
 
   delete: publicProcedure
     .input(

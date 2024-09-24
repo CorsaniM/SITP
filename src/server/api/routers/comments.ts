@@ -33,11 +33,11 @@ export const commentsRouter = createTRPCRouter({
           type: "sent",
           description: "Comentario enviado",
         });
-        if (!input?.isFinish){
+        if (!input?.isFinish) {
           await ctx.db
-          .update(schema.tickets)
-          .set({ state: "En espera" })
-          .where(eq(schema.tickets.id, input.ticketId));
+            .update(schema.tickets)
+            .set({ state: "En espera" })
+            .where(eq(schema.tickets.id, input.ticketId));
         }
       } else {
         await ctx.db.insert(schema.events).values({
@@ -45,12 +45,13 @@ export const commentsRouter = createTRPCRouter({
           type: "recieved",
           description: "Comentario recibido",
         });
-        if (!input?.isFinish){
-        await ctx.db
-          .update(schema.tickets)
-          .set({ state: "En curso" })
-          .where(eq(schema.tickets.id, input.ticketId));
-      }}
+        if (!input?.isFinish) {
+          await ctx.db
+            .update(schema.tickets)
+            .set({ state: "En curso" })
+            .where(eq(schema.tickets.id, input.ticketId));
+        }
+      }
 
       if (!respuesta) {
         throw new Error("Error al crear el comentario");
@@ -63,21 +64,21 @@ export const commentsRouter = createTRPCRouter({
       const url = `http://localhost:3000/api/hono/ticket/get/${input.ticketId}`;
 
       console.log("Envio commentario: ", url);
-      const result = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ticketId: input.ticketId,
-          title: input.title + "Nos llego la solicitud",
-          description: input.description,
-        }),
-      });
+      // const result = await fetch(url, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     ticketId: input.ticketId,
+      //     title: input.title + "Nos llego la solicitud",
+      //     description: input.description,
+      //   }),
+      // });
 
-      if (!result.ok) {
-        throw new Error("Error al enviar la solicitud" + result.status);
-      }
+      // if (!result.ok) {
+      //   throw new Error("Error al enviar la solicitud" + result.status);
+      // }
     }),
 
   getById: publicProcedure

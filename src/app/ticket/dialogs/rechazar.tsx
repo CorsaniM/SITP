@@ -4,10 +4,7 @@ import {  useState } from "react";
 import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
-import { AsignarPrioridad } from "./asigPrioridad";
-import { number } from "zod";
-import { participants } from "~/server/db/schema";
-import { AsignarUsuario } from "./asignarUsuario";
+
 
 
 interface ticket {
@@ -24,8 +21,8 @@ interface ticket {
   
 
   export function Rechazar(props: { ticket: ticket, isRechazado: boolean, isFinalizado: boolean }) {
-    let isRechazado = props.isRechazado
-  let isFinalizado = props.isFinalizado
+    const isRechazado = props.isRechazado
+    const isFinalizado = props.isFinalizado
 
     const [open, setOpen] = useState(false);
     const router = useRouter();

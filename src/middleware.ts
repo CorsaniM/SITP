@@ -1,10 +1,20 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher(["/(.*)", "/forum(.*)"]);
+const isWebhookRoute = createRouteMatcher(["/api/uploadthing(.*)"]);
 
 export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) auth().protect();
+  // Permitir acceso a la ruta del webhook
+  if (isWebhookRoute(req)) {
+    return; // No hacer nada, deja que pase sin protección
+  }
+
+  // Proteger otras rutas
+  if (isProtectedRoute(req)) {
+    auth().protect();
+  }
 });
+
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };

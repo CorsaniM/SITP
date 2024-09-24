@@ -30,8 +30,8 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
 //   })div
 // })
 
-let isRechazado = ticket?.state === "Rechazado"; 
-let isFinalizado = ticket?.state === "Finalizado";
+const isRechazado = ticket?.state === "Rechazado"; 
+const isFinalizado = ticket?.state === "Finalizado";
 
 
 
@@ -54,9 +54,9 @@ let isFinalizado = ticket?.state === "Finalizado";
 
             <br />
             Description: {ticket?.description}
-            {ticket.images ? (null) : (
+            {/* {ticket.images ? (null) : (
               <h1>No contiene images</h1>
-            )}
+            )} */}
           <hr className='mt-3 bg-gray-800'/>
           <div className='flex-wrap place-content-center justify-center p-2 space-y-3'>
           <Aprobar ticket={ticket} isFinalizado ={isFinalizado} isRechazado ={isRechazado}  /> 

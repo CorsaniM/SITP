@@ -32,7 +32,6 @@ export const tickets = createTable(
 
 export const ticketsRelations = relations(tickets, ({ many, one }) => ({
   comments: many(comments),
-  images: many(images),
   participants: many(participants),
   companies: one(companies, {
     fields: [tickets.orgId],
@@ -97,11 +96,12 @@ export const userCompaniesRelations = relations(userCompanies, ({ one }) => ({
   }),
 }));
 
-export const commentsRelations = relations(comments, ({ one }) => ({
+export const commentsRelations = relations(comments, ({ one, many }) => ({
   ticket: one(tickets, {
     fields: [comments.ticketId],
     references: [tickets.id],
   }),
+  images: one(images),
 }));
 
 export const images = createTable(
@@ -109,8 +109,8 @@ export const images = createTable(
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userName: text("userName").notNull(),
-    ticketId: int("ticketId")
-      .references(() => tickets.id)
+    commentId: int("commentId")
+      .references(() => comments.id)
       .notNull(),
     url: text("url"),
     createdAt: int("created_at", { mode: "timestamp" })
@@ -122,10 +122,10 @@ export const images = createTable(
   }),
 );
 
-export const imagesRelations = relations(images, ({ one }) => ({
-  ticket: one(tickets, {
-    fields: [images.ticketId],
-    references: [tickets.id],
+export const imagesRelations = relations(images, ({ many, one }) => ({
+  comments: one(comments, {
+    fields: [images.commentId],
+    references: [comments.id],
   }),
 }));
 

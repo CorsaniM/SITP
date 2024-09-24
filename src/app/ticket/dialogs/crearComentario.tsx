@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import ImageUpload from "~/app/_components/image-upload";
 
 export function CrearComentario(props: { ticketId: number, isRechazado: boolean, isFinalizado: boolean }) {
-  let isRechazado = props.isRechazado
-  let isFinalizado = props.isFinalizado
-  let finish = isRechazado || isFinalizado
+  const isRechazado = props.isRechazado
+  const isFinalizado = props.isFinalizado
+  const finish = isRechazado || isFinalizado
 
   const [open, setOpen] = useState(false);
   const id = props.ticketId
@@ -89,7 +89,7 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
                     />
                     {error && <p className="text-red-500">{error}</p>}
 
-                    <ImageUpload/>
+                    <ImageUpload commentId={ticket?.id ?? 29}/>
 
                     </Dialog.Description>
                   </DialogHeader>

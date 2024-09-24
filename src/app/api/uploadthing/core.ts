@@ -1,39 +1,31 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
-import { getServerAuthSession } from "~/server/auth";
-import { z } from "zod";
-import { db, schema } from "~/server/db";
+import { db, schema } from "~/server/db"; // Importa correctamente tu configuración de la base de datos
 import { eq } from "drizzle-orm";
+import { z } from "zod";
+import { getServerAuthSession } from "~/server/auth";
 
 const f = createUploadthing();
 
 export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" } })
-    .input(z.object({ ticketId: z.string() }))
+    .input(z.object({ commentId: z.number() })) // Asegúrate de que el `ticketId` sea un string
     .middleware(async ({ input }) => {
       const session = await getServerAuthSession();
+      if (!session) throw new Error("No autorizado");
 
-      if (!session) throw new UploadThingError("Unauthorized");
-      if (!session) throw new UploadThingError("Unauthorized");
-
-      return { userId: session.user.id, ticketId: input.ticketId };
+      return { userId: session.user.id, commentId: input.commentId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const [respuesta] = await db
+      const [response] = await db
         .insert(schema.images)
         .values({
           userName: metadata.userId,
-          ticketId: parseInt(metadata.ticketId),
+          commentId: metadata.commentId,
           url: file.url,
         })
         .returning();
 
-      await db
-        .update(schema.comments)
-        .set({
-          ticketId: parseInt(metadata.ticketId),
-        })
-        .where(eq(schema.comments.ticketId, respuesta?.ticketId ?? 0));
+      console.log("Imagen subida correctamente:", response);
 
       return { uploadedBy: metadata.userId };
     }),

@@ -55,7 +55,7 @@ export function AddCompanyDialog() {
         await createCompany({
           orgId: organization.id ?? "",
           description: description,
-          name: organizationName,
+          name: organizationName, 
           state: "activa",
           address: address,
           phone_number: phone_number,
