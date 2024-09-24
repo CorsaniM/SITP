@@ -54,28 +54,36 @@ export const comments = createTable(
     createdAt: int("created_at", { mode: "timestamp" })
       .default(sql`(unixepoch())`)
       .notNull(),
-  },
-  (example) => ({
-    descriptionIndex: index("description_idx").on(example.description),
-  }),
-);
+    },
+    (example) => ({
+      descriptionIndex: index("description_idx").on(example.description),
+    }),
+  );
 
-export const companies = createTable("companies", {
-  id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-  orgId: text("orgId").notNull(),
-  name: text("name", { length: 255 }).notNull(),
-  razon_social: text("razon_social"),
-  description: text("description", { length: 255 }).notNull(),
-  state: text("state", { length: 255 }).notNull(),
-  phone_number: text("phone_number"),
-  address: text("address"),
-  createdAt: int("created_at", { mode: "timestamp" })
-    .default(sql`(unixepoch())`)
-    .notNull(),
-  updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-    () => new Date(),
-  ),
-});
+  export const companies = createTable("companies", {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    orgId: text("orgId").notNull(),
+    name: text("name", { length: 255 }).notNull(),
+    razon_social: text("razon_social"),
+    description: text("description", { length: 255 }).notNull(),
+    state: text("state", { length: 255 }).notNull(),
+    phone_number: text("phone_number"),
+    address: text("address"),
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+    updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
+      () => new Date(),
+    ),
+  });
+
+  export const commentsRelations = relations(comments, ({ one }) => ({
+    ticket: one(tickets, {
+      fields: [comments.ticketId],
+      references: [tickets.id],
+    }),
+    images: one(images),
+  }));
 
 export const userCompanies = createTable("userCompanies", {
   id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
@@ -83,12 +91,13 @@ export const userCompanies = createTable("userCompanies", {
   userId: text("userId").notNull(),
   orgId: int("orgId"),
   createdAt: int("created_at", { mode: "timestamp" })
-    .default(sql`(unixepoch())`)
-    .notNull(),
+  .default(sql`(unixepoch())`)
+  .notNull(),
   updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
     () => new Date(),
   ),
 });
+
 export const userCompaniesRelations = relations(userCompanies, ({ one }) => ({
   companies: one(companies, {
     fields: [userCompanies.orgId],
@@ -96,13 +105,6 @@ export const userCompaniesRelations = relations(userCompanies, ({ one }) => ({
   }),
 }));
 
-export const commentsRelations = relations(comments, ({ one }) => ({
-  ticket: one(tickets, {
-    fields: [comments.ticketId],
-    references: [tickets.id],
-  }),
-  images: one(images),
-}));
 
 export const images = createTable(
   "images",

@@ -74,8 +74,6 @@ const isFinalizado = ticket?.state === "Finalizado";
           <Messages className='w-full h-full text-lg overflow-y-auto
           border-collapse border border-gray-700 hover:border-collapse'>
   {comments ? comments.map((comments) => (
-        
-
          <MessageTile
                 key={comments.id}
                 title={comments.title}
