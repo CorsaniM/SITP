@@ -68,7 +68,7 @@ const [open, setOpen] = useState(false)
                     alt="User Profile"
                     /></div>}
                     />
-                : (<ListTile className='p-0 items-center min-w-fit' 
+                : (<ListTile className='p-2 items-center min-w-fit' 
                     title={<>
                         {username}
                     </>}
@@ -77,19 +77,22 @@ const [open, setOpen] = useState(false)
                 <div className='flex font-medium '>{props.title}</div>
             </div>}
             </div>
-<div className='flex flex-row justify-between'>
-            {props.description && <div className='flex px-2 max-h-40 overflow-y-auto text-justify'>{props.description}</div>}
-            {props.img && <img className='' src={props.img} alt='image' width={300} height={300} onClick={() => setOpen(true)}/>}
+<div className='flex flex-row flex-auto justify-between'>
+            {props.description && <div className='flex px-2 flex-1 max-h-60 overflow-y-auto text-justify'>{props.description}</div>}
+            {props.img && <div className='flex w-1/4 px-2 max-h-60 '>
+                <img src={props.img} alt='image' className='flex object-contain justify-center' onClick={() => setOpen(true)}/>
+            </div>
+            }
 </div>
 
         </>
         <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[700px]">
+        <DialogContent className="flex justify-center max-w-[80vw] max-h-[90vh] ">
           
-        <img src={props.img ?? ""} alt='image'  className="w-full h-auto" onClick={() => setOpen(false)}/>
-              <Button onClick={() => setOpen(false)}>
+        <img src={props.img ?? ""} alt='image'  className="flex object-contain " onClick={() => setOpen(false)}/>
+              {/* <Button onClick={() => setOpen(false)}>
                Cerrar
-              </Button>
+              </Button> */}
         </DialogContent>
 
         </Dialog>

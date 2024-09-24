@@ -121,7 +121,6 @@ export function DataTable<TData, TValue>({
         onClick={() => handleRowClick(row)}
       >
         {row.getVisibleCells().map((cell) => {
-          // Si es la columna de urgency, aplicamos la lógica personalizada
           if (cell.column.id === "urgency") {
             const { suppUrgency, urgency } = row.original as { suppUrgency: number | null, urgency: number | null };
             return (
@@ -130,8 +129,6 @@ export function DataTable<TData, TValue>({
               </TableCell>
             );
           }
-
-          // Renderiza el resto de las celdas de manera estándar
           return (
             <TableCell className="text-center" key={cell.id}>
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
