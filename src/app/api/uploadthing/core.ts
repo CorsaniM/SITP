@@ -1,30 +1,40 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { getServerAuthSession } from "~/server/auth";
+import { z } from "zod";
+import { db, schema } from "~/server/db";
+import { eq } from "drizzle-orm";
 
 const f = createUploadthing();
 
-const auth = (_req: Request) => ({ id: "fakeId" }); // Fake auth function
-// FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
-  // Define as many FileRoutes as you like, each with a unique routeSlug
   imageUploader: f({ image: { maxFileSize: "4MB" } })
-    // Set permissions and file types for this FileRoute
-    .middleware(async ({ req }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const user = auth(req);
+    .input(z.object({ ticketId: z.string() }))
+    .middleware(async ({ input }) => {
+      const session = await getServerAuthSession();
 
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!session) throw new UploadThingError("Unauthorized");
 
-      return { userName: user.id };
+      return { userId: session.user.id, ticketId: input.ticketId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userName:", metadata.userName);
+      const [respuesta] = await db
+        .insert(schema.images)
+        .values({
+          userName: metadata.userId,
+          ticketId: parseInt(metadata.ticketId),
+          url: file.url,
+        })
+        .returning();
 
-      console.log("file url", file.url);
+      await db
+        .update(schema.comments)
+        .set({
+          ticketId: parseInt(metadata.ticketId),
+        })
+        .where(eq(schema.comments.ticketId, respuesta?.ticketId ?? 0));
 
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userName };
+      return { uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;
 
