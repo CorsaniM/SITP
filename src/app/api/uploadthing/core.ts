@@ -1,5 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { getServerAuthSession } from "~/server/auth";
+import { db, schema } from "~/server/db";
 
 const f = createUploadthing();
 
@@ -11,19 +13,19 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const user = auth(req);
+      const session = getServerAuthSession();
 
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!session) throw new UploadThingError("Unauthorized");
 
-      return { userName: user.id };
+      return { userName: session.user.id};
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userName:", metadata.userName);
+      await db.insert(schema.images).values({
+        userName: metadata.userName,
+        ticketId: 0,
+        url: file.url
+      })
 
-      console.log("file url", file.url);
-
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userName };
     }),
 } satisfies FileRouter;

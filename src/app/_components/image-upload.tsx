@@ -16,23 +16,15 @@ export default function ImageUpload() {
       
       <UploadDropzone
         appearance={{
-          container: {
-            border: '5px dotted black',
-          },
-          uploadIcon: {
-            background: 'blue'
-          }
-        }}
+          container: {border: '5px dotted white'},
+          uploadIcon: {background: ''}}}
         endpoint='imageUploader'
         onClientUploadComplete={(res: UploadResponse[]) => {
-          // Do something with the response
-          console.log("Files: ", res);
           if (res.length > 0 && res) {
             setImageUrl(res[0]?.url ?? "");
           }
         }}
         onUploadError={(error: Error) => {
-          // Do something with the error.
           alert(`ERROR! ${error.message}`);
         }}
       />
