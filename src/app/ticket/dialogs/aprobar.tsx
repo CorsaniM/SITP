@@ -18,8 +18,8 @@ interface ticket {
 }
 
 export function Aprobar(props: { ticket: ticket, isRechazado: boolean, isFinalizado: boolean }) {
-  let isRechazado = props.isRechazado
-  let isFinalizado = props.isFinalizado
+  const isRechazado = props.isRechazado
+  const isFinalizado = props.isFinalizado
 
   const { mutateAsync: cambiar , isPending: isLoading} = api.tickets.update.useMutation();
   

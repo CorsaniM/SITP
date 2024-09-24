@@ -26,8 +26,8 @@ interface User {
 export function AsignarUsuario(props: {
   ticketId: number, isRechazado: boolean, isFinalizado: boolean
 }) {
-  let isRechazado = props.isRechazado
-  let isFinalizado = props.isFinalizado
+  const isRechazado = props.isRechazado
+  const isFinalizado = props.isFinalizado
 
   const [open, setOpen] = useState(false);
   

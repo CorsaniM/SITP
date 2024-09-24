@@ -3,9 +3,9 @@
 import { UploadDropzone } from "~/utils/uploadthing";
 import { useState } from "react";
 
-interface UploadResponse {
-  url: string;
-}
+// interface UploadResponse {
+//   url: string;
+// }
 
 export default function ImageUpload(props: { commentId: number }) {
   const commentId = props.commentId;

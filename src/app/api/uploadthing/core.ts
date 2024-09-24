@@ -1,6 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { db, schema } from "~/server/db"; // Importa correctamente tu configuración de la base de datos
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 
@@ -10,7 +9,7 @@ export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" } })
     .input(z.object({ commentId: z.number() })) // Asegúrate de que el `ticketId` sea un string
     .middleware(async ({ input }) => {
-      const session = await getServerAuthSession();
+      const session = getServerAuthSession();
       if (!session) throw new Error("No autorizado");
 
       return { userId: session.user.id, commentId: input.commentId };

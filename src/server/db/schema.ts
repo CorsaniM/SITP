@@ -96,7 +96,7 @@ export const userCompaniesRelations = relations(userCompanies, ({ one }) => ({
   }),
 }));
 
-export const commentsRelations = relations(comments, ({ one, many }) => ({
+export const commentsRelations = relations(comments, ({ one }) => ({
   ticket: one(tickets, {
     fields: [comments.ticketId],
     references: [tickets.id],
@@ -122,7 +122,7 @@ export const images = createTable(
   }),
 );
 
-export const imagesRelations = relations(images, ({ many, one }) => ({
+export const imagesRelations = relations(images, ({ one }) => ({
   comments: one(comments, {
     fields: [images.commentId],
     references: [comments.id],
