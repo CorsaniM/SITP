@@ -52,9 +52,9 @@ export default function ImageUpload() {
 
 
 <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[700px]">
+        <DialogContent className="sm:max-w-[700px] sm:max-h[400px] overflow-scroll">
           
-        <img src={imageUrl} alt='image' width={800} height={800} onClick={() => setOpen(false)}/>
+        <img src={imageUrl} alt='image'  className="w-full h-auto" onClick={() => setOpen(false)}/>
               <Button onClick={() => setOpen(false)}>
                Cerrar
               </Button>

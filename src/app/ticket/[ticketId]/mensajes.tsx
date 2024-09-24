@@ -86,7 +86,7 @@ const [open, setOpen] = useState(false)
         <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[700px]">
           
-        <img src={props.img ?? ""} alt='image' width={800} height={800} onClick={() => setOpen(false)}/>
+        <img src={props.img ?? ""} alt='image'  className="w-full h-auto" onClick={() => setOpen(false)}/>
               <Button onClick={() => setOpen(false)}>
                Cerrar
               </Button>
