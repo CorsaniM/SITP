@@ -14,6 +14,7 @@ export const ourFileRouter = {
       const session = await getServerAuthSession();
 
       if (!session) throw new UploadThingError("Unauthorized");
+      if (!session) throw new UploadThingError("Unauthorized");
 
       return { userId: session.user.id, ticketId: input.ticketId };
     })
