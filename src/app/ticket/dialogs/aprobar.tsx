@@ -45,7 +45,7 @@ const ticket = props.ticket
       <Button
         className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-[#85cf83] border hover:bg-[#57af54] hover:text-black"
         onClick={() => setOpen(true)}
-        disabled={isAprobado || isRechazado } // Deshabilita si el ticket está aprobado
+        disabled={isAprobado || isRechazado }
       >
         Finalizar
       </Button>
