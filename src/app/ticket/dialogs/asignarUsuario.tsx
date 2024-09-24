@@ -5,32 +5,31 @@ import { toast } from "sonner";
 import { Button } from "~/app/_components/ui/button";
 import { DialogHeader, DialogFooter, DialogContent, DialogTitle, Dialog } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
-import { isRechazado } from "./rechazar";
-import { isAprobado } from "./aprobar";
 
 interface User {
   id: string | null;
   firstName: string | null;
   fullName: string | null;
 }
-interface ticket {
-  id: number;
-  orgId: number | null;
-  state: string | null;
-  urgency: number | null;
-  suppUrgency: number | null;
-  title: string | null;
-  description: string | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
+// interface ticket {
+//   id: number;
+//   orgId: number | null;
+//   state: string | null;
+//   urgency: number | null;
+//   suppUrgency: number | null;
+//   title: string | null;
+//   description: string | null;
+//   createdAt: Date;
+//   updatedAt: Date | null;
+// }
 
 export function AsignarUsuario(props: {
-  ticket: any; ticketId: number 
+  ticketId: number, isRechazado: boolean, isFinalizado: boolean
 }) {
+  let isRechazado = props.isRechazado
+  let isFinalizado = props.isFinalizado
+
   const [open, setOpen] = useState(false);
-  const ticket = props.ticket;
-  
   
   const { mutateAsync: createParticipants, isPending: isLoading } = api.participants.create.useMutation();
   const { data: response } = api.clerk.list.useQuery(); 
@@ -104,7 +103,7 @@ export function AsignarUsuario(props: {
       <Button
         className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
         onClick={() => setOpen(true)}
-        disabled={isRechazado|| isLoading  || isAprobado} 
+        disabled={isRechazado|| isLoading  || isFinalizado} 
       >
         Asignar usuario
       </Button>

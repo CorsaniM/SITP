@@ -15,6 +15,7 @@ export const commentsRouter = createTRPCRouter({
         title: z.string(),
         description: z.string(),
         createdAt: z.date().optional(),
+        isFinish: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -32,21 +33,24 @@ export const commentsRouter = createTRPCRouter({
           type: "sent",
           description: "Comentario enviado",
         });
-        await ctx.db
+        if (!input?.isFinish){
+          await ctx.db
           .update(schema.tickets)
           .set({ state: "En espera" })
           .where(eq(schema.tickets.id, input.ticketId));
+        }
       } else {
         await ctx.db.insert(schema.events).values({
           ticketId: respuesta?.id,
           type: "recieved",
           description: "Comentario recibido",
         });
+        if (!input?.isFinish){
         await ctx.db
           .update(schema.tickets)
           .set({ state: "En curso" })
           .where(eq(schema.tickets.id, input.ticketId));
-      }
+      }}
 
       if (!respuesta) {
         throw new Error("Error al crear el comentario");

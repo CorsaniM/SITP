@@ -8,7 +8,7 @@ import { AsignarPrioridad } from "./asigPrioridad";
 import { number } from "zod";
 import { participants } from "~/server/db/schema";
 import { AsignarUsuario } from "./asignarUsuario";
-import { isAprobado } from "./aprobar";
+
 
 interface ticket {
     id: number;
@@ -21,9 +21,12 @@ interface ticket {
     createdAt: Date;
     updatedAt: Date | null;
   }
-  export let isRechazado: boolean = false   
+  
 
-  export function Rechazar(props: { ticket: ticket }) {
+  export function Rechazar(props: { ticket: ticket, isRechazado: boolean, isFinalizado: boolean }) {
+    let isRechazado = props.isRechazado
+  let isFinalizado = props.isFinalizado
+
     const [open, setOpen] = useState(false);
     const router = useRouter();
     const { mutateAsync: cambiar, isPending: isLoading } = api.tickets.update.useMutation();
@@ -38,15 +41,13 @@ interface ticket {
       setOpen(false);
       router.refresh(); 
     }
-  
-    isRechazado = ticket.state === "Rechazado";
-  
+
     return (
       <>
         <Button
           className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-[#581e1e] border hover:bg-[#8d3030] hover:text-black"
           onClick={() => setOpen(true)}
-          disabled={isRechazado || isAprobado || isLoading}  // Deshabilitar si el ticket está rechazado
+          disabled={isRechazado || isFinalizado || isLoading}  // Deshabilitar si el ticket está rechazado
         >
           Rechazar
         </Button>

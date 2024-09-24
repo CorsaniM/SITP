@@ -7,8 +7,13 @@ import { DialogHeader, DialogFooter } from "~/app/_components/ui/dialog";
 import { api } from "~/trpc/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import ImageUpload from "~/app/_components/image-upload";
 
-export function CrearComentario(props: { ticketId: number }) {
+export function CrearComentario(props: { ticketId: number, isRechazado: boolean, isFinalizado: boolean }) {
+  let isRechazado = props.isRechazado
+  let isFinalizado = props.isFinalizado
+  let finish = isRechazado || isFinalizado
+
   const [open, setOpen] = useState(false);
   const id = props.ticketId
   const ticket = api.tickets.getById.useQuery({ id }).data;
@@ -22,6 +27,9 @@ export function CrearComentario(props: { ticketId: number }) {
   const [title, setTitle] = useState(ticket?.title ?? "")
   
   // const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+
+
+
   async function handleCreate() {
     if(!description || !title){
       setError('Todos los campos son obligatorios')
@@ -36,6 +44,7 @@ export function CrearComentario(props: { ticketId: number }) {
             state: "no leido",
             description: description,
             createdAt: new Date,
+            isFinish: finish
         })  
          
         toast.success('Mensaje enviado')
@@ -59,10 +68,8 @@ export function CrearComentario(props: { ticketId: number }) {
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <Dialog.Portal>
             <Dialog.Overlay className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40" />
-
-              {/* Contenido del diálogo */}
               <Dialog.Content className="fixed  z-50 m-auto inset-0 flex items-center justify-center">
-                <div className="bg-gray-800 h-[55vh] w-[50vw] min-w-80 p-6 rounded-lg shadow-lg">
+                <div className="bg-gray-800 w-[50vw] min-w-80 p-6 rounded-lg shadow-lg pb-0">
                   <DialogHeader>
                     <Dialog.Title>Ingrese un nuevo comentario</Dialog.Title>
                     <Dialog.Description className="space-y-3">
@@ -81,6 +88,9 @@ export function CrearComentario(props: { ticketId: number }) {
                     onChange={(e) => setDescription(e.target.value)}
                     />
                     {error && <p className="text-red-500">{error}</p>}
+
+                    <ImageUpload/>
+
                     </Dialog.Description>
                   </DialogHeader>
                   <DialogFooter>

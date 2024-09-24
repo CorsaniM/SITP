@@ -30,6 +30,11 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
 //   })div
 // })
 
+let isRechazado = ticket?.state === "Rechazado"; 
+let isFinalizado = ticket?.state === "Finalizado";
+
+
+
   return (
     <LayoutContainer>
     <div className="w-full md:px-20 lg:px-32 xl:px-40">
@@ -54,11 +59,11 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
             )}
           <hr className='mt-3 bg-gray-800'/>
           <div className='flex-wrap place-content-center justify-center p-2 space-y-3'>
-          <Aprobar ticket={ticket}/> 
-          <Rechazar ticket={ticket}/>
-          <AsignarUsuario ticketId={parseInt(id)} ticket={undefined}/>
-          <CrearComentario ticketId={parseInt(id)}/>
-          <AsignarPrioridad ticket={ticket}/>
+          <Aprobar ticket={ticket} isFinalizado ={isFinalizado} isRechazado ={isRechazado}  /> 
+          <Rechazar ticket={ticket} isFinalizado ={isFinalizado} isRechazado ={isRechazado} />
+          <AsignarUsuario ticketId={parseInt(id)} isFinalizado ={isFinalizado} isRechazado ={isRechazado} />
+          <CrearComentario ticketId={parseInt(id)} isFinalizado ={isFinalizado} isRechazado ={isRechazado} />
+          <AsignarPrioridad ticket={ticket} isFinalizado ={isFinalizado} isRechazado ={isRechazado} />
 
           </div>
           

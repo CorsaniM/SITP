@@ -4,8 +4,6 @@ import { api } from "~/trpc/react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/app/_components/ui/select";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { isRechazado } from "./rechazar";
-import { isAprobado } from "./aprobar";
 
 interface Ticket {
   id: number;
@@ -20,8 +18,11 @@ interface Ticket {
 }
 
 export function AsignarPrioridad(props: {
-  ticket: Ticket 
+  ticket: Ticket, isRechazado: boolean, isFinalizado: boolean 
 }) {
+  let isRechazado = props.isRechazado
+  let isFinalizado = props.isFinalizado
+
   const [open, setOpen] = useState(false);
   const { mutateAsync: cambiar, isPending: isLoading } = api.tickets.update.useMutation();
   const queryClient = useQueryClient();
@@ -50,7 +51,7 @@ export function AsignarPrioridad(props: {
   return (
     <>
       <div className="inline-flex m-2 text-white disabled:opacity-50 text-lg w-1/5 bg-gray-800 hover:bg-gray-500 hover:text-black">
-        <Select  disabled={isRechazado || isLoading || isAprobado} open={open} onOpenChange={setOpen} onValueChange={HandleUpdate}>
+        <Select  disabled={isRechazado || isLoading || isFinalizado} open={open} onOpenChange={setOpen} onValueChange={HandleUpdate}>
           <SelectTrigger className="bg-gray-700">
             <SelectValue placeholder="Asignar prioridad" />
           </SelectTrigger>
