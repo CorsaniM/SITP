@@ -94,9 +94,9 @@ export function AsignarUsuario(props: {
 
 
     }
-    router.refresh();
     setOpen(false);
     setUsuariosAEliminar([]);
+    router.refresh();
   }
 
   return (

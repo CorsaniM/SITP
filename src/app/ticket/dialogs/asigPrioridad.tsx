@@ -3,6 +3,7 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "~/app/_components/ui/select";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { isRechazado } from "./rechazar";
 import { isAprobado } from "./aprobar";
 
@@ -23,7 +24,8 @@ export function AsignarPrioridad(props: {
 }) {
   const [open, setOpen] = useState(false);
   const { mutateAsync: cambiar, isPending: isLoading } = api.tickets.update.useMutation();
-  const router = useQueryClient();
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const ticket = props.ticket;
 
 
@@ -40,8 +42,9 @@ export function AsignarPrioridad(props: {
       suppUrgency: number,
       updatedAt: new Date(),
     });
-    await router.invalidateQueries();
+    await queryClient.invalidateQueries();
     setOpen(false);
+    router.refresh();
   }
 
   return (
@@ -49,7 +52,7 @@ export function AsignarPrioridad(props: {
       <div className="inline-flex m-2 text-white disabled:opacity-50 text-lg w-1/5 bg-gray-800 hover:bg-gray-500 hover:text-black">
         <Select  disabled={isRechazado || isLoading || isAprobado} open={open} onOpenChange={setOpen} onValueChange={HandleUpdate}>
           <SelectTrigger className="bg-gray-700">
-            <SelectValue placeholder="prio" />
+            <SelectValue placeholder="Asignar prioridad" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

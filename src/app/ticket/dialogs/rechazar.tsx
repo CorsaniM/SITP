@@ -43,7 +43,6 @@ interface ticket {
   
     return (
       <>
-        {/* Botón para abrir el diálogo de rechazo */}
         <Button
           className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-[#581e1e] border hover:bg-[#8d3030] hover:text-black"
           onClick={() => setOpen(true)}
