@@ -40,7 +40,7 @@ export function AsignarPrioridad(props: {
 
     await cambiar({
       id: ticket.id,
-      suppUrgency: number,
+      urgency: number,
       updatedAt: new Date(),
     });
     await queryClient.invalidateQueries();

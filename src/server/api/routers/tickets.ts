@@ -154,7 +154,7 @@ export const ticketsRouter = createTRPCRouter({
         id: z.number(),
         orgId: z.number().optional(),
         state: z.string().optional(),
-        suppUrgency: z.number().optional(),
+        urgency: z.number().optional(),
         updatedAt: z.date(),
       }),
     )

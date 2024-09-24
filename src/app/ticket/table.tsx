@@ -121,14 +121,6 @@ export function DataTable<TData, TValue>({
         onClick={() => handleRowClick(row)}
       >
         {row.getVisibleCells().map((cell) => {
-          if (cell.column.id === "urgency") {
-            const { suppUrgency, urgency } = row.original as { suppUrgency: number | null, urgency: number | null };
-            return (
-              <TableCell className="text-center" key={cell.id}>
-                {suppUrgency && suppUrgency !== 0 ? suppUrgency : urgency}
-              </TableCell>
-            );
-          }
           return (
             <TableCell className="text-center" key={cell.id}>
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
