@@ -46,7 +46,6 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
             createdAt: new Date,
             isFinish: finish
         })  
-         
         toast.success('Mensaje enviado')
         await queryClient.invalidateQueries()
         setDescription("")
@@ -89,7 +88,7 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
                     />
                     {error && <p className="text-red-500">{error}</p>}
 
-                    <ImageUpload commentId={ticket?.id ?? 29}/>
+                    <ImageUpload/>
 
                     </Dialog.Description>
                   </DialogHeader>

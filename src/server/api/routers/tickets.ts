@@ -54,7 +54,7 @@ export const ticketsRouter = createTRPCRouter({
       const ticketWithRelations = await ctx.db.query.tickets.findFirst({
         where: eq(tickets.id, input.id),
         with: {
-          comments: true,
+          comments: { with: { images: true } },
           participants: true,
         },
       });

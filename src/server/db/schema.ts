@@ -109,9 +109,7 @@ export const images = createTable(
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     userName: text("userName").notNull(),
-    commentId: int("commentId")
-      .references(() => comments.id)
-      .notNull(),
+    commentId: int("commentId"),
     url: text("url"),
     createdAt: int("created_at", { mode: "timestamp" })
       .default(sql`(unixepoch())`)

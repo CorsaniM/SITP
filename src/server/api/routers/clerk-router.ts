@@ -15,6 +15,18 @@ export const clerkRouter = createTRPCRouter({
         throw new Error("Error fetching user by ID");
       }
     }),
+  getUsername: protectedProcedure
+    .input(z.object({ username: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        const response = (await clerkClient.users.getUserList()).data.find(
+          (x) => x.username === input.username,
+        );
+        return response;
+      } catch (e) {
+        throw new Error("Error fetching user by ID");
+      }
+    }),
   list: protectedProcedure.query(async () => {
     try {
       const response = await clerkClient.users.getUserList();

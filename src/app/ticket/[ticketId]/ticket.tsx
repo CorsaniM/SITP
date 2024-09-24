@@ -74,13 +74,21 @@ const isFinalizado = ticket?.state === "Finalizado";
           <Messages className='w-full h-full text-lg overflow-y-auto
           border-collapse border border-gray-700 hover:border-collapse'>
   {comments ? comments.map((comments) => (
-          <MessageTile
+        
+
+         <MessageTile
                 key={comments.id}
                 title={comments.title}
                 description={comments.description}
                 from={comments.userName}
-              />
-          )) : (<h1>No hay mensajes</h1>)}
+                img={comments.images?.url}
+                user={comments.userName}
+                />
+           
+    
+  )) : (
+    <p>No hay comentarios</p>
+  )}
       </Messages>
         </div>
       </Card>

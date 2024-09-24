@@ -1,25 +1,23 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { db, schema } from "~/server/db"; // Importa correctamente tu configuración de la base de datos
-import { z } from "zod";
+import { db, schema } from "~/server/db";
 import { getServerAuthSession } from "~/server/auth";
 
 const f = createUploadthing();
 
 export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" } })
-    .input(z.object({ commentId: z.number() })) // Asegúrate de que el `ticketId` sea un string
     .middleware(async ({ input }) => {
       const session = getServerAuthSession();
       if (!session) throw new Error("No autorizado");
 
-      return { userId: session.user.id, commentId: input.commentId };
+      return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const [response] = await db
         .insert(schema.images)
         .values({
           userName: metadata.userId,
-          commentId: metadata.commentId,
+          commentId: 0,
           url: file.url,
         })
         .returning();

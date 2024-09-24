@@ -26,6 +26,11 @@ export const commentsRouter = createTRPCRouter({
         .values(input)
         .returning();
 
+      await ctx.db
+        .update(schema.images)
+        .set({ commentId: respuesta?.id })
+        .where(eq(schema.images.commentId, 0));
+
       if (respuesta?.userName) {
         await ctx.db.insert(schema.events).values({
           userName: respuesta?.userName,

@@ -39,52 +39,49 @@ export function AddCompanyDialog() {
   const router = useRouter();
   
   async function handleCreate() {
+    console.log("Attempting to create organization with:", organizationName);
+
     try {
-      if(!razon_social || !organizationName || !description || !phone_number){
-        setError("Todos los campos son obligatorios");
-        return toast.error("Todos los campos son obligatorios");
+        if (!razon_social || !organizationName || !description || !phone_number) {
+            setError("Todos los campos son obligatorios");
+            toast.error("Todos los campos son obligatorios");
+            return;
+        }
+
+        let organization;
+        if (createOrganization) {
+            organization = await createOrganization({ name: organizationName });
+            console.log("Organization created:", organization);
+        } else {
+            console.warn("createOrganization is undefined");
+        }
+
+        if (organization) {
+            await createCompany({
+                orgId: organization.id ?? "",
+                description: description,
+                name: organizationName,
+                state: "activa",
+                address: address,
+                phone_number: phone_number,
+                razon_social: razon_social,
+                updatedAt: new Date(),
+            });
+            console.log("Company created successfully");
+        }
         
-      }
-      let organization;
-      if (createOrganization) {
-        organization = await createOrganization({ name: organizationName });
-      } else {
-        console.warn("createOrganization is undefined");
-      }
-      if (organization) {
-        await createCompany({
-          orgId: organization.id ?? "",
-          description: description,
-          name: organizationName, 
-          state: "activa",
-          address: address,
-          phone_number: phone_number,
-          razon_social: razon_social,
-          updatedAt: new Date(),
-        });
-       
-        await createEvent({
-          orgId: organization.id,
-          type: "Creado por el administrador",
-          description: "Se ha creado una nueva entidad",
-          userName: user?.fullName ?? "admin",
-        });
-      }
-      setDescription("");
-      
-      toast.success("Entidad creado correctamente");
-      router.refresh();
-      setOpen(false);
+        // More logic follows...
     } catch (e) {
-      setError("ocurrio un error al crear entidad");
-      const errorResult = asTRPCError(e);
-      if (errorResult) {
-        toast.error(errorResult.message);
-      } else {
-        console.error("Error conversion failed");
-      }
+        console.error("Error creating organization or company:", e);
+        setError("ocurrio un error al crear entidad" + e);
+        const errorResult = asTRPCError(e);
+        if (errorResult) {
+            toast.error(errorResult.message);
+        } else {
+            console.error("Error conversion failed");
+        }
     }
-  };
+}
 
   return (
     <>
