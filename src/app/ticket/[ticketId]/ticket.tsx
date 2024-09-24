@@ -56,7 +56,7 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
           <div className='flex-wrap place-content-center justify-center p-2 space-y-3'>
           <Aprobar ticket={ticket}/> 
           <Rechazar ticket={ticket}/>
-          <AsignarUsuario ticketId={parseInt(id)}/>
+          <AsignarUsuario ticketId={parseInt(id)} ticket={undefined}/>
           <CrearComentario ticketId={parseInt(id)}/>
           <AsignarPrioridad ticket={ticket}/>
 
