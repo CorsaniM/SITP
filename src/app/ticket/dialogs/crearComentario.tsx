@@ -22,14 +22,10 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
-
   const [description, setDescription] = useState("")
   const [title, setTitle] = useState(ticket?.title ?? "")
+  const [imageId, setImageId] = useState<number | null>(0);
   
-  // const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-
-
-
   async function handleCreate() {
     if(!description || !title){
       setError('Todos los campos son obligatorios')
@@ -58,6 +54,21 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
         toast.error('No se pudo crear el mensaje')
     }
 }
+
+const {mutateAsync:deleteImage} = api.images.delete.useMutation()
+
+async function handleCancel() {
+    try {
+    await deleteImage({
+      id: 0,
+    })
+      toast.success('Imagen eliminada');
+    } catch (error) {
+      toast.error('No se pudo eliminar la imagen');
+  }
+  setOpen(false);
+}
+
   return (
     <>
       <Button className="m-2 px-4 py-2 text-white disabled:opacity-50 text-lg rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
@@ -88,7 +99,8 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
                     />
                     {error && <p className="text-red-500">{error}</p>}
 
-                    <ImageUpload/>
+                    <ImageUpload setImageId={setImageId} />
+
 
                     </Dialog.Description>
                   </DialogHeader>
@@ -102,7 +114,7 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
                     </Button>
                     <Button className="m-4 px-4 py-2 text-white disabled:opacity-50 text-lg 
                       rounded-full bg-gray-800 border hover:bg-gray-500 hover:text-black"
-                      onClick={() => setOpen(false)}>Cancelar</Button>
+                      onClick={handleCancel}>Cancelar</Button>
                   </DialogFooter>
                 </div>
               </Dialog.Content>

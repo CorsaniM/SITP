@@ -5,9 +5,14 @@ import { useState } from "react";
 import { Dialog,
   DialogContent } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { api } from "~/trpc/react";
+import { toast } from "sonner";
 
-export default function ImageUpload() {
-  
+interface ImageUploadProps {
+  setImageId: (id: number | 0) => void; 
+}
+
+export default function ImageUpload({ setImageId }: ImageUploadProps) {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [isZoomed, setIsZoomed] = useState(false);     
   const [open, setOpen] = useState(false)
@@ -24,9 +29,17 @@ export default function ImageUpload() {
     setTransformOrigin({ x: originX, y: originY });
     setIsZoomed(prev => !prev);
   };
-
-  const handleImageDelete = () => {
-    setImageUrl(""); 
+  const {mutateAsync:deleteImage} = api.images.delete.useMutation()
+  const handleImageDelete = async () => {
+    try {
+      await deleteImage({
+        id: 0,
+      })
+      setImageUrl("");
+        toast.success('Imagen eliminada');
+      } catch (error) {
+        toast.error('No se pudo eliminar la imagen');
+    }
   };
 
   return (
