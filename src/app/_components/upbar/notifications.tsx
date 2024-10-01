@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import { Bell } from "lucide-react";
-import { Messages, MessageTile } from "~/app/ticket/[ticketId]/mensajes";
+import { Messages } from "~/app/ticket/[ticketId]/mensajes";
 import { api } from "~/trpc/react";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 import { ListTile } from "../ui/list";
 
@@ -24,7 +21,7 @@ export default function NotificationButton() {
       router.push(`/ticket/${id}`);
     }
   return (
-    <div className="relative bg-gray-500 rounded-full p-1 mr-3 ">
+    <div className="relative hover:bg-gray-700 rounded-full p-1.5 mr-3 ">
       <div
         className="cursor-pointer relative"
         onClick={() => setIsOpen(!isOpen)}

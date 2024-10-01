@@ -1,21 +1,31 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
- 
-import { Button } from "../_components/ui/button"
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "../_components/ui/button";
+import { api } from "~/trpc/react"; // Asegúrate de que la importación sea correcta
+import { useEffect, useState } from "react";
 
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type TablaTickets = {
-  id: number
-  orgId: number|null
-  state: string|null
-  urgency: number|null
-  suppUrgency: number|null
-  createdAt: Date
+interface UrgenciaMap {
+  [key: number]: string;
 }
+
+const urgenciaMap: UrgenciaMap = {
+  1: "Leve",
+  2: "Baja",
+  3: "Moderado",
+  4: "Alto",
+  5: "Urgente",
+};
+
+export type TablaTickets = {
+  id: number;
+  orgId: number | null;
+  state: string | null;
+  urgency: number | null;
+  suppUrgency: number | null;
+  createdAt: Date;
+};
 
 export const columns: ColumnDef<TablaTickets>[] = [
   {
@@ -29,7 +39,24 @@ export const columns: ColumnDef<TablaTickets>[] = [
           Organización
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
+    },
+    cell: ({ getValue, row }) => {
+      const orgId = getValue<number | null>();
+      const { data: organizations, isLoading } = api.companies.list.useQuery();
+
+      if (isLoading) {
+        return "Cargando...";
+      }
+
+      const orgMap = organizations?.reduce((acc, org) => {
+        acc[org.id] = org.name;
+        return acc;
+      }, {} as Record<number, string>) || {};
+
+      const organizationName = orgId ? orgMap[orgId] : "Sin organización";
+
+      return organizationName || "Desconocido";
     },
   },
   {
@@ -43,7 +70,7 @@ export const columns: ColumnDef<TablaTickets>[] = [
           Estado
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
   },
   {
@@ -57,7 +84,7 @@ export const columns: ColumnDef<TablaTickets>[] = [
           Fecha de creación
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleDateString(),
   },
@@ -67,42 +94,18 @@ export const columns: ColumnDef<TablaTickets>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === "asc")
+          }
         >
           Urgencia
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
+    },
+    cell: ({ getValue }) => {
+      const valorUrgencia = getValue<number>();
+      return urgenciaMap[valorUrgencia] || "Desconocido";
     },
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const ticket = row.original
- 
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <MoreHorizontal className="h-4 w-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={() => navigator.clipboard.writeText(JSON.stringify(ticket.id))}
-  //           >
-  //             Copy ticket ID
-  //           </DropdownMenuItem>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem>View customer</DropdownMenuItem>
-  //           <DropdownMenuItem>View ticket details</DropdownMenuItem>
-            
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     )
-  //   },
-  // },
-]
-
+];

@@ -94,7 +94,7 @@ console.log(availableUsers)
     return (
       <>
         <Button
-          className="m-2 px-4 py-2 text-black text-lg rounded-full bg-gray-800 border hover:text-black"
+          className="m-2 px-4 py-2 text-lg rounded-full border hover:text-gray-200 hover:bg-gray-700"
           onClick={() => setOpen(true)}
         >
           Asignar usuario

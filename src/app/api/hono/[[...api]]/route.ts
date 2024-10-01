@@ -16,7 +16,7 @@ app.get("/ticket/:id", async (c) => {
   }
 });
 // http://localhost:3000/api/hono/ticket/get/8/2/Test%20Ticket/This%20is%20a%20test%20description
-
+// http://localhost:3000/api/hono/comments/get/1/dimetallo/Test%20Ticket/This%20is%20a%20test%20description
 app.get("/:type/get/:identifier/:urgency/:title/:description", async (c) => {
   const type = c.req.param("type");
   if (type === "ticket") {

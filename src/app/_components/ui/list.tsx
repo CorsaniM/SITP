@@ -33,7 +33,7 @@ export function ListTile(props: ListTileProps) {
         <>
             {props.leading && <div className='flex p-1 items-center justify-center'>{props.leading}</div>}
             <div className='flex flex-row w-full justify-between'>
-                <div className='flex font-medium p-1 '>{props.title}</div>
+                <div className='flex font-medium p-1 whitespace-nowrap'>{props.title}</div>
                 <div className='flex text-md font-normal p-1 '>{props.subtitle}</div>
             </div>
             {props.trailing && <div className='flex font-light p-1 place-self-start'>{props.trailing}</div>}
@@ -57,7 +57,7 @@ export function ListTile(props: ListTileProps) {
     }
 
     return (
-        <li className='flex border border-gray-700 truncate rounded-md' role='button' onClick={props.onClick}>
+        <li className='flex border border-gray-700 rounded-md' role='button' onClick={props.onClick}>
             {content}
         </li>
     )

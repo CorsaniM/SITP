@@ -30,9 +30,11 @@ const isAdmin = UseCheckRole("Admin");
       {isAdmin ? (
         <List>
           {usersList ? usersList.data.map((usuario) => (
+            <div className="m-auto max-w-xl">
             <ListTile
               key={usuario.id}
               href={`./users/${usuario.id}`}
+              className="flex-row"
               title={
                 <>
                   {usuario.firstName} {usuario.lastName}
@@ -44,15 +46,16 @@ const isAdmin = UseCheckRole("Admin");
                 )?.emailAddress
               }
               leading={
-                <div>
+                <div className="px-1">
                   <img
-                    className="h-10 rounded-full"
+                    className=" h-10 w-10 rounded-full"
                     src={usuario.imageUrl}
                     alt="User Profile"
-                  />
+                    />
                 </div>
               }
-            />
+              />
+            </div>
           )) : (
             <h1>No hay usuarios</h1>
           )}

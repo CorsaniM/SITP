@@ -16,9 +16,13 @@ import { useQueryClient } from '@tanstack/react-query';
 dayjs.extend(utc);
 dayjs.locale("es");
 
+interface UrgenciaMap {
+  [key: number]: string;
+}
 export default function TicketPage(props:{params:{ticketId: string}}) {
   const id = props.params.ticketId
   const ticket = api.tickets.getById.useQuery({ id: parseInt(id) }).data;
+  const org = api.companies.get.useQuery({ id: ticket?.orgId ?? 0 }).data;
   const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
 
 const isRechazado = ticket?.state === "Rechazado"; 
@@ -39,29 +43,37 @@ const queryClient = useQueryClient();
         queryClient.invalidateQueries()
       }
   }, [ticket, updateMensaje]);
+  const urgenciaMap: UrgenciaMap = {
+    1: "Leve",
+    2: "Baja",
+    3: "Moderado",
+    4: "Alto",
+    5: "Urgente",
+  };
+
+  const urg:string = urgenciaMap[ticket?.urgency ?? 0] || "Desconocido";
 
   return (
     <LayoutContainer>
     <div className="w-full md:px-20 lg:px-32 xl:px-40">
         {ticket ? (
           <Card>
-        <div className='bg-gray-800 p-2 border-collapse text-lg text-wrap'>
+        <div className='bg-gray-800 p-2 border-collapse text-lg text-wrap '>
           <div className='flex flex-row bg-gray-800 '>
             <div className='w-1/2 px-2'>
-            <CardTitle>ID: {ticket?.id} - {ticket?.title}</CardTitle>
-            Fecha de creación: {dayjs.utc(ticket.createdAt).format('DD/MM/YYYY')}
+            <CardTitle>Ticket N° {ticket?.id} - {ticket?.title}</CardTitle>
+            Creado por <b>{org?.name}</b> el <b>{dayjs.utc(ticket.createdAt).format('DD/MM/YYYY')}</b>
             </div>
             <div className='flex flex-auto w-1/2 px-2 justify-end bg-gray-800'>
             Estado: {ticket?.state} <br />
-            Urgencia: {ticket?.urgency}
+            Urgencia: {urg}
             </div>
-          </div>
+            </div>
 
             <br />
-            Description: {ticket?.description}
-            {/* {ticket.images ? (null) : (
-              <h1>No contiene images</h1>
-            )} */}
+            <div className='px-2'>
+            {ticket?.description}
+            </div>
           <hr className='mt-3 bg-gray-800'/>
           <div className='flex-wrap place-content-center justify-center p-2 space-y-3'>
           <Aprobar ticket={ticket} isFinalizado ={isFinalizado} isRechazado ={isRechazado}  /> 
