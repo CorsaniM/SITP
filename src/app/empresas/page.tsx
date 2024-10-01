@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <LayoutContainer>
-      <section className="space-y-2">
+      <section className="w-full space-y-3">
         <div className="flex justify-between">
           <Title>Entidades</Title>
           <AddCompanyDialog />

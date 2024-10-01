@@ -25,12 +25,11 @@ const isAdmin = UseCheckRole("Admin");
   return (
     <>
     <LayoutContainer>
-      <div className="m-5 space-y-5">
+      <div className=" ">
       <Title>Usuarios</Title>
       {isAdmin ? (
         <List>
           {usersList ? usersList.data.map((usuario) => (
-            <div className="m-auto max-w-xl">
             <ListTile
               key={usuario.id}
               href={`./users/${usuario.id}`}
@@ -55,7 +54,6 @@ const isAdmin = UseCheckRole("Admin");
                 </div>
               }
               />
-            </div>
           )) : (
             <h1>No hay usuarios</h1>
           )}

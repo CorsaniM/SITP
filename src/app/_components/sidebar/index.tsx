@@ -4,6 +4,7 @@ import {
     Mails,
     Rows3,
     Users,
+    Building,
   } from "lucide-react";
 import Sidenav, { SidenavItem } from '../sidenav';
 import { useCheckRole } from "~/lib/react/roles";
@@ -24,8 +25,8 @@ export default function Page() {
             <SidenavItem icon={<Rows3 />} href="/events">
               Eventos
             </SidenavItem>
-            <SidenavItem icon={<Rows3 />} href="/empresas">
-              Empresas
+            <SidenavItem icon={<Building />} href="/empresas">
+              Entidades
             </SidenavItem>
           </Sidenav>
             )

@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <LayoutContainer>
-      <section className="space-y-2">
+      <section className="">
         <div className="flex justify-between">
           <Title>Roles</Title>
 

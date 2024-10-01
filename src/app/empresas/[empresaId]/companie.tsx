@@ -45,8 +45,6 @@ export default function CompanyPage({
   company: NonNullable<RouterOutputs["companies"]["get"]>;
   userList: User[];
 }) {
-
-  console.log("COMPANY", userList);
   const [phone, setPhone] = useState(company.phone_number ?? "");
   const [state, setState] = useState(company.state ?? "");
   const [name, setname] = useState(
@@ -84,7 +82,7 @@ export default function CompanyPage({
   if(!isAdmin) return <>Acceso denegado</>;
   return (
     <LayoutContainer>
-      <section className="space-y-2">
+      <section className="">
         <div className="flex justify-between">
           <Title>{company.name}</Title>
           <Button disabled={isLoading} onClick={handleChange}>

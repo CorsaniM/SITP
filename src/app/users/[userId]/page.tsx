@@ -78,13 +78,13 @@ export default function UserPage(props: { params: { userId: string } }) {
 
   return (
     <LayoutContainer>
-      <div className="">
+      <div className=" ">
         <Title>Usuarios</Title>
         <div className="mt-20">
           {isLoading ? (
             <div>Cargando...</div>
           ) : (
-            <section className="space-y-2">
+            <section className="">
               <div className="flex justify-between">
                 <Title>
                   {firstName} {lastName}

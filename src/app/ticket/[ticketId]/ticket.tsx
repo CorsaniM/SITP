@@ -55,7 +55,7 @@ const queryClient = useQueryClient();
 
   return (
     <LayoutContainer>
-    <div className="w-full md:px-20 lg:px-32 xl:px-40">
+    <div className="">
         {ticket ? (
           <Card>
         <div className='bg-gray-800 p-2 border-collapse text-lg text-wrap '>
