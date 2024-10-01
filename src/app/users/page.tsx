@@ -46,9 +46,9 @@ const isAdmin = UseCheckRole("Admin");
                 )?.emailAddress
               }
               leading={
-                <div className="px-1">
+                <div className="flex mx-1">
                   <img
-                    className=" h-10 w-10 rounded-full"
+                    className="h-11 w-12 rounded-full"
                     src={usuario.imageUrl}
                     alt="User Profile"
                     />
