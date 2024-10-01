@@ -33,7 +33,7 @@ export const commentsRouter = createTRPCRouter({
 
       if (respuesta?.userName) {
         await ctx.db.insert(schema.events).values({
-          userName: respuesta?.userName,
+          userName: respuesta?.userName.replace("org", ""),
           ticketId: respuesta?.id,
           type: "sent",
           description: "Comentario enviado",
@@ -112,6 +112,26 @@ export const commentsRouter = createTRPCRouter({
       });
 
       return channel;
+    }),
+
+  getAllUnseen: publicProcedure
+  .query(async ({ ctx }) => {
+      const unseenComments = await ctx.db.query.comments.findMany({
+        where: eq(comments.state, "no leido"),
+      });
+  
+      return unseenComments;
+    }),
+
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        state: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      await db.update(comments).set(input).where(eq(comments.id, input.id));
     }),
 
   delete: publicProcedure

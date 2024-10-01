@@ -17,10 +17,10 @@ app.get("/ticket/:id", async (c) => {
 });
 // http://localhost:3000/api/hono/ticket/get/8/2/Test%20Ticket/This%20is%20a%20test%20description
 
-app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
+app.get("/:type/get/:identifier/:urgency/:title/:description", async (c) => {
   const type = c.req.param("type");
   if (type === "ticket") {
-    const orgId = c.req.param("orgid");
+    const orgId = c.req.param("identifier");
     const urgency = parseInt(c.req.param("urgency"));
     const title = c.req.param("title");
     const description = c.req.param("description");
@@ -43,11 +43,10 @@ app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
       return c.json({ error: "Error creando el ticket" }, 500);
     }
   } else if (type === "comments") {
-    const title = c.req.param("urgency");
-    const ticketId = c.req.param("orgid");
-    console.log(ticketId, "looooooolazo");
-
-    const description = c.req.param("title");
+    const title = c.req.param("title");
+    const orgName = c.req.param("urgency");
+    const ticketId = c.req.param("identifier");
+    const description = c.req.param("description");
 
     if (!ticketId || !title || !description) {
       return c.json({ error: "Faltan parámetros requeridos" }, 400);
@@ -58,7 +57,7 @@ app.get("/:type/get/:orgid/:urgency/:title/:description", async (c) => {
         title: title,
         description: description,
         createdAt: new Date(),
-        userName: "",
+        userName: "org" + orgName,
         ticketId: parseInt(ticketId),
         type: "recibido",
       });

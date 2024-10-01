@@ -11,6 +11,8 @@ import { AsignarPrioridad } from '../dialogs/asigPrioridad';
 import { Rechazar } from '../dialogs/rechazar';
 import { CrearComentario } from '../dialogs/crearComentario';
 import { Aprobar } from '../dialogs/aprobar';
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 dayjs.extend(utc);
 dayjs.locale("es");
 
@@ -18,22 +20,25 @@ export default function TicketPage(props:{params:{ticketId: string}}) {
   const id = props.params.ticketId
   const ticket = api.tickets.getById.useQuery({ id: parseInt(id) }).data;
   const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-  
-
-// const { mutateAsync: updateMensaje} = api.comments.update.useMutation();
-// useEffect(()=>{
-//   ticket?.comments.map((mensaje)=>{
-//     updateMensaje({
-//       id: mensaje.id,
-//       state: "leido",
-//     })
-//   })div
-// })
 
 const isRechazado = ticket?.state === "Rechazado"; 
 const isFinalizado = ticket?.state === "Finalizado";
 
-
+const { mutateAsync: updateMensaje } = api.comments.update.useMutation();
+const queryClient = useQueryClient();
+  useEffect( () => {
+      if (comments) {
+        comments.map(async (comments) => {
+          if (comments?.state === "no leido") {
+            await updateMensaje({
+              id: comments?.id ?? 0,
+              state: "leido",
+            });
+          }
+        });
+        queryClient.invalidateQueries()
+      }
+  }, [ticket, updateMensaje]);
 
   return (
     <LayoutContainer>

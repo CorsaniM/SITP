@@ -2,6 +2,8 @@
 import { OrganizationSwitcher, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useCheckRole } from "~/lib/react/roles";
+import NotificationButton from "./notifications";
+import { TRPCReactProvider } from "~/trpc/react";
 
 export default function Upbar() {
   const { user } = useUser();
@@ -20,6 +22,9 @@ export default function Upbar() {
         )}
       </div>
       <div className="flex items-center p-4 shadow-inner">
+      <TRPCReactProvider>
+        <NotificationButton />
+        </TRPCReactProvider>
         <div className="bg-gray-500 text-slate-100 m-2 rounded shadow-lg">
           <OrganizationSwitcher hidePersonal={true} />
         </div>

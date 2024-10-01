@@ -31,18 +31,16 @@ export function List(props: ListProps) {
 export function ListTile(props: ListTileProps) {
     let content = (
         <>
-            {props.leading && <div className='flex flex-auto shrink-0 p-3 items-center justify-center'>{props.leading}</div>}
-
-            <div className='w-full'>
-                <div className='flex font-medium '>{props.title}</div>
-                <div className='text-md'>{props.subtitle}</div>
+            {props.leading && <div className='flex p-1 items-center justify-center'>{props.leading}</div>}
+            <div className='flex flex-row w-full justify-between'>
+                <div className='flex font-medium p-1 '>{props.title}</div>
+                <div className='flex text-md font-normal p-1 '>{props.subtitle}</div>
             </div>
-
-            {props.trailing && <div className='flex shrink-0 items-center justify-center'>{props.trailing}</div>}
+            {props.trailing && <div className='flex font-light p-1 place-self-start'>{props.trailing}</div>}
         </>
     )
 
-    const containerClassName = 'flex py-3 h-full w-full hover:bg-gray-700 '
+    const containerClassName = 'flex flex-col py-3 h-full w-full hover:bg-gray-700 '
 
     if (props.href) {
         content = (
@@ -59,8 +57,7 @@ export function ListTile(props: ListTileProps) {
     }
 
     return (
-        <li className='flex flex-auto max-w- border-t last:border-b
-        overflow-y-auto border-collapse border border-gray-700 hover:border-collapse' role='button' onClick={props.onClick}>
+        <li className='flex border border-gray-700 truncate rounded-md' role='button' onClick={props.onClick}>
             {content}
         </li>
     )

@@ -47,7 +47,14 @@ export function MessageTile(props: MessageTileProps) {
   const [open, setOpen] = useState(false)
   const [transformOrigin, setTransformOrigin] = useState({ x: '50%', y: '50%' });
   const username = props.user ?? ""
-  const user = api.clerk.getUsername.useQuery({ username: username }).data;
+  let org = null
+  let user = null
+  if (username.includes("org"))   {
+    org = api.companies.getByName.useQuery({ name: username.replace("org", "") }).data;
+  } else {
+    user = api.clerk.getUsername.useQuery({ username: username }).data;
+  }
+  
 
   const handleZoomToggle = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -64,8 +71,15 @@ export function MessageTile(props: MessageTileProps) {
   return (
     <div className='flex flex-col max-w-full p-2 border border-gray-700 border-t last:border-b' role='button'>
       <>
-        <div className='flex flex-row m-2 min-w-fit'>
-          {user ? (
+        <div className='flex flex-row flex-auto m-2 w-full'>
+          {org ? (
+            <ListTile
+            className='items-center p-2'
+            href={`../empresas/${org?.id}`}
+            title={<>{org?.name}</>}
+          />
+            
+          ) : ( user ? (
             <ListTile
               className='p-0 items-center min-w-fit'
               href={`./users/${user?.id}`}
@@ -80,10 +94,15 @@ export function MessageTile(props: MessageTileProps) {
                 </div>
               }
             />
-          ) : (
-            <ListTile className='p-2 items-center min-w-fit' title={<>{username}</>} />
+          ):(
+            <ListTile
+            className='items-center p-2'
+            title={<>{username}</>}
+          />
+          )
+            
           )}
-          {props.title && <div className='flex w-full h-fit p-2'>
+          {props.title && <div className='flex flex-auto w-full h-fit p-2'>
             <div className='flex font-medium'>{props.title}</div>
           </div>}
         </div>

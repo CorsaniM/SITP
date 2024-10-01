@@ -57,6 +57,20 @@ export const companiesRouter = createTRPCRouter({
       return companiesWithRelations;
     }),
 
+    getByName: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const companiesWithRelations = await ctx.db.query.companies.findFirst({
+        where: eq(companies.name, input.name),
+      });
+
+      return companiesWithRelations;
+    }),
+
   update: publicProcedure
     .input(
       z.object({
