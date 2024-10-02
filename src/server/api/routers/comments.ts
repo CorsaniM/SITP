@@ -68,7 +68,7 @@ export const commentsRouter = createTRPCRouter({
       // const url = `http://localhost:3000/api/hono/comments/get/${input.ticketId}/${input.title}/${input.description}/test/test`;
       const url = `http://localhost:3000/api/hono/ticket/get/${input.ticketId}`;
 
-      console.log("Envio commentario: ", url);
+  
       // const result = await fetch(url, {
       //   method: "POST",
       //   headers: {

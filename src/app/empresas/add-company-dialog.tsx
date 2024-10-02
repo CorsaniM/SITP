@@ -39,7 +39,7 @@ export function AddCompanyDialog() {
   const router = useRouter();
   
   async function handleCreate() {
-    console.log("Attempting to create organization with:", organizationName);
+    
 
     try {
         if (!razon_social || !organizationName || !description || !phone_number) {
@@ -51,7 +51,7 @@ export function AddCompanyDialog() {
         let organization;
         if (createOrganization) {
             organization = await createOrganization({ name: organizationName });
-            console.log("Organization created:", organization);
+            
         } else {
             console.warn("createOrganization is undefined");
         }
@@ -67,7 +67,7 @@ export function AddCompanyDialog() {
                 razon_social: razon_social,
                 updatedAt: new Date(),
             });
-            console.log("Company created successfully");
+            
         }
         
         // More logic follows...

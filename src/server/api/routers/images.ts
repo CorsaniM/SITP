@@ -58,11 +58,10 @@ export const imagesRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const [respuesta] = await db.delete(images).where(eq(images.commentId, input.id)).returning();
-      console.log("RESPUESTA ", respuesta);
       if (!respuesta || !respuesta?.url) {
         throw new Error("Error al borrar la imagen");
       }
       const url = (await utapi.deleteFiles(respuesta?.url.replace("https://utfs.io/f/", ""))).deletedCount;
-      console.log("Cantidad de archivos eliminados ", url, respuesta?.url.replace("https://utfs.io/f/", ""));
+      // return url;
     }),
 });

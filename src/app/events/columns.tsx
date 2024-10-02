@@ -6,41 +6,38 @@ import { ArrowUpDown } from "lucide-react"
 import { Button } from "../_components/ui/button"
 
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type TablaEvents = {
   id: number
-  orgId: string|null
-  state: string|null
-  urgency: number|null
-  suppUrgency: number|null
+  username: string|null
+  type: string|null
+  description: string|null
   createdAt: Date
 }
 
 export const columns: ColumnDef<TablaEvents>[] = [
   {
-    accessorKey: "orgId",
+    accessorKey: "id",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
         >
-          Organización
+          N° ID
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
   },
   {
-    accessorKey: "state",
+    accessorKey: "username",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Estado
+          Usuario
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -62,22 +59,31 @@ export const columns: ColumnDef<TablaEvents>[] = [
     cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleDateString(),
   },
   {
-    accessorKey: "urgency",
+    accessorKey: "type",
     header: ({ column }) => {
       return (
         <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Urgencia
+          Tipo
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
-    
-    cell: ({ row }) => {
-      const { suppUrgency, urgency } = row.original;
-      return suppUrgency && suppUrgency !== 0 ? suppUrgency : urgency;
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Descripción
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
   },
   

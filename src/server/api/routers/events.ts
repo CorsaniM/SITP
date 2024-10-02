@@ -20,7 +20,18 @@ export const eventsRouter = createTRPCRouter({
       await ctx.db.insert(events).values(input);
     }),
 
-  get: publicProcedure.query(async ({ ctx }) => {
-    await ctx.db.query.events.findMany();
+  get: publicProcedure
+  .query(async ({ ctx }) => {
+    const eventsList = await ctx.db.query.events.findMany();
+
+    const sortedEvents = eventsList.map((event) => {
+      if (event.userName) {
+        return { ...event, type: "sent" };
+      } else {
+        return { ...event, type: "recieved" };
+      }
+    });
+
+    return sortedEvents;
   }),
 });

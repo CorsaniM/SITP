@@ -22,7 +22,6 @@ export const ourFileRouter = {
         })
         .returning();
 
-      console.log("Imagen subida correctamente:", response);
 
       return { uploadedBy: metadata.userId };
     }),

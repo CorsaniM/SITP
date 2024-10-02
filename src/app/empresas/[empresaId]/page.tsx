@@ -38,7 +38,7 @@ export default async function Page(props: { params: { empresaId: string } }) {
       email: "",
     }));
 
-    console.log("User list:", userList); 
+    
   } catch (error) {
     console.error("Error fetching or processing data:", error);
   }

@@ -65,7 +65,7 @@ export function AsignarUsuario(props: { orgId: number }) {
     if (selectedUsers.length === 0 && usuariosAEliminar.length === 0) {
       return toast.error("Seleccione al menos un usuario");
     }
-console.log(availableUsers)
+
     for (const selectedUser of selectedUsers) {
       const existingParticipant = userCompanies?.find(
         (x) => x.userName === selectedUser.id && x.orgId === props.orgId

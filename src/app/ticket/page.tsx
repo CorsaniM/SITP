@@ -8,6 +8,7 @@ import { api } from "~/trpc/react";
 import { NumeroGrande } from "../_components/ui/title";
 import { useUser } from "@clerk/nextjs";
 import { useCheckRole } from "~/lib/react/roles";
+import LayoutContainer from "../_components/layout-container";
 type Ticket = {
   id: number;
   orgId: number;
@@ -56,15 +57,17 @@ export default function Page() {
 
   if (loading) {
     return (
+      <LayoutContainer>
       <div className="flex flex-1 align-middle justify-center">
         <NumeroGrande>Loading...</NumeroGrande>
       </div>
+      </LayoutContainer>
     );
   }
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="sticky top-16 flex h-28 place-content-right z-10">
+      <div className="sticky top-16 flex h-24 place-content-right z-10">
         <Dashboard tickets={ticketsPorOrg}/>
       </div>
       <div className="flex place-content-center flex-column">

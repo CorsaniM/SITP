@@ -64,10 +64,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {/* <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div> */}
           <div className="flex items-center m-2 ">
             <div className="flex items-center space-x-6 lg:space-x-8">
               <p className="text-sm font-medium"> Filas</p>

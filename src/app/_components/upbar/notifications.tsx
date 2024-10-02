@@ -8,12 +8,7 @@ import { useRouter } from "next/navigation";
 import { ListTile } from "../ui/list";
 
 export default function NotificationButton() {
-    const { data: comments, isLoading } = api.comments.getAllUnseen.useQuery();
-    if (comments){
-      console.log(comments[0]);
-    } else {
-      console.log("no existe com")
-    }
+    const { data: comments, isLoading } = api.comments.getAllUnseen.useQuery(); 
     const [isOpen, setIsOpen] = useState(false); 
     const router = useRouter();
 

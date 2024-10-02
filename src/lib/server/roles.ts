@@ -5,7 +5,6 @@ export const UseCheckRole = (role: Roles) => {
   const user = useUser();
   const publicMetadata = user?.user?.publicMetadata.role ?? "";
 
-  console.log("TEST", publicMetadata);
   return publicMetadata === role;
 };
 // "use server";
