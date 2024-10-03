@@ -68,8 +68,13 @@ export function AddCompanyDialog() {
                 updatedAt: new Date(),
             });
             
+
+            setOpen(false);
+            router.refresh();
+            toast.success("Entidad creada con exito");
         }
         
+
         // More logic follows...
     } catch (e) {
         console.error("Error creating organization or company:", e);
