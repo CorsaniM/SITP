@@ -33,7 +33,11 @@ export default function Events() {
 
       const transformedEventsList = eventsList.map((event) => ({
         ...event,
+        id: event.id,
+        type: event.type,
+        description: event.description,
         username: event.userName,
+        createdAt: event.createdAt,
       }));
       
       return (

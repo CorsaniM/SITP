@@ -7,7 +7,7 @@ import { Button } from "../_components/ui/button"
 
 export type TablaEvents = {
   id: number
-  username: string|null
+  username?: string|null
   type: string|null
   description: string|null
   createdAt: Date
@@ -27,6 +27,7 @@ export const columns: ColumnDef<TablaEvents>[] = [
         </Button>
       )
     },
+    sortDescFirst: true,
   },
   {
     accessorKey: "username",

@@ -25,11 +25,9 @@ export const eventsRouter = createTRPCRouter({
     const eventsList = await ctx.db.query.events.findMany();
 
     const sortedEvents = eventsList.map((event) => {
-      if (event.userName) {
-        return { ...event, type: "sent" };
-      } else {
-        return { ...event, type: "recieved" };
-      }
+        console.log("Event",event)
+        return { ...event, type: event.type, description: event.description, userName: event.userName };  
+      
     });
 
     return sortedEvents;

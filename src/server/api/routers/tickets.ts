@@ -37,7 +37,7 @@ export const ticketsRouter = createTRPCRouter({
         userName: "",
         ticketId: respuesta?.id,
         type: "recieved",
-        description: "Ticket recibido",
+        description: "Ticket creado",
       });
       if (!respuesta) {
         throw new Error("Error al crear el ticket");
@@ -158,8 +158,48 @@ export const ticketsRouter = createTRPCRouter({
         updatedAt: z.date(),
       }),
     )
-    .mutation(async ({ input }) => {
-      await db.update(tickets).set(input).where(eq(tickets.id, input.id));
+    .mutation(async ({ ctx, input }) => {
+      const [respuesta] = await ctx.db
+        .update(tickets)
+        .set(input)
+        .where(eq(tickets.id, input.id))
+        .returning();
+        if (!respuesta) {
+          throw new Error("Error al crear el ticket");
+        }
+        if (respuesta.state === "En espera") {
+          await ctx.db.insert(schema.events).values({
+            userName: "",
+            ticketId: respuesta?.id,
+            type: "on hold",
+            description: "Ticket en espera",
+          }); 
+        }
+        if (respuesta.state === "Rechazado") {
+          await ctx.db.insert(schema.events).values({
+            userName: "",
+            ticketId: respuesta?.id,
+            type: "rejected",
+            description: "Ticket rechazado",
+          }); 
+        }
+        if (respuesta.state === "Finalizado") {
+          await ctx.db.insert(schema.events).values({
+            userName: "",
+            ticketId: respuesta?.id,
+            type: "finished",
+            description: "Ticket finalizado",
+          }); 
+        }
+        // if (respuesta.state === "En espera") {
+        //   await ctx.db.insert(schema.events).values({
+        //     userName: "",
+        //     ticketId: respuesta?.id,
+        //     type: "recieved",
+        //     description: "Ticket en espera",
+        //   }); 
+        // }
+        return respuesta;
     }),
 
   delete: publicProcedure

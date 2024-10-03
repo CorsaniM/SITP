@@ -22,6 +22,13 @@ export const participantsRouter = createTRPCRouter({
         .set({ state: "En curso" })
         .where(eq(schema.tickets.id, input.ticketId));
 
+        await ctx.db.insert(schema.events).values({
+          userName: input.userName,
+          ticketId: input.ticketId,
+          type: "asigned",
+          description: "Ticket asignado",
+        });
+
       return ticket;
     }),
 
@@ -66,6 +73,13 @@ export const participantsRouter = createTRPCRouter({
         .update(participants)
         .set(input)
         .where(eq(participants.id, input.id));
+        
+      await db.insert(schema.events).values({
+          userName: "",
+          ticketId: input.ticketId,
+          type: "asigned",
+          description: "Ticket asignado",
+        });
     }),
 
   delete: publicProcedure

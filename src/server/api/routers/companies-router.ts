@@ -34,7 +34,12 @@ export const companiesRouter = createTRPCRouter({
         .insert(schema.companies)
         .values(input)
         .returning();
-
+        await ctx.db.insert(schema.events).values({
+          userName: "",
+          ticketId: respuesta?.id,
+          type: "company created",
+          description: "Compañía creada",
+        });
       if (!respuesta) {
         throw new Error("Error al crear el companies");
       }
