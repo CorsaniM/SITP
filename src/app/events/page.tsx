@@ -1,17 +1,15 @@
 "use client"
 
 import { NumeroGrande, Title } from "~/app/_components/ui/title"
-import { DataTable } from "./table"
-import { columns } from "./columns"
+import { DataTable, DataTableComponent } from "./table"
 import { api } from "~/trpc/react";
 import LayoutContainer from "../_components/layout-container";
-import { useState } from "react";
 
 
 export default function Events() {
 
     const { data: eventsList, isLoading, error } = api.events.get.useQuery();   
-    console.log(eventsList)
+       
 
       if (isLoading) return (
         <LayoutContainer>
@@ -33,20 +31,23 @@ export default function Events() {
        </LayoutContainer>
       );
 
-    return (
+      const transformedEventsList = eventsList.map((event) => ({
+        ...event,
+        username: event.userName,
+      }));
+      
+      return (
         <LayoutContainer>
-            <div className="flex justify-center align-middle flex-col">
-                <div className="flex place-content-center">
-                    <Title>Eventos</Title>
-                </div>
-                <div className="flex  place-content-center">
-                    <DataTable
-                    columns={columns}
-                    data={eventsList}
-                    />
-                </div>
+          <div className="flex justify-center align-middle flex-col">
+            <div className="flex place-content-center">
+              <Title>Eventos</Title>
             </div>
+            <div className="flex place-content-center">
+              <DataTableComponent data={transformedEventsList} />
+            </div>
+          </div>
         </LayoutContainer>
-    )
-}
+      );
+    }
+    
 

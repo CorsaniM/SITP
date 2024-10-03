@@ -25,6 +25,24 @@ import {
   PaginationItem,
 
 } from "../_components/ui/pagination"
+import { columns } from "./columns";
+import { TablaEvents } from "./columns";
+
+
+type Props = {
+  data: TablaEvents[];
+};
+
+export const DataTableComponent = ({ data }: Props) => {
+  return (
+    <div className="p-4">
+      <DataTable
+        columns={columns}
+        data={data}
+      />
+    </div>
+  );
+};
 
 
 import { Button } from "../_components/ui/button"
@@ -35,6 +53,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+
 
 export function DataTable<TData, TValue>({
   columns,

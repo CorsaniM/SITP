@@ -5,6 +5,15 @@ import { api } from "~/trpc/server";
 const app = new Hono().basePath("api/hono");
 // const postDimetallo = new Hono().basePath("api/hono/dimetallo");
 
+app.get("/events", async (c) => {
+  try {
+    const events = await api.events.get();
+    return c.json(events);
+  } catch (error) {
+    return c.json({ error: "Error al obtener los eventos" }, 500);
+  }
+});
+
 app.get("/ticket/:id", async (c) => {
   const ticketId = c.req.param("id");
 

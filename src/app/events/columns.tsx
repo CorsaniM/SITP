@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
- 
 import { Button } from "../_components/ui/button"
 
 
@@ -21,7 +20,7 @@ export const columns: ColumnDef<TablaEvents>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           N° ID
           <ArrowUpDown className="ml-2 h-4 w-4" />
