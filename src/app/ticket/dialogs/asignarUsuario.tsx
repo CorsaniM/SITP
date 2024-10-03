@@ -9,6 +9,7 @@ import { api } from "~/trpc/react";
 interface User {
   id: string | null;
   firstName: string | null;
+  lastName: string | null;
   fullName: string | null;
 }
 // interface ticket {
@@ -70,7 +71,7 @@ export function AsignarUsuario(props: {
         user: user.id ?? "",
         ticketId: props.ticketId ?? 0,
       });
-      toast.message(`Usuario ${user.fullName} eliminado`);
+      toast.message(`Usuario ${user?.fullName ?? user?.firstName + " " + user?.lastName} eliminado`);
     }
   }
 
@@ -85,6 +86,7 @@ export function AsignarUsuario(props: {
       );
       if (!existingParticipant) {
         await createParticipants({
+          userFullName: selectedUser.fullName ?? selectedUser.firstName + " " + selectedUser.lastName,
           userName: selectedUser.id ?? "",
           ticketId: props.ticketId ?? 0,
         });
@@ -119,7 +121,7 @@ export function AsignarUsuario(props: {
               <ul>
                 {availableUsers ? availableUsers.map(user => (
                   <li key={user.id} className="flex justify-between items-center py-2">
-                    {user.fullName} - {user.firstName ?? user?.fullName}
+                    {user?.fullName ?? user?.firstName + " " + user?.lastName}
                     <Button onClick={() => handleAddUser(user)} disabled={isRechazado}>
                       Agregar</Button>
                   </li>
@@ -133,7 +135,7 @@ export function AsignarUsuario(props: {
               <ul>
                 {selectedUsers.map(user => (
                   <li key={user.id} className="flex justify-between items-center py-2">
-                    {user.fullName} - {user.firstName}
+                    {user?.fullName ?? user?.firstName + " " + user?.lastName}
                     <Button onClick={() => handleRemoveUser(user)} disabled={isRechazado}>Eliminar</Button>
                   </li>
                 ))}

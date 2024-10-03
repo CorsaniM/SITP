@@ -8,6 +8,7 @@ export const participantsRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
+        userFullName: z.string(),
         userName: z.string(),
         ticketId: z.number(),
       }),
@@ -15,15 +16,16 @@ export const participantsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      await ctx.db.insert(participants).values(input);
+      await ctx.db.insert(participants).values({
+        userName: input.userName, ticketId: input.ticketId});
 
       const ticket = await ctx.db
         .update(schema.tickets)
         .set({ state: "En curso" })
         .where(eq(schema.tickets.id, input.ticketId));
-
+        console.log("Termo 2", input.userFullName )
         await ctx.db.insert(schema.events).values({
-          userName: input.userName,
+          userName: input.userFullName,
           ticketId: input.ticketId,
           type: "asigned",
           description: "Ticket asignado",
@@ -63,6 +65,7 @@ export const participantsRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
+        userFullName: z.string(),
         userName: z.string(),
         ticketId: z.number(),
         updatedAt: z.date(),
@@ -75,7 +78,7 @@ export const participantsRouter = createTRPCRouter({
         .where(eq(participants.id, input.id));
         
       await db.insert(schema.events).values({
-          userName: "",
+          userName: input.userFullName,
           ticketId: input.ticketId,
           type: "asigned",
           description: "Ticket asignado",

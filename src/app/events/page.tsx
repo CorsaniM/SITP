@@ -9,6 +9,7 @@ import LayoutContainer from "../_components/layout-container";
 export default function Events() {
 
     const { data: eventsList, isLoading, error } = api.events.get.useQuery();   
+    eventsList?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
        
 
       if (isLoading) return (
