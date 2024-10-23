@@ -9,6 +9,8 @@ import { NumeroGrande } from "../_components/ui/title";
 import { useUser } from "@clerk/nextjs";
 import { useCheckRole } from "~/lib/react/roles";
 import LayoutContainer from "../_components/layout-container";
+import { useRouter } from "next/navigation";
+import { Button } from "../_components/ui/button";
 type Ticket = {
   id: number;
   orgId: number;
@@ -27,6 +29,8 @@ export default function Page() {
   const { hasRole: isAdmin } = useCheckRole("Admin");
   const { user } = useUser();
 
+  const router = useRouter();
+
   const ticketsQuery = isAdmin
     ? api.tickets.list.useQuery()
     : api.tickets.getByUser.useQuery({ userId: user?.id ?? "" });
@@ -41,19 +45,20 @@ export default function Page() {
     }
   }, [ticketsQuery.data, ticketsQuery.error]);
 
-  // const { mutateAsync: CreateTicket } = api.tickets.create.useMutation();
+  const { mutateAsync: CreateTicket } = api.tickets.create.useMutation();
 
-  // const Creator = async () => {
-  //   await CreateTicket({
-  //     orgId: 2,
-  //     state: "test",
-  //     urgency: 3,
-  //     suppUrgency: 0,
-  //     title: "test",
-  //     description: "test",
-  //   });
-  //   router.refresh();
-  // };
+  const Creator = async () => {
+    await CreateTicket({
+      orgId: 4,
+      state: "test",
+      urgency: 3,
+      suppUrgency: 0,
+      title: "test",
+      description: "test",
+
+    });
+    router.refresh();
+  };
 
   if (loading) {
     return (
@@ -74,7 +79,7 @@ export default function Page() {
         <DataTable columns={columns} data={ticketsPorOrg} />
       </div>
       <div>
-        {/* <Button onClick={Creator}>Crear ticket</Button> */}
+        <Button onClick={Creator}>Crear ticket</Button>
       </div>
     </div>
   );
