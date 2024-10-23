@@ -9,7 +9,9 @@ export default clerkMiddleware((auth, req) => {
   if (isWebhookRoute(req)) {
     return; // No hacer nada, deja que pase sin protección
   }
-
+  if (isWebhookRouteApi(req)) {
+    return;
+  }
   // Proteger otras rutas
   if (isProtectedRoute(req)) {
     auth().protect();

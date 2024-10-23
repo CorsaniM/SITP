@@ -37,9 +37,9 @@ export default function NotificationButton() {
               ) : comments ? (
                 <Messages className="max-h-96 min-h-full overflow-y-auto">
                   {comments.map((comment) => (
-                    <div>
+                    <div key={comment.id}>
                       <ListTile
-                        key={comment.id}
+                        
                         className='items-center p-2'
                         onClick={() => handleClick(comment.ticketId)}
                         title={<>{comment.userName?.replace("org", "")}</>}

@@ -67,8 +67,8 @@ export const commentsRouter = createTRPCRouter({
 
       // const url = `http://localhost:3000/api/hono/comments/get/${input.ticketId}/${input.title}/${input.description}/test/test`;
       const url = `http://localhost:3000/api/hono/ticket/get/${input.ticketId}`;
+      console.log(url);
 
-  
       // const result = await fetch(url, {
       //   method: "POST",
       //   headers: {
@@ -114,14 +114,13 @@ export const commentsRouter = createTRPCRouter({
       return channel;
     }),
 
-  getAllUnseen: publicProcedure
-  .query(async ({ ctx }) => {
-      const unseenComments = await ctx.db.query.comments.findMany({
-        where: eq(comments.state, "no leido"),
-      });
-  
-      return unseenComments;
-    }),
+  getAllUnseen: publicProcedure.query(async ({ ctx }) => {
+    const unseenComments = await ctx.db.query.comments.findMany({
+      where: eq(comments.state, "no leido"),
+    });
+
+    return unseenComments;
+  }),
 
   update: publicProcedure
     .input(

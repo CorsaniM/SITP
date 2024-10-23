@@ -1,5 +1,4 @@
 import { eq } from "drizzle-orm";
-import { url } from "inspector";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db, schema } from "~/server/db";
@@ -57,11 +56,19 @@ export const imagesRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const [respuesta] = await db.delete(images).where(eq(images.commentId, input.id)).returning();
+      const [respuesta] = await db
+        .delete(images)
+        .where(eq(images.commentId, input.id))
+        .returning();
       if (!respuesta || !respuesta?.url) {
         throw new Error("Error al borrar la imagen");
       }
-      const url = (await utapi.deleteFiles(respuesta?.url.replace("https://utfs.io/f/", ""))).deletedCount;
+      const url = (
+        await utapi.deleteFiles(
+          respuesta?.url.replace("https://utfs.io/f/", ""),
+        )
+      ).deletedCount;
+      console.log("url delete", url);
       // return url;
     }),
 });
