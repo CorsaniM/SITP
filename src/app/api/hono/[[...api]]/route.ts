@@ -1,9 +1,18 @@
 "use server";
 import { Hono } from "hono";
 import { api } from "~/trpc/server";
-
+import { cors } from "hono/cors";
 const app = new Hono().basePath("api/hono");
 // const postDimetallo = new Hono().basePath("api/hono/dimetallo");
+
+// Configuración de CORS
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Cambia esto al dominio de tu otro proyecto
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 app.get("/events", async (c) => {
   try {
