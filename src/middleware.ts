@@ -5,7 +5,7 @@ const isWebhookRoute = createRouteMatcher(["/api/uploadthing(.*)"]);
 const isWebhookRouteApi = createRouteMatcher(["/api/hono(.*)"]);
 
 // Nueva condición para rutas permitidas
-const isPublicApiRoute = createRouteMatcher(["/api/tickets"]);
+const isPublicApiRoute = createRouteMatcher(["/api/hono/tickets"]);
 
 export default clerkMiddleware((auth, req) => {
   // Permitir acceso a la ruta del webhook
