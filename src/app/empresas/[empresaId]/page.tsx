@@ -2,8 +2,8 @@
 import { api } from "~/trpc/server";
 import { Title } from "~/app/_components/ui/title";
 import CompanyPage from "./companie";
-import { db } from "~/server/db"; // Importa tu instancia de la base de datos
-import { userCompanies } from "~/server/db/schema"; // Asegúrate de que la ruta sea correcta
+import { db } from "~/server/db"; 
+import { userCompanies } from "~/server/db/schema"; 
 import { eq } from "drizzle-orm";
 
 type User = {

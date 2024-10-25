@@ -21,6 +21,10 @@ interface UrgenciaMap {
 }
 export default function TicketPage(props:{params:{ticketId: string}}) {
   const id = props.params.ticketId
+  
+
+  const test = api.images.getByTicket.useQuery({commentId: parseInt(id)});
+
   const ticket = api.tickets.getById.useQuery({ id: parseInt(id) }).data;
   const org = api.companies.get.useQuery({ id: ticket?.orgId ?? 0 }).data;
   const comments = ticket?.comments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())

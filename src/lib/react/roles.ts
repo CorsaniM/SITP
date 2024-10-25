@@ -14,20 +14,4 @@ export function useCheckRole(role: Roles) {
   }, [role, user, hasRole]);
 
   return { hasRole };
-  // const {
-  //   data: usuario,
-  //   isLoading,
-  //   error,
-  // } = api.clerk.getUserbyId.useQuery(
-  //   { id: user?.id ?? "" },
-  //   { enabled: !!user },
-  // );
-
-  // useEffect(() => {
-  //   if (!isLoading && usuario) {
-  //     const userRole = usuario.publicMetadata?.role;
-  //     console.log("TEST", userRole);
-
-  //   }
-  // }, [isLoading, usuario, role, user]);
 }

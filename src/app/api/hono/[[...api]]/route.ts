@@ -14,6 +14,16 @@ app.get("/events", async (c) => {
   }
 });
 
+app.get("/tickets", async (c) => {
+  try {
+    // Llama a la función para obtener todos los tickets desde tu API
+    const tickets = await api.tickets.list();
+    return c.json(tickets);
+  } catch (error) {
+    return c.json({ error: "Error al obtener los tickets" }, 500);
+  }
+});
+
 app.get("/ticket/:id", async (c) => {
   const ticketId = c.req.param("id");
 

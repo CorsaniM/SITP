@@ -17,6 +17,8 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
   const [open, setOpen] = useState(false);
   const id = props.ticketId
   const ticket = api.tickets.getById.useQuery({ id }).data;
+
+  
   const { mutateAsync: createMensaje, isPending } = api.comments.create.useMutation();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -33,14 +35,14 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
     }
     try {
         await createMensaje({
-            title: title || "",
-            userName: user!.fullName!,
-            ticketId: ticket!.id,
-            type: "actualización",
-            state: "no leido",
-            description: description,
-            createdAt: new Date,
-            isFinish: finish
+          title: title ??  "",
+          userName: user!.fullName!,
+          ticketId: ticket!.id,
+          type: "actualización",
+          state: "no leido",
+          description: description,
+          createdAt: new Date,
+          isFinish: finish
         })  
         toast.success('Mensaje enviado')
         await queryClient.invalidateQueries()
