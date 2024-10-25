@@ -6,14 +6,14 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" } })
-    .middleware(async ({ input }) => {
+    .middleware(async () => {
       const session = getServerAuthSession();
       if (!session) throw new Error("No autorizado");
 
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const [response] = await db
+      await db
         .insert(schema.images)
         .values({
           userName: metadata.userId,
@@ -21,7 +21,6 @@ export const ourFileRouter = {
           url: file.url,
         })
         .returning();
-
 
       return { uploadedBy: metadata.userId };
     }),

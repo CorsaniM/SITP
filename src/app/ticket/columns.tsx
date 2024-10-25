@@ -4,11 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../_components/ui/button";
 import { api } from "~/trpc/react"; // Asegúrate de que la importación sea correcta
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-interface UrgenciaMap {
-  [key: number]: string;
-}
+type UrgenciaMap = Record<number, string>;
 
 const urgenciaMap: UrgenciaMap = {
   1: "Leve",
@@ -41,7 +39,7 @@ export const columns: ColumnDef<TablaTickets>[] = [
         </Button>
       );
     },
-    cell: ({ getValue, row }) => {
+    cell: ({ getValue }) => {
       const orgId = getValue<number | null>();
       const { data: organizations, isLoading } = api.companies.list.useQuery();
 
@@ -52,11 +50,11 @@ export const columns: ColumnDef<TablaTickets>[] = [
       const orgMap = organizations?.reduce((acc, org) => {
         acc[org.id] = org.name;
         return acc;
-      }, {} as Record<number, string>) || {};
+      }, {} as Record<number, string>) ?? {};
 
       const organizationName = orgId ? orgMap[orgId] : "Sin organización";
 
-      return organizationName || "Desconocido";
+      return organizationName ?? "Desconocido";
     },
   },
   {
@@ -105,7 +103,7 @@ export const columns: ColumnDef<TablaTickets>[] = [
     },
     cell: ({ getValue }) => {
       const valorUrgencia = getValue<number>();
-      return urgenciaMap[valorUrgencia] || "Desconocido";
+      return urgenciaMap[valorUrgencia] ?? "Desconocido";
     },
   },
 ];

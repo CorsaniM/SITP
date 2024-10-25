@@ -16,7 +16,7 @@ import { Input } from "../_components/ui/input";
 import { Label } from "../_components/ui/label";
 import { asTRPCError } from "~/lib/errors";
 import { api } from "~/trpc/react";
-import { useOrganizationList, useUser } from "@clerk/nextjs";
+import { useOrganizationList } from "@clerk/nextjs";
 
 
 export function AddCompanyDialog() {
@@ -24,10 +24,10 @@ export function AddCompanyDialog() {
   const { mutateAsync: createCompany, isPending } =
     api.companies.create.useMutation();
 
-  const { mutateAsync: createEvent, isPending: isLoadingEvent } =
-    api.events.create.useMutation();
-
-    const user = useUser().user;
+  // const { mutateAsync: createEvent, isPending: isLoadingEvent } =
+  //   api.events.create.useMutation();
+const [isLoadingEvent, setIsLoadingEvent] = useState(false);
+    // const user = useUser().user;
   const [description, setDescription] = useState("");
   const address = ""
   const [organizationName, setOrganizationName] = useState("");
@@ -40,7 +40,7 @@ export function AddCompanyDialog() {
   
   async function handleCreate() {
     
-
+    setIsLoadingEvent(true)
     try {
         if (!razon_social || !organizationName || !description || !phone_number) {
             setError("Todos los campos son obligatorios");
@@ -70,16 +70,18 @@ export function AddCompanyDialog() {
             
 
             setOpen(false);
+            setIsLoadingEvent(false);
             router.refresh();
             toast.success("Entidad creada con exito");
         }
         
 
         // More logic follows...
-    } catch (e) {
-        console.error("Error creating organization or company:", e);
-        setError("ocurrio un error al crear entidad" + e);
+    } catch (e) { 
+      
+      setError(`Ocurrió un error al crear la entidad}`);
         const errorResult = asTRPCError(e);
+        setIsLoadingEvent(false);
         if (errorResult) {
             toast.error(errorResult.message);
         } else {

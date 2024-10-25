@@ -41,6 +41,7 @@ export function AsignarUsuario(props: { orgId: number }) {
   const handleAddUser = (user: User) => {
     setAvailableUsers(prev => prev.filter(u => u.id !== user.id));
     setSelectedUsers(prev => [...prev, user]);
+    console.log(availableUsers);
   };
 
   const handleRemoveUser = async (user: User) => {

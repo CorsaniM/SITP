@@ -9,7 +9,7 @@ import { api } from "~/trpc/react";
 import { toast } from "sonner";
 
 interface ImageUploadProps {
-  setImageId: (id: number | 0) => void; 
+  setImageId: (id: number) => void; 
 }
 
 export default function ImageUpload({ setImageId }: ImageUploadProps) {
@@ -31,6 +31,7 @@ export default function ImageUpload({ setImageId }: ImageUploadProps) {
   };
   const {mutateAsync:deleteImage} = api.images.delete.useMutation()
   const handleImageDelete = async () => {
+    setImageId(0)
     try {
       await deleteImage({
         id: 0,

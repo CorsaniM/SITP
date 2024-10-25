@@ -60,7 +60,7 @@ export const imagesRouter = createTRPCRouter({
         .delete(images)
         .where(eq(images.commentId, input.id))
         .returning();
-      if (!respuesta || !respuesta?.url) {
+      if (!respuesta?.url) {
         throw new Error("Error al borrar la imagen");
       }
       const url = (

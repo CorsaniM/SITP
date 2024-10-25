@@ -16,14 +16,13 @@ import { useQueryClient } from '@tanstack/react-query';
 dayjs.extend(utc);
 dayjs.locale("es");
 
-interface UrgenciaMap {
-  [key: number]: string;
-}
+type UrgenciaMap = Record<number, string>;
+
 export default function TicketPage(props:{params:{ticketId: string}}) {
   const id = props.params.ticketId
   
 
-  const test = api.images.getByTicket.useQuery({commentId: parseInt(id)});
+  // const test = api.images.getByTicket.useQuery({commentId: parseInt(id)});
 
   const ticket = api.tickets.getById.useQuery({ id: parseInt(id) }).data;
   const org = api.companies.get.useQuery({ id: ticket?.orgId ?? 0 }).data;
@@ -34,19 +33,26 @@ const isFinalizado = ticket?.state === "Finalizado";
 
 const { mutateAsync: updateMensaje } = api.comments.update.useMutation();
 const queryClient = useQueryClient();
-  useEffect( () => {
-      if (comments) {
-        comments.map(async (comments) => {
-          if (comments?.state === "no leido") {
-            await updateMensaje({
-              id: comments?.id ?? 0,
-              state: "leido",
-            });
-          }
-        });
-        queryClient.invalidateQueries()
-      }
-  }, [ticket, updateMensaje]);
+
+
+useEffect(() => {
+  const updateComments = async () => {
+    if (comments) {
+      await Promise.all(comments.map((comment) => 
+        comment.state === "no leido" 
+          ? updateMensaje({ id: comment.id ?? 0, state: "leido" })
+          : Promise.resolve()
+      ));
+      // queryClient.invalidateQueries(); 
+    }
+  };
+  
+  updateComments().catch((error) => {
+    console.error("Error updating comments:", error);
+  });
+}, [comments, updateMensaje, queryClient]);
+
+
   const urgenciaMap: UrgenciaMap = {
     1: "Leve",
     2: "Baja",
@@ -55,7 +61,7 @@ const queryClient = useQueryClient();
     5: "Urgente",
   };
 
-  const urg:string = urgenciaMap[ticket?.urgency ?? 0] || "Desconocido";
+  const urg:string = urgenciaMap[ticket?.urgency ?? 0] ?? "Desconocido";
 
   return (
     <LayoutContainer>

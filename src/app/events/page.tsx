@@ -1,7 +1,7 @@
 "use client"
 
 import { NumeroGrande, Title } from "~/app/_components/ui/title"
-import { DataTable, DataTableComponent } from "./table"
+import {  DataTableComponent } from "./table"
 import { api } from "~/trpc/react";
 import LayoutContainer from "../_components/layout-container";
 

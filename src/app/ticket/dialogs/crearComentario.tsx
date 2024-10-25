@@ -33,6 +33,7 @@ export function CrearComentario(props: { ticketId: number, isRechazado: boolean,
       setError('Todos los campos son obligatorios')
       return toast.error('Todos los campos son obligatorios')
     }
+    console.log(imageId)
     try {
         await createMensaje({
           title: title ??  "",
