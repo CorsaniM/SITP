@@ -8,9 +8,9 @@ const app = new Hono().basePath("api/hono");
 // Configuración de CORS
 app.use(
   cors({
-    origin: "http://localhost:3000", // Cambia esto al dominio de tu otro proyecto
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    origin: "*", // Permitir solicitudes de cualquier origen
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Métodos permitidos
+    allowHeaders: ["Content-Type", "Authorization"], // Encabezados permitidos
   }),
 );
 
