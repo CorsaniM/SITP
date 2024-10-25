@@ -4,14 +4,20 @@ const isProtectedRoute = createRouteMatcher(["/(.*)", "/forum(.*)"]);
 const isWebhookRoute = createRouteMatcher(["/api/uploadthing(.*)"]);
 const isWebhookRouteApi = createRouteMatcher(["/api/hono(.*)"]);
 
+// Nueva condición para rutas permitidas
+const isPublicApiRoute = createRouteMatcher(["/api/tickets"]);
+
 export default clerkMiddleware((auth, req) => {
   // Permitir acceso a la ruta del webhook
-  if (isWebhookRoute(req)) {
+  if (isWebhookRoute(req) || isWebhookRouteApi(req)) {
     return; // No hacer nada, deja que pase sin protección
   }
-  if (isWebhookRouteApi(req)) {
-    return;
+
+  // Permitir acceso a las rutas públicas
+  if (isPublicApiRoute(req)) {
+    return; // No hacer nada, deja que pase sin protección
   }
+
   // Proteger otras rutas
   if (isProtectedRoute(req)) {
     auth().protect();
