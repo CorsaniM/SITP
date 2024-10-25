@@ -20,7 +20,7 @@ app.get("/tickets", async (c) => {
     const tickets = await api.tickets.list();
     return c.json(tickets);
   } catch (error) {
-    return c.json({ error: "Error al obtener los tickets" }, 500);
+    return c.json({ error: "Error al obtener los tickets 400" }, 500);
   }
 });
 
