@@ -12,7 +12,8 @@ import { useCheckRole } from "~/lib/react/roles";
 import LayoutContainer from "../_components/layout-container";
 import { useRouter } from "next/navigation";
 import { Button } from "../_components/ui/button";
-// import Link from "next/link";
+import Link from "next/link";
+import Prueba from "../prueba/page";
 type Ticket = {
   id: number;
   orgId: number;
@@ -51,7 +52,7 @@ export default function Page() {
 
   const Creator = async () => {
     await CreateTicket({
-      orgId: 4,
+      orgId: 1,
       state: "test",
       urgency: 3,
       suppUrgency: 0,
@@ -82,6 +83,7 @@ export default function Page() {
       </div>
       <div>
         <Button onClick={Creator}>Crear ticket</Button>
+      <Link href={"../prueba"} className="border border-gray-900 bg-gray-900 p-2 hover:bg-gray-800" >ir a prueba</Link>
       </div>
     </div>
   );
