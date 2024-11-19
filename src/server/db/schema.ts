@@ -32,6 +32,7 @@ export const tickets = createTable(
 
 export const ticketsRelations = relations(tickets, ({ many, one }) => ({
   comments: many(comments),
+  reporteElegido: many(reportes),
   participants: many(participants),
   companies: one(companies, {
     fields: [tickets.orgId],
@@ -173,3 +174,28 @@ export const participantsRelations = relations(participants, ({ one }) => ({
     references: [tickets.id],
   }),
 }));
+
+
+export const reportes = createTable(
+  "reportes",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    ticketId: int("ticketId")
+      .references(() => tickets.id)
+      .notNull(),
+    type: text("type"),
+    title: text("title"),
+    description: text("description"),
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+    },
+  );
+
+  export const reportesRelations = relations(reportes, ({ one }) => ({
+    ticketElegido: one(tickets, {
+      fields: [reportes.ticketId],
+      references: [tickets.id],
+    }),
+  }));
+  

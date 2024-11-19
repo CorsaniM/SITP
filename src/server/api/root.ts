@@ -7,6 +7,7 @@ import { eventsRouter } from "./routers/events";
 import { clerkRouter } from "./routers/clerk-router";
 import { companiesRouter } from "./routers/companies-router";
 import { userCompaniesRouter } from "./routers/companiesToUser";
+import { reportesRouter } from "./routers/reportes-routes";
 
 /**
  * This is the primary router for your server.
@@ -15,6 +16,7 @@ import { userCompaniesRouter } from "./routers/companiesToUser";
  */
 export const appRouter = createTRPCRouter({
   tickets: ticketsRouter,
+  reportes:reportesRouter,
   comments: commentsRouter,
   participants: participantsRouter,
   images: imagesRouter,
